@@ -1,395 +1,854 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tiles UI + Share Buttons</title>
-
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  
+  <!-- PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#0a0a0b" />
+  
+  <!-- PWA Icons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiBmaWxsPSIjNjM2NmYxIi8+Cjx0ZXh0IHg9IjkwIiB5PSI5MCIgZm9udC1mYW1pbHk9IkludGVyIiBmb250LXNpemU9IjYwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+VDwvdGV4dD4KPHN2Zz4=" />
+  
+  <title>TilesPro Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="manifest" href="application/json;base64,ewogICJuYW1lIjogIlRpbGVzUHJvIENhbGN1bGF0b3IiLAogICJzaG9ydF9uYW1lIjogIlRpbGVzUHJvIiwKICAiZGVzY3JpcHRpb24iOiAiUHJvZmVzc2lvbmFsIHRpbGUgY2FsY3VsYXRpb24gYXBwIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwYTBhMGIiLAogICJ0aGVtZV9jb2xvciI6ICIjNjM2NmYxIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRnd0lpQm9aV2xuYUhROUlqRTRNQ0lpSUhacFpYZENiM2c5SWpBZ01DQXhPREFnTVRnd0lpQm1hV3hzUFNKdWIyNWxJaUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lQZ29nUEhKbFkzUWdkMmxrZEdnOUlqRTRNQ0lpSUdobGFXZG9kRDBpTVRnd0lpQm1hV3hzUFNJalEwTXlOREZHT1VFaUx6NEtJRHgwWlhoMElIZzlJamt3SWlCNVBTSTVNQ0lpSUdadmJuUXRabUZ0YVd4NVBTSkpiblJsY2lJZ1ptOXVkQzF6YVhwbFBTSTJNQ0lpSUdacGJHeDBhWFpoSUdacGJHeDBhWFpsUFNKM2FHbDBaU0lpSUhSbGVIUXRZVzVqYUc5eVBTSnRhV1JrYkdVaUlHUnZiV2x1WVc1MExXSmhjMlZzYVc1bFBTSnRhV1JrYkdVaVBsUThMM1JsZUhRK0NqeHpkbWMrIiwKICAgICAgInNpemVzIjogIjE4MHgxODAiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0KfQ==" />
+  
   <style>
-    :root{
-      /* Theme — match existing UI palette here */
-      --bg: #0e1116;
-      --fg: #eaecef;
-      --muted: #9aa4b2;
-      --card: #151a21;
-      --border: #232a33;
-      --primary: #3b82f6; /* accent */
-      --primary-2: #2563eb;
-      --success: #22c55e;
-      --wa: #25D366;
-      --sms: #0ea5e9;
-      --mail: #f59e0b;
-      --shadow: 0 6px 20px rgba(0,0,0,0.35);
-      --radius: 14px;
+    :root {
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-dark: #4338ca;
+      --secondary: #06b6d4;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      
+      --bg-primary: #0a0a0b;
+      --bg-secondary: #121214;
+      --bg-tertiary: #1a1a1e;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+      
+      --border-radius: 16px;
+      --border-radius-sm: 12px;
+      --border-radius-lg: 20px;
+      
+      /* Safe area variables for notch devices */
+      --safe-area-top: env(safe-area-inset-top);
+      --safe-area-bottom: env(safe-area-inset-bottom);
+      --safe-area-left: env(safe-area-inset-left);
+      --safe-area-right: env(safe-area-inset-right);
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background: linear-gradient(180deg, #0d1218, #0b0f14);
-      color:var(--fg);
-      font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    .container{
-      width: min(1100px, 94vw);
-      margin: 18px auto 22px;
+    html {
+      /* Fullscreen PWA support for iOS */
+      min-height: calc(100% + var(--safe-area-top));
+      padding: var(--safe-area-top) var(--safe-area-right) var(--safe-area-bottom) var(--safe-area-left);
+      background-attachment: fixed;
     }
 
-    /* ===== Existing UI (unchanged) ===== */
-    .app-header{
-      display:flex; align-items:center; justify-content:space-between;
-      background: linear-gradient(180deg, rgba(59,130,246,0.12), rgba(59,130,246,0.02));
-      border:1px solid var(--border);
-      border-radius: var(--radius);
-      padding:14px 16px;
-      box-shadow: var(--shadow);
-    }
-    .title{
-      font-size:18px; letter-spacing:0.2px;
-    }
-    .toolbar{
-      display:flex; gap:10px;
-    }
-    .btn{
-      background: #10161d;
-      color:var(--fg);
-      border:1px solid var(--border);
-      border-radius:10px;
-      padding:10px 12px;
-      display:inline-flex; align-items:center; gap:8px;
-      cursor:pointer; user-select:none;
-      transition: all .2s ease;
-    }
-    .btn:hover{ border-color:#32404f; transform: translateY(-1px) }
-    .grid{
-      margin-top:14px;
-      display:grid; gap:12px;
-      grid-template-columns: repeat(12, 1fr);
-    }
-    .card{
-      grid-column: span 6;
-      background: var(--card);
-      border:1px solid var(--border);
-      border-radius: var(--radius);
-      padding:14px;
-      box-shadow: var(--shadow);
-    }
-    .row{ display:flex; gap:12px; align-items:center; margin-top:8px }
-    .input, .select{
-      flex:1;
-      background:#0f141a;
-      border:1px solid var(--border);
-      color:var(--fg);
-      border-radius:10px;
-      padding:10px 12px;
-      outline:none;
-    }
-    .input:focus, .select:focus{ border-color:#2b3755; box-shadow: 0 0 0 3px rgba(59,130,246,0.15)}
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px;
-      border:1px solid var(--border);
-      background:#0f141a;
-      border-radius: 999px;
-      color:var(--muted);
-      font-size:12px;
-    }
-    .metric{
-      margin-top:10px;
-      display:flex; gap:10px; flex-wrap:wrap;
-    }
-    .metric .kpi{
-      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0));
-      border:1px solid var(--border);
-      padding:10px 12px;
-      border-radius:12px;
-      min-width: 120px;
-    }
-    .kpi .label{ font-size:11px; color:var(--muted)}
-    .kpi .val{ margin-top:4px; font-size:16px}
-
-    @media (max-width: 900px){
-      .card{ grid-column: span 12 }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-primary);
+      background-image: 
+        radial-gradient(at 40% 20%, hsla(228,100%,74%,0.12) 0, transparent 50%),
+        radial-gradient(at 80% 0%, hsla(189,100%,56%,0.08) 0, transparent 50%),
+        radial-gradient(at 20% 80%, hsla(355,100%,93%,0.05) 0, transparent 50%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+      overflow-x: hidden;
+      font-feature-settings: 'cv11', 'ss01';
+      font-variation-settings: 'opsz' 32;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* ===== Share bar at bottom ===== */
-    .share-bar{
-      margin-top: 16px;
-      position: sticky;
-      bottom: 0;
-      background: rgba(10,14,19,0.8);
+    .container {
+      width: 100%;
+      max-width: 800px;
+      padding: max(1rem, var(--safe-area-left)) max(1rem, var(--safe-area-right));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - var(--safe-area-top) - var(--safe-area-bottom));
+      min-height: calc(100dvh - var(--safe-area-top) - var(--safe-area-bottom));
+    }
+
+    /* Floating orbs animation */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      opacity: 0.3;
+      filter: blur(40px);
+      animation: float 20s infinite linear;
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    .orb:nth-child(1) {
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      top: 10%;
+      left: -5%;
+      animation-delay: 0s;
+    }
+    
+    .orb:nth-child(2) {
+      width: 150px;
+      height: 150px;
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      bottom: 10%;
+      right: -5%;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      33% { transform: translateY(-20px) rotate(120deg); }
+      66% { transform: translateY(20px) rotate(240deg); }
+    }
+
+    /* Main card - Perfectly centered */
+    .calculator-card {
+      width: 100%;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+      max-width: 100%;
+      transform: translateY(0);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .calculator-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+      opacity: 0.5;
+    }
+
+    .calculator-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 32px 64px -12px rgb(0 0 0 / 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    /* Form section - Compact layout */
+    .form-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    /* Labels */
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color 0.2s ease;
+    }
+
+    /* Inputs */
+    .form-input, .form-select {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--border-radius-sm);
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-weight: 400;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      outline: none;
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Mode toggle */
+    .mode-toggle {
+      display: flex;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: var(--border-radius-sm);
+      padding: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mode-option {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    .mode-option.active {
+      color: var(--text-primary);
+    }
+
+    .mode-toggle::after {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      bottom: 4px;
+      width: calc(50% - 4px);
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: calc(var(--border-radius-sm) - 4px);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1;
+    }
+
+    .mode-toggle.pieces-mode::after {
+      transform: translateX(100%);
+    }
+
+    /* Action buttons */
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn {
+      padding: 0.875rem 1.5rem;
+      border: none;
+      border-radius: var(--border-radius-sm);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+
+    /* Results - 2x2 Grid */
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .result-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--border-radius);
+      padding: 1.25rem;
+      text-align: center;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .result-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+
+    .result-item:hover::before {
+      transform: translateX(0);
+    }
+
+    .result-item:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .result-label {
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-value {
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Meta info */
+    .results-meta {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-align: center;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: var(--border-radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Share Buttons */
+    .share-section {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .share-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .share-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transition: all 0.5s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    .share-btn:active::before {
+      width: 100px;
+      height: 100px;
+    }
+
+    .share-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .share-whatsapp {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+    }
+
+    .share-whatsapp:hover {
+      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+    }
+
+    .share-sms {
+      background: linear-gradient(135deg, var(--secondary), #0891b2);
+    }
+
+    .share-sms:hover {
+      box-shadow: 0 8px 25px rgba(6, 182, 212, 0.4);
+    }
+
+    .share-email {
+      background: linear-gradient(135deg, var(--accent), #db2777);
+    }
+
+    .share-email:hover {
+      box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
+    }
+
+    .share-icon {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+
+    /* Copy message - Fixed position for PWA */
+    .copy-message {
+      position: fixed;
+      top: calc(20px + var(--safe-area-top));
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(6, 182, 212, 0.9));
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: var(--border-radius-sm);
+      color: white;
+      font-size: 0.875rem;
+      font-weight: 500;
       backdrop-filter: blur(10px);
-      border:1px solid var(--border);
-      border-radius: calc(var(--radius) + 2px);
-      padding: 10px 12px;
-      box-shadow: var(--shadow);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
     }
-    .share-wrap{
-      display:flex; align-items:center; justify-content:center; gap:12px;
-      flex-wrap: wrap;
+
+    .copy-message.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
-    .share-btn{
-      width:56px; height:56px;
-      border-radius:50%;
-      display:inline-flex; align-items:center; justify-content:center;
-      color:#fff; text-decoration:none;
-      border:1px solid rgba(255,255,255,0.08);
-      box-shadow: var(--shadow);
-      transition: transform .15s ease, box-shadow .15s ease, filter .2s ease;
+
+    /* Responsive - Mobile optimizations */
+    @media (max-width: 480px) {
+      .calculator-card { 
+        padding: 1.25rem;
+        border-radius: var(--border-radius);
+        margin: 0.5rem;
+      }
+      .form-row { gap: 0.75rem; }
+      .actions { gap: 0.75rem; }
+      .results-grid { 
+        gap: 0.75rem;
+      }
+      .result-item { 
+        padding: 1rem;
+        min-height: 70px;
+      }
+      .result-value { font-size: 1.25rem; }
+      .results-meta { font-size: 0.7rem; }
+      .share-section { gap: 1rem; }
+      .share-btn { 
+        width: 48px; 
+        height: 48px; 
+      }
+      .share-icon { 
+        width: 20px; 
+        height: 20px; 
+      }
     }
-    .share-btn:hover{ transform: translateY(-2px); filter: brightness(1.05) }
-    .share-btn:active{ transform: translateY(0) }
 
-    .share-btn svg{ width:24px; height:24px; display:block }
+    /* Loading state */
+    .loading .result-value {
+      animation: pulse 1.5s infinite;
+    }
 
-    .btn-wa { background: radial-gradient(120% 120% at 50% 0%, #29e67f 0%, #1fb15e 60%, #148c49 100%) }
-    .btn-sms{ background: radial-gradient(120% 120% at 50% 0%, #22d3ee 0%, #0ea5e9 60%, #0369a1 100%) }
-    .btn-mail{ background: radial-gradient(120% 120% at 50% 0%, #fbbf24 0%, #f59e0b 60%, #b45309 100%) }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
 
-    .share-label{
-      width:100%;
-      text-align:center;
-      color:var(--muted);
-      font-size:12px;
-      margin-top:6px;
+    /* PWA fullscreen detection */
+    @media (display-mode: standalone) {
+      .calculator-card {
+        /* Additional styling when running as PWA */
+        box-shadow: 
+          var(--shadow-lg),
+          0 0 0 1px rgba(255, 255, 255, 0.03);
+      }
+    }
+
+    /* iOS standalone mode detection */
+    @supports (-webkit-touch-callout: none) {
+      @media (display-mode: standalone) {
+        body {
+          /* iOS-specific PWA adjustments */
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
+        }
+      }
     }
   </style>
 </head>
 <body>
+  <div class="orb"></div>
+  <div class="orb"></div>
+  
   <div class="container">
-    <!-- ================= Existing UI (unchanged) ================= -->
-    <header class="app-header" role="banner" aria-label="Header">
-      <div class="title">Tiles Selection</div>
-      <div class="toolbar">
-        <button class="btn" id="btnCopy">
-          <!-- copy icon -->
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M9 9.5A2.5 2.5 0 0 1 11.5 7h6A2.5 2.5 0 0 1 20 9.5v6A2.5 2.5 0 0 1 17.5 18h-6A2.5 2.5 0 0 1 9 15.5v-6Z" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M7 15.5A2.5 2.5 0 0 1 4.5 13v-6A2.5 2.5 0 0 1 7 4.5h6" stroke="currentColor" stroke-width="1.5"/>
-          </svg>
-          Copy
-        </button>
-        <button class="btn" id="btnClear">
-          <!-- clear icon -->
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M5 7h14M9 7l.8 11.2A2 2 0 0 0 11.8 20h.4a2 2 0 0 0 2-1.8L15 7M10 7l1-3h2l1 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-          Clear
-        </button>
-      </div>
-    </header>
-
-    <section class="grid" aria-label="Inputs">
-      <div class="card">
-        <div class="pill">Order • Live calc</div>
-        <div class="row">
-          <select class="select" id="size">
-            <option value="600x600">600 x 600</option>
-            <option value="800x800">800 x 800</option>
-            <option value="600x1200">600 x 1200</option>
-          </select>
-          <select class="select" id="thickness">
-            <option value="8">8 mm</option>
-            <option value="10">10 mm</option>
-            <option value="12">12 mm</option>
-          </select>
-          <input class="input" id="area" type="number" step="0.01" placeholder="Area (sq ft)" />
+    <div class="calculator-card">
+      <div class="form-section">
+        <!-- Tile Size with thickness combined -->
+        <div class="form-row">
+          <div class="form-group full-width">
+            <label class="form-label">Tile Size & Thickness</label>
+            <select id="sizeThickness" class="form-select"></select>
+          </div>
         </div>
-        <div class="metric">
-          <div class="kpi">
-            <div class="label">Per-piece area</div>
-            <div class="val" id="kpiPcs">—</div>
+
+        <!-- Mode Toggle -->
+        <div class="form-row">
+          <div class="form-group full-width">
+            <label class="form-label">Calculation Mode</label>
+            <div class="mode-toggle" id="modeToggle">
+              <button class="mode-option active" data-mode="area">Area (ft²)</button>
+              <button class="mode-option" data-mode="pieces">Pieces</button>
+            </div>
           </div>
-          <div class="kpi">
-            <div class="label">Total qty (pcs)</div>
-            <div class="val" id="kpiQty">—</div>
-          </div>
-          <div class="kpi">
-            <div class="label">Weight (tons)</div>
-            <div class="val" id="kpiTons">—</div>
+        </div>
+
+        <!-- Quantity Input -->
+        <div class="form-row">
+          <div class="form-group full-width">
+            <label class="form-label" id="inputLabel">Area (ft²)</label>
+            <input type="number" id="quantity" class="form-input" placeholder="Enter value..." min="0" step="0.01" inputmode="decimal">
           </div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="pill">Preview</div>
-        <div id="preview" style="margin-top:8px; color:var(--muted)">Selections will appear here…</div>
+      <!-- Action Buttons Side by Side -->
+      <div class="actions">
+        <button class="btn btn-primary" id="copyBtn">Copy Details</button>
+        <button class="btn btn-secondary" id="clearBtn">Clear</button>
       </div>
-    </section>
 
-    <!-- ================= Bottom Share Buttons (added) ================= -->
-    <nav class="share-bar" role="navigation" aria-label="Share actions">
-      <div class="share-wrap">
-        <a class="share-btn btn-wa" id="btnWA" href="#" aria-label="Share on WhatsApp" title="WhatsApp">
-          <!-- WhatsApp icon -->
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M20.5 3.5A11 11 0 0 0 3.1 16.8L2 22l5.4-1.1A11 11 0 1 0 20.5 3.5Zm-8.4 16a9 9 0 0 1-4.6-1.3l-.3-.2-3 .6.6-3-.2-.3a9 9 0 1 1 7.5 4.2Zm4.9-6.7c-.3-.2-1.8-.9-2-.9s-.5-.1-.7.2-.8.9-1 .9-.5 0-.8-.3-1.1-.9-1.6-1.5-1.1-1.5-1.2-1.8 0-.6.2-.8.3-.5.5-.7c.2-.2.3-.4.2-.7s-.7-2-1-2.7c-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.7.1-1.1.5s-1.5 1.5-1.5 3.6 1.6 4.2 1.8 4.5 3 4.7 7.1 6.4c1 .4 1.8.6 2.4.8 1 .3 2 0 2.8-.6s1.3-1.7 1.5-2.4.1-1.1 0-1.2-.3-.2-.6-.4Z"/>
-          </svg>
-        </a>
-        <a class="share-btn btn-sms" id="btnSMS" href="#" aria-label="Share via SMS" title="SMS">
-          <!-- SMS icon -->
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9.4L5 21v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm2 5h12v2H6V9Zm0-3h12v2H6V6Zm0 6h9v2H6v-2Z"/>
-          </svg>
-        </a>
-        <a class="share-btn btn-mail" id="btnMail" href="#" aria-label="Share via Email" title="Email">
-          <!-- Mail icon -->
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v.4l9 5.6 9-5.6V7H3Zm18 10V9.3l-8.4 5.2a2 2 0 0 1-2.2 0L2 9.3V17h19Z"/>
-          </svg>
-        </a>
-
-        <div class="share-label">Share order summary</div>
+      <!-- Results in 2x2 Grid -->
+      <div class="results-grid">
+        <div class="result-item">
+          <div class="result-label">Pieces</div>
+          <div class="result-value" id="piecesResult">-</div>
+        </div>
+        <div class="result-item">
+          <div class="result-label">Area (ft²)</div>
+          <div class="result-value" id="areaFt2Result">-</div>
+        </div>
+        <div class="result-item">
+          <div class="result-label">Area (m²)</div>
+          <div class="result-value" id="areaM2Result">-</div>
+        </div>
+        <div class="result-item">
+          <div class="result-label">Weight (tons)</div>
+          <div class="result-value" id="weightResult">-</div>
+        </div>
       </div>
-    </nav>
+
+      <!-- Meta Information -->
+      <div class="results-meta" id="resultsMeta">Select tile specifications to see calculations</div>
+
+      <!-- Share Buttons -->
+      <div class="share-section">
+        <button class="share-btn share-whatsapp" id="shareWhatsapp">
+          <svg class="share-icon" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/>
+          </svg>
+        </button>
+        <button class="share-btn share-sms" id="shareSMS">
+          <svg class="share-icon" viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
+          </svg>
+        </button>
+        <button class="share-btn share-email" id="shareEmail">
+          <svg class="share-icon" viewBox="0 0 24 24">
+            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
   </div>
 
+  <div class="copy-message" id="copyMessage">✓ Details copied to clipboard!</div>
+
   <script>
-    // ===== Mock calculation (replace with existing logic) =====
-    const elSize = document.getElementById('size');
-    const elThk = document.getElementById('thickness');
-    const elArea = document.getElementById('area');
-    const elPcs = document.getElementById('kpiPcs');
-    const elQty = document.getElementById('kpiQty');
-    const elTons = document.getElementById('kpiTons');
-    const elPreview = document.getElementById('preview');
+    // SKU Master Data
+    const SKU_MASTER = [
+      {size:"1200x1200",thk:"9MM",pcs:2,kg:"61",ft2:31.0,m2:2.88},
+      {size:"1200x1790",thk:"9MM",pcs:2,kg:"91",ft2:46.242,m2:4.296},
+      {size:"1200x1800",thk:"9MM",pcs:2,kg:"91 TO 96.5",ft2:46.5,m2:4.32},
+      {size:"1200x2400",thk:"9MM",pcs:1,kg:"62",ft2:31.0,m2:2.88},
+      {size:"1200x2800",thk:"6MM",pcs:1,kg:"50.5",ft2:36.167,m2:3.36},
+      {size:"1200x3180",thk:"15MM",pcs:1,kg:"136",ft2:41.075,m2:3.816},
+      {size:"1200x3200",thk:"15MM",pcs:1,kg:"136",ft2:41.337,m2:3.84},
+      {size:"1600x1600",thk:"9MM",pcs:1,kg:"55",ft2:27.556,m2:2.56},
+      {size:"1600x3200",thk:"6MM",pcs:1,kg:"74",ft2:55.116,m2:5.12},
+      {size:"1600x3200",thk:"12MM",pcs:1,kg:"148",ft2:55.116,m2:5.12},
+      {size:"1620x3240",thk:"12MM",pcs:1,kg:"150",ft2:56.5,m2:5.249},
+      {size:"790x2980",thk:"15MM",pcs:1,kg:"87",ft2:25.338,m2:2.354},
+      {size:"800x3000",thk:"15MM",pcs:1,kg:"84.5",ft2:25.834,m2:2.4},
+      {size:"800x2400",thk:"15MM",pcs:1,kg:"67.5",ft2:20.67,m2:1.9},
+      {size:"1000x3000",thk:"5MM",pcs:1,kg:"35.5",ft2:32.29,m2:3.0},
+      {size:"1200x2600",thk:"6MM",pcs:1,kg:"42.5",ft2:33.58,m2:3.1},
+      {size:"1200x3000",thk:"9MM",pcs:1,kg:"77.5",ft2:38.75,m2:3.6},
+      {size:"1200x3200",thk:"15MM",pcs:1,kg:"136",ft2:41.33,m2:3.8},
+      {size:"800x3200",thk:"15MM",pcs:1,kg:"74",ft2:27.56,m2:2.6},
+    ];
 
-    function perPieceSqft(size){
-      // parse e.g. "600x600" -> m^2 -> sqft
-      const [wmm, hmm] = size.split('x').map(Number);
-      const sqm = (wmm/1000) * (hmm/1000);
-      const sqft = sqm * 10.7639;
-      return sqft;
+    const FT2_PER_M2 = 10.7639;
+    const fmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+    const fmt3 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 3 });
+
+    let currentMode = 'area';
+
+    const elements = {
+      sizeThickness: document.getElementById('sizeThickness'),
+      quantity: document.getElementById('quantity'),
+      modeToggle: document.getElementById('modeToggle'),
+      inputLabel: document.getElementById('inputLabel'),
+      copyBtn: document.getElementById('copyBtn'),
+      clearBtn: document.getElementById('clearBtn'),
+      copyMessage: document.getElementById('copyMessage'),
+      resultsMeta: document.getElementById('resultsMeta'),
+      piecesResult: document.getElementById('piecesResult'),
+      areaFt2Result: document.getElementById('areaFt2Result'),
+      areaM2Result: document.getElementById('areaM2Result'),
+      weightResult: document.getElementById('weightResult')
+    };
+
+    function parseKgMin(value) {
+      const nums = String(value).match(/[\d.]+/g);
+      return nums && nums.length ? parseFloat(nums[0]) : NaN;
     }
-    function weightTons(size, thicknessMM, qty){
-      // rough density estimate: 2.2 g/cc; tile volume = w*h*thk; result in tons
-      const [wmm, hmm] = size.split('x').map(Number);
-      const vol_m3 = (wmm/1000) * (hmm/1000) * (thicknessMM/1000) * qty;
-      const kg = vol_m3 * 2200; // 2.2 t/m^3
-      return kg/1000; // tons
+
+    function initializeSelect() {
+      // Create combined size + thickness options
+      elements.sizeThickness.innerHTML = SKU_MASTER.map((sku, index) => 
+        `<option value="${index}">${sku.size} (${sku.thk})</option>`
+      ).join('');
+      
+      // Set default to 800x3000 (15MM)
+      const defaultIndex = SKU_MASTER.findIndex(s => s.size === "800x3000" && s.thk === "15MM");
+      if (defaultIndex >= 0) elements.sizeThickness.selectedIndex = defaultIndex;
+      
+      calculate();
     }
-    function recompute(){
-      const size = elSize.value;
-      const thk = Number(elThk.value || 0);
-      const area = Number(elArea.value || 0);
 
-      const per = perPieceSqft(size);
-      const qty = per ? Math.max(0, Math.ceil(area / per)) : 0;
-      const tons = qty ? weightTons(size, thk, qty) : 0;
-
-      elPcs.textContent = per ? per.toFixed(2) + ' sq ft' : '—';
-      elQty.textContent = qty ? qty + ' pcs' : '—';
-      elTons.textContent = tons ? tons.toFixed(3) + ' t' : '—';
-
-      elPreview.textContent = `Size: ${size}, Thickness: ${thk} mm, Area: ${area || 0} sq ft, Qty: ${qty || 0} pcs, Weight: ${tons ? tons.toFixed(3) : 0} t`;
+    function getSelectedSKU() {
+      const index = parseInt(elements.sizeThickness.value);
+      return SKU_MASTER[index];
     }
-    [elSize, elThk, elArea].forEach(el => el.addEventListener('input', recompute));
-    recompute();
 
-    // ===== Copy / Clear (existing actions) =====
-    document.getElementById('btnCopy').addEventListener('click', async () => {
-      try{
-        await navigator.clipboard.writeText(document.getElementById('preview').textContent);
-        toast('Copied!');
-      }catch(e){ toast('Copy failed'); }
-    });
-    document.getElementById('btnClear').addEventListener('click', () => {
-      elArea.value = '';
-      recompute();
-      toast('Cleared');
-    });
-
-    function toast(msg){
-      let t = document.getElementById('toast');
-      if(!t){
-        t = document.createElement('div');
-        t.id='toast';
-        Object.assign(t.style,{
-          position:'fixed', left:'50%', bottom:'24px', transform:'translateX(-50%)',
-          background:'#0b1117', color:'#fff', border:'1px solid #273244',
-          borderRadius:'12px', padding:'10px 14px', zIndex:9999,
-          boxShadow:'0 8px 30px rgba(0,0,0,0.4)', fontSize:'13px'
-        });
-        document.body.appendChild(t);
+    function calculate() {
+      const sku = getSelectedSKU();
+      const quantity = parseFloat(elements.quantity.value);
+      
+      if (!sku) {
+        resetResults();
+        return;
       }
-      t.textContent = msg;
-      t.style.opacity='1';
-      clearTimeout(t._to);
-      t._to = setTimeout(()=>{ t.style.opacity='0' }, 1400);
-    }
 
-    // ===== Share helpers =====
-    function makeSubject(){
-      return `Tiles Order • ${new Date().toLocaleDateString()}`;
-    }
-    function makeShareText(){
-      const size = elSize.value;
-      const thk = elThk.value;
-      const area = elArea.value || 0;
-      const per = elPcs.textContent;
-      const qty = elQty.textContent;
-      const wt = elTons.textContent;
-      return [
-        'Tiles Order Details',
-        `Size: ${size}`,
-        `Thickness: ${thk} mm`,
-        `Area: ${area} sq ft`,
-        `Per-piece area: ${per}`,
-        `Qty: ${qty}`,
-        `Weight: ${wt}`
-      ].join('\n');
-    }
-    function isiOS(){
-      return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    }
+      const pcsPerBox = sku.pcs;
+      const ft2PerPc = sku.ft2 / pcsPerBox;
+      const m2PerPc = sku.m2 / pcsPerBox;
+      const kgPerPc = parseKgMin(sku.kg) / pcsPerBox;
 
-    // Use Web Share API if available
-    async function tryWebShare(){
-      if(navigator.share){
-        try{
-          await navigator.share({ title: makeSubject(), text: makeShareText() });
-          toast('Shared');
-          return true;
-        }catch(e){ /* user canceled or not supported for this payload */ }
+      let pieces = 0, areaFt2 = 0, areaM2 = 0, weight = 0;
+
+      if (quantity > 0) {
+        if (currentMode === 'area') {
+          areaFt2 = quantity;
+          pieces = Math.ceil(areaFt2 / ft2PerPc);
+          areaM2 = areaFt2 / FT2_PER_M2;
+        } else {
+          pieces = Math.ceil(quantity);
+          areaFt2 = pieces * ft2PerPc;
+          areaM2 = pieces * m2PerPc;
+        }
+        weight = (pieces * kgPerPc) / 1000; // Convert to tons
       }
-      return false;
+
+      // Update results
+      elements.piecesResult.textContent = pieces ? fmt.format(pieces) : '-';
+      elements.areaFt2Result.textContent = areaFt2 ? fmt.format(areaFt2) : '-';
+      elements.areaM2Result.textContent = areaM2 ? fmt3.format(areaM2) : '-';
+      elements.weightResult.textContent = weight ? fmt3.format(weight) : '-';
+      
+      elements.resultsMeta.textContent = `${pcsPerBox} pcs/box • ${sku.ft2} ft²/box • ${sku.m2} m²/box • ~${parseKgMin(sku.kg)} kg/box`;
     }
 
-    // Wire buttons
-    const btnWA = document.getElementById('btnWA');
-    const btnSMS = document.getElementById('btnSMS');
-    const btnMail = document.getElementById('btnMail');
+    function resetResults() {
+      ['piecesResult', 'areaFt2Result', 'areaM2Result', 'weightResult'].forEach(id => {
+        elements[id].textContent = '-';
+      });
+      elements.resultsMeta.textContent = 'Select tile specifications to see calculations';
+    }
 
-    btnWA.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const shared = await tryWebShare();
-      if(shared) return;
-      // App scheme for WhatsApp (avoids http links)
-      const text = encodeURIComponent(makeShareText());
-      const href = `whatsapp://send?text=${text}`;
-      window.location.href = href;
+    function setMode(mode) {
+      currentMode = mode;
+      elements.modeToggle.classList.toggle('pieces-mode', mode === 'pieces');
+      
+      const options = elements.modeToggle.querySelectorAll('.mode-option');
+      options.forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.mode === mode);
+      });
+      
+      elements.inputLabel.textContent = mode === 'area' ? 'Area (ft²)' : 'Pieces';
+      elements.quantity.placeholder = mode === 'area' ? 'e.g. 2000' : 'e.g. 25';
+      
+      calculate();
+    }
+
+    function getShareText() {
+      const sku = getSelectedSKU();
+      if (!sku || !elements.quantity.value) return '';
+      
+      return `TilesPro Calculation:
+
+Size: ${sku.size} (${sku.thk})
+Pieces: ${elements.piecesResult.textContent}
+Area (ft²): ${elements.areaFt2Result.textContent}
+Area (m²): ${elements.areaM2Result.textContent}
+Weight (tons): ${elements.weightResult.textContent}
+
+Generated by TilesPro Calculator`;
+    }
+
+    function copyToClipboard() {
+      const sku = getSelectedSKU();
+      if (!sku || !elements.quantity.value) return;
+
+      const text = `size:- ${sku.size} ${sku.thk}
+Pieces:- ${elements.piecesResult.textContent}
+Area (ft²):- ${elements.areaFt2Result.textContent}
+Area (m²):- ${elements.areaM2Result.textContent}
+Weight (tons):- ${elements.weightResult.textContent}`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        elements.copyMessage.classList.add('show');
+        setTimeout(() => {
+          elements.copyMessage.classList.remove('show');
+        }, 2000);
+      }).catch(err => {
+        console.error('Copy failed:', err);
+      });
+    }
+
+    function clearForm() {
+      elements.quantity.value = '';
+      calculate();
+    }
+
+    // Share Functions
+    function shareWhatsApp() {
+      const text = getShareText();
+      if (!text) return;
+      const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+    }
+
+    function shareSMS() {
+      const text = getShareText();
+      if (!text) return;
+      const url = navigator.userAgent.match(/iPhone|iPad/) 
+        ? `sms:&body=${encodeURIComponent(text)}` 
+        : `sms:?body=${encodeURIComponent(text)}`;
+      window.location.href = url;
+    }
+
+    function shareEmail() {
+      const text = getShareText();
+      if (!text) return;
+      const subject = encodeURIComponent('TilesPro Calculation Results');
+      const body = encodeURIComponent(text);
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    }
+
+    // Event listeners
+    elements.sizeThickness.addEventListener('change', calculate);
+    elements.quantity.addEventListener('input', calculate);
+
+    elements.modeToggle.addEventListener('click', (e) => {
+      const option = e.target.closest('.mode-option');
+      if (option) {
+        setMode(option.dataset.mode);
+      }
     });
 
-    btnSMS.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const shared = await tryWebShare();
-      if(shared) return;
-      const sep = isiOS() ? '&' : '?';
-      const href = `sms:${sep}body=${encodeURIComponent(makeShareText())}`;
-      window.location.href = href;
-    });
+    elements.copyBtn.addEventListener('click', copyToClipboard);
+    elements.clearBtn.addEventListener('click', clearForm);
 
-    btnMail.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const shared = await tryWebShare();
-      if(shared) return;
-      const subject = encodeURIComponent(makeSubject());
-      const body = encodeURIComponent(makeShareText());
-      const href = `mailto:?subject=${subject}&body=${body}`;
-      window.location.href = href;
-    });
+    // Share button event listeners
+    document.getElementById('shareWhatsapp').addEventListener('click', shareWhatsApp);
+    document.getElementById('shareSMS').addEventListener('click', shareSMS);
+    document.getElementById('shareEmail').addEventListener('click', shareEmail);
+
+    // Initialize
+    initializeSelect();
+
+    // PWA detection and fullscreen handling
+    if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+      console.log('Running as PWA');
+      // Additional PWA-specific initialization if needed
+    }
   </script>
 </body>
 </html>

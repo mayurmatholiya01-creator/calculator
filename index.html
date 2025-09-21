@@ -30,10 +30,6 @@
     .k{background:#0a1426;border:1px solid rgba(148,163,184,.2);border-radius:14px;padding:12px}
     .t{font-size:12px;color:#a5b4fc} .v{font-size:20px;margin-top:4px}
     .meta{color:var(--muted);font-size:13px}
-    @media (max-width:760px){
-      .col-6,.col-12,.col-4,.col-8{grid-column:span 12}
-      .kpi{grid-template-columns:repeat(2,1fr)}
-    }
     #copyBtn {
       margin-top: 10px;
       padding: 10px 15px;
@@ -46,6 +42,17 @@
     }
     #copyBtn:hover {
       background: #15803d;
+    }
+    #copyMsg {
+      color: #22c55e;
+      font-size: 14px;
+      margin-top: 8px;
+      height: 20px;
+      font-weight: 600;
+    }
+    @media (max-width:760px){
+      .col-6,.col-12,.col-4,.col-8{grid-column:span 12}
+      .kpi{grid-template-columns:repeat(2,1fr)}
     }
   </style>
 </head>
@@ -88,6 +95,7 @@
     </div>
 
     <button id="copyBtn">Copy Details</button>
+    <div id="copyMsg"></div>
 
     <div class="out">
       <div class="meta" id="meta">-</div>
@@ -212,7 +220,7 @@ el('btnArea').addEventListener('click', ()=>setMode('area'));
 el('btnPcs').addEventListener('click',  ()=>setMode('pcs'));
 el('q2').addEventListener('click',  ()=>{ el('val').value=''; recalc(); });
 
-// Copy to clipboard
+// Copy to clipboard & message
 el('copyBtn').addEventListener('click', () => {
   const size = el('size').value;
   const thk = el('thk').value;
@@ -223,11 +231,13 @@ el('copyBtn').addEventListener('click', () => {
 
   const text = `size:- ${size} ${thk}\nPieces:- ${pieces}\nArea (ft²):- ${areaFt2}\nArea (m²):- ${areaM2}\nWeight (tons):- ${weight}`;
 
-  navigator.clipboard.writeText(text).then(() => {
-    alert('Details copied to clipboard!');
-  }).catch(err => {
-    alert('Copy failed, please try manually');
+  navigator.clipboard.writeText(text).catch(err => {
+    console.error('Copy failed:', err);
   });
+
+  const copyMsg = document.getElementById('copyMsg');
+  copyMsg.textContent = 'Copied!';
+  setTimeout(() => { copyMsg.textContent = ''; }, 1500);
 });
 
 bootstrap();

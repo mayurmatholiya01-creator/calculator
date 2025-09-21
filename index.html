@@ -1,246 +1,731 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tiles Live Calculator (ft² ↔ pcs, tons)</title>
+  <title>TilesPro • Advanced Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:#0b1020; --card:#0e1627; --ink:#e5e7eb; --muted:#94a3b8;
-      --accent:#22c55e; --accent2:#16a34a; --stroke:rgba(148,163,184,.22);
-      --glass:rgba(17,24,39,.7);
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-dark: #4338ca;
+      --secondary: #06b6d4;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      
+      --bg-primary: #0a0a0b;
+      --bg-secondary: #121214;
+      --bg-tertiary: #1a1a1e;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+      
+      --border-radius: 16px;
+      --border-radius-sm: 12px;
+      --border-radius-lg: 20px;
     }
-    *{box-sizing:border-box}
-    body{margin:0;background:radial-gradient(1200px 600px at 20% -20%,#0f1b3a 0%,transparent 60%),linear-gradient(135deg,#0b1020,#0b1020);color:var(--ink);font-family:system-ui,Segoe UI,Roboto,Arial}
-    .wrap{max-width:900px;margin:28px auto;padding:12px}
-    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-    .brand{font-weight:600;letter-spacing:.3px}
-    .chip{font-size:12px;color:#c7d2fe;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);padding:6px 10px;border-radius:999px}
-    .card{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;padding:16px;backdrop-filter: blur(6px)}
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
-    .col-6{grid-column:span 6} .col-12{grid-column:span 12} .col-4{grid-column:span 4} .col-8{grid-column:span 8}
-    label{font-size:13px;color:#cbd5e1;margin-bottom:6px;display:block}
-    select,input{width:100%;padding:12px;border-radius:12px;border:1px solid var(--stroke);background:#0b1220;color:var(--ink);outline:none}
-    input[type=number]{appearance:textfield}
-    .seg{display:inline-flex;border:1px solid var(--stroke);border-radius:12px;overflow:hidden;background:#0b1220}
-    .seg button{all:unset;cursor:pointer;padding:10px 14px;color:#cbd5e1}
-    .seg .on{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#052e16;font-weight:600}
-    .out{margin-top:12px;padding:14px;border-radius:14px;background:#0b1220;border:1px dashed rgba(148,163,184,.35)}
-    .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .k{background:#0a1426;border:1px solid rgba(148,163,184,.2);border-radius:14px;padding:12px}
-    .t{font-size:12px;color:#a5b4fc} .v{font-size:20px;margin-top:4px}
-    .meta{color:var(--muted);font-size:13px}
-    #copyBtn {
-      margin-top: 10px;
-      padding: 10px 15px;
-      border-radius: 10px;
-      background: #16a34a;
-      color: #fff;
-      cursor: pointer;
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-primary);
+      background-image: 
+        radial-gradient(at 40% 20%, hsla(228,100%,74%,0.1) 0, transparent 50%),
+        radial-gradient(at 80% 0%, hsla(189,100%,56%,0.08) 0, transparent 50%),
+        radial-gradient(at 0% 50%, hsla(355,100%,93%,0.05) 0, transparent 50%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-feature-settings: 'cv11', 'ss01';
+      font-variation-settings: 'opsz' 32;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      position: relative;
+    }
+
+    /* Floating orbs animation */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.4;
+      filter: blur(40px);
+      animation: float 20s infinite linear;
+      z-index: -1;
+    }
+    
+    .orb:nth-child(1) {
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      top: 10%;
+      left: -10%;
+      animation-delay: 0s;
+    }
+    
+    .orb:nth-child(2) {
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      top: 60%;
+      right: -5%;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      33% { transform: translateY(-30px) rotate(120deg); }
+      66% { transform: translateY(30px) rotate(240deg); }
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .logo::before {
+      content: '◈';
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: logoSpin 8s infinite linear;
+    }
+
+    @keyframes logoSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .tagline {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      font-weight: 400;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out 0.5s forwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Main card */
+    .calculator-card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+      transform: translateY(0);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .calculator-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+      opacity: 0.5;
+    }
+
+    .calculator-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 
+        0 32px 64px -12px rgb(0 0 0 / 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    /* Form grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    .form-group.col-6 { grid-column: span 6; }
+    .form-group.col-8 { grid-column: span 8; }
+    .form-group.col-4 { grid-column: span 4; }
+    .form-group.col-12 { grid-column: span 12; }
+
+    /* Labels */
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color 0.2s ease;
+    }
+
+    /* Inputs */
+    .form-input, .form-select {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--border-radius-sm);
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-weight: 400;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      outline: none;
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .form-input:focus + .form-label,
+    .form-select:focus + .form-label {
+      color: var(--primary);
+    }
+
+    /* Mode toggle */
+    .mode-toggle {
+      display: flex;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: var(--border-radius-sm);
+      padding: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mode-option {
+      flex: 1;
+      padding: 0.75rem 1.5rem;
+      background: none;
       border: none;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    .mode-option.active {
+      color: var(--text-primary);
+    }
+
+    .mode-toggle::after {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      bottom: 4px;
+      width: calc(50% - 4px);
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: calc(var(--border-radius-sm) - 4px);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1;
+    }
+
+    .mode-toggle.pieces-mode::after {
+      transform: translateX(100%);
+    }
+
+    /* Action buttons */
+    .actions {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--border-radius-sm);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transition: all 0.5s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    .btn:active::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    /* Results */
+    .results {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--border-radius-lg);
+      padding: 2rem;
+      position: relative;
+    }
+
+    .results-meta {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .result-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+
+    .result-item:hover::before {
+      transform: translateX(0);
+    }
+
+    .result-item:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .result-label {
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-value {
+      color: var(--text-primary);
+      font-size: 1.875rem;
       font-weight: 600;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    #copyBtn:hover {
-      background: #15803d;
+
+    /* Copy message */
+    .copy-message {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: var(--border-radius-sm);
+      color: var(--success);
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
     }
-    #copyMsg {
-      color: #22c55e;
-      font-size: 14px;
-      margin-top: 8px;
-      height: 20px;
-      font-weight: 600;
+
+    .copy-message.show {
+      opacity: 1;
+      transform: translateY(0);
     }
-    @media (max-width:760px){
-      .col-6,.col-12,.col-4,.col-8{grid-column:span 12}
-      .kpi{grid-template-columns:repeat(2,1fr)}
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      .calculator-card { padding: 1.5rem; }
+      .form-grid { gap: 1rem; }
+      .form-group.col-6, .form-group.col-8, .form-group.col-4 { 
+        grid-column: span 12; 
+      }
+      .results-grid { 
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+      }
+      .result-item { padding: 1rem; }
+      .result-value { font-size: 1.5rem; }
+    }
+
+    @media (max-width: 480px) {
+      .results-grid { grid-template-columns: 1fr; }
+      .actions { flex-direction: column; }
+    }
+
+    /* Loading state */
+    .loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .loading .result-value {
+      animation: pulse 1.5s infinite;
     }
   </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="topbar">
-    <div class="brand">Tiles Calculator</div>
-    <div class="chip">Live mode</div>
-  </div>
+  <div class="orb"></div>
+  <div class="orb"></div>
+  
+  <div class="container">
+    <header class="header">
+      <div class="logo">TilesPro</div>
+      <p class="tagline">Professional tile calculation with precision engineering</p>
+    </header>
 
-  <div class="card">
-    <div class="grid">
-      <div class="col-6">
-        <label>Size</label>
-        <select id="size"></select>
-      </div>
-      <div class="col-6">
-        <label>Thickness</label>
-        <select id="thk"></select>
-      </div>
+    <div class="calculator-card">
+      <div class="form-grid">
+        <div class="form-group col-6">
+          <label class="form-label">Tile Size</label>
+          <select id="size" class="form-select"></select>
+        </div>
+        
+        <div class="form-group col-6">
+          <label class="form-label">Thickness</label>
+          <select id="thickness" class="form-select"></select>
+        </div>
 
-      <div class="col-12">
-        <label>Mode</label>
-        <div class="seg" id="seg">
-          <button id="btnArea" class="on">Area (ft²)</button>
-          <button id="btnPcs">Pieces</button>
+        <div class="form-group col-12">
+          <label class="form-label">Calculation Mode</label>
+          <div class="mode-toggle" id="modeToggle">
+            <button class="mode-option active" data-mode="area">Area (ft²)</button>
+            <button class="mode-option" data-mode="pieces">Pieces</button>
+          </div>
+        </div>
+
+        <div class="form-group col-8">
+          <label class="form-label" id="inputLabel">Area (ft²)</label>
+          <input type="number" id="quantity" class="form-input" placeholder="Enter value..." min="0" step="0.01">
         </div>
       </div>
 
-      <div class="col-8">
-        <label id="valLabel">Area (ft²)</label>
-        <input id="val" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 2000" />
+      <div class="actions">
+        <button class="btn btn-primary" id="copyBtn">Copy Details</button>
+        <button class="btn btn-secondary" id="clearBtn">Clear</button>
       </div>
-      <div class="col-4">
-        <label>Quick actions</label>
-        <div class="seg" style="display:flex;justify-content:flex-start;width:auto">
-          <button id="q2">Clear</button>
+
+      <div class="copy-message" id="copyMessage">✓ Details copied to clipboard!</div>
+
+      <div class="results" id="results">
+        <div class="results-meta" id="resultsMeta">Select tile specifications to see calculations</div>
+        <div class="results-grid">
+          <div class="result-item">
+            <div class="result-label">Pieces</div>
+            <div class="result-value" id="piecesResult">-</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Area (ft²)</div>
+            <div class="result-value" id="areaFt2Result">-</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Area (m²)</div>
+            <div class="result-value" id="areaM2Result">-</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Weight (tons)</div>
+            <div class="result-value" id="weightResult">-</div>
+          </div>
         </div>
       </div>
     </div>
-
-    <button id="copyBtn">Copy Details</button>
-    <div id="copyMsg"></div>
-
-    <div class="out">
-      <div class="meta" id="meta">-</div>
-      <div class="kpi" style="margin-top:10px">
-        <div class="k"><div class="t">Pieces</div><div class="v" id="pcsOut">-</div></div>
-        <div class="k"><div class="t">Area (ft²)</div><div class="v" id="ft2Out">-</div></div>
-        <div class="k"><div class="t">Area (m²)</div><div class="v" id="m2Out">-</div></div>
-        <div class="k"><div class="t">Weight (tons)</div><div class="v" id="tonsOut">-</div></div>
-      </div>
-    </div>
   </div>
-</div>
 
-<script>
-// MASTER from sheet (PCS=pieces/box; ft2,m2,kg are per box)
-const MASTER = [
-  {size:"1200x1200",thk:"9MM",pcs:2,kg:"61",ft2:31.0,m2:2.88},
-  {size:"1200x1790",thk:"9MM",pcs:2,kg:"91",ft2:46.242,m2:4.296},
-  {size:"1200x1800",thk:"9MM",pcs:2,kg:"91 TO 96.5",ft2:46.5,m2:4.32},
-  {size:"1200x2400",thk:"9MM",pcs:1,kg:"62",ft2:31.0,m2:2.88},
-  {size:"1200x2800",thk:"6MM",pcs:1,kg:"50.5",ft2:36.167,m2:3.36},
-  {size:"1200x3180",thk:"15MM",pcs:1,kg:"136",ft2:41.075,m2:3.816},
-  {size:"1200x3200",thk:"15MM",pcs:1,kg:"136",ft2:41.337,m2:3.84},
-  {size:"1600x1600",thk:"9MM",pcs:1,kg:"55",ft2:27.556,m2:2.56},
-  {size:"1600x3200",thk:"6MM",pcs:1,kg:"74",ft2:55.116,m2:5.12},
-  {size:"1600x3200",thk:"12MM",pcs:1,kg:"148",ft2:55.116,m2:5.12},
-  {size:"1620x3240",thk:"12MM",pcs:1,kg:"150",ft2:56.5,m2:5.249},
-  {size:"790x2980",thk:"15MM",pcs:1,kg:"87",ft2:25.338,m2:2.354},
-  {size:"800x3000",thk:"15MM",pcs:1,kg:"84.5",ft2:25.834,m2:2.4},
-  {size:"800x2400",thk:"15MM",pcs:1,kg:"67.5",ft2:20.67,m2:1.9},
-  {size:"1000x3000",thk:"5MM",pcs:1,kg:"35.5",ft2:32.29,m2:3.0},
-  {size:"1200x2600",thk:"6MM",pcs:1,kg:"42.5",ft2:33.58,m2:3.1},
-  {size:"1200x3000",thk:"9MM",pcs:1,kg:"77.5",ft2:38.75,m2:3.6},
-  {size:"1200x3200",thk:"15MM",pcs:1,kg:"136",ft2:41.33,m2:3.8},
-  {size:"800x3200",thk:"15MM",pcs:1,kg:"74",ft2:27.56,m2:2.6},
-];
+  <script>
+    // SKU Master Data
+    const SKU_MASTER = [
+      {size:"1200x1200",thk:"9MM",pcs:2,kg:"61",ft2:31.0,m2:2.88},
+      {size:"1200x1790",thk:"9MM",pcs:2,kg:"91",ft2:46.242,m2:4.296},
+      {size:"1200x1800",thk:"9MM",pcs:2,kg:"91 TO 96.5",ft2:46.5,m2:4.32},
+      {size:"1200x2400",thk:"9MM",pcs:1,kg:"62",ft2:31.0,m2:2.88},
+      {size:"1200x2800",thk:"6MM",pcs:1,kg:"50.5",ft2:36.167,m2:3.36},
+      {size:"1200x3180",thk:"15MM",pcs:1,kg:"136",ft2:41.075,m2:3.816},
+      {size:"1200x3200",thk:"15MM",pcs:1,kg:"136",ft2:41.337,m2:3.84},
+      {size:"1600x1600",thk:"9MM",pcs:1,kg:"55",ft2:27.556,m2:2.56},
+      {size:"1600x3200",thk:"6MM",pcs:1,kg:"74",ft2:55.116,m2:5.12},
+      {size:"1600x3200",thk:"12MM",pcs:1,kg:"148",ft2:55.116,m2:5.12},
+      {size:"1620x3240",thk:"12MM",pcs:1,kg:"150",ft2:56.5,m2:5.249},
+      {size:"790x2980",thk:"15MM",pcs:1,kg:"87",ft2:25.338,m2:2.354},
+      {size:"800x3000",thk:"15MM",pcs:1,kg:"84.5",ft2:25.834,m2:2.4},
+      {size:"800x2400",thk:"15MM",pcs:1,kg:"67.5",ft2:20.67,m2:1.9},
+      {size:"1000x3000",thk:"5MM",pcs:1,kg:"35.5",ft2:32.29,m2:3.0},
+      {size:"1200x2600",thk:"6MM",pcs:1,kg:"42.5",ft2:33.58,m2:3.1},
+      {size:"1200x3000",thk:"9MM",pcs:1,kg:"77.5",ft2:38.75,m2:3.6},
+      {size:"1200x3200",thk:"15MM",pcs:1,kg:"136",ft2:41.33,m2:3.8},
+      {size:"800x3200",thk:"15MM",pcs:1,kg:"74",ft2:27.56,m2:2.6},
+    ];
 
-const FT2_PER_M2 = 10.7639;
-const fmt0 = new Intl.NumberFormat('en-IN');
-const fmt2 = new Intl.NumberFormat('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
-const fmt3 = new Intl.NumberFormat('en-IN',{minimumFractionDigits:3,maximumFractionDigits:3});
-const el = id => document.getElementById(id);
-const parseKgMin = v => {
-  const nums = (""+v).match(/[\d.]+/g);
-  return nums && nums.length ? parseFloat(nums[0]) : NaN;
-};
+    const FT2_PER_M2 = 10.7639;
+    const fmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+    const fmt3 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 3 });
 
-let mode = 'area'; // 'area' or 'pcs'
+    let currentMode = 'area';
 
-function initSize() {
-  const sizes = [...new Set(MASTER.map(r=>r.size))].sort();
-  el('size').innerHTML = sizes.map(s=>`<option value="${s}">${s}</option>`).join('');
-}
-function initThk() {
-  const thks = [...new Set(MASTER.filter(r=>r.size===el('size').value).map(r=>r.thk))];
-  el('thk').innerHTML = thks.map(t=>`<option value="${t}">${t}</option>`).join('');
-}
-function findSKU(){
-  const sz = el('size').value, th = el('thk').value;
-  return MASTER.find(r=>r.size===sz && r.thk===th) || null;
-}
+    const elements = {
+      size: document.getElementById('size'),
+      thickness: document.getElementById('thickness'),
+      quantity: document.getElementById('quantity'),
+      modeToggle: document.getElementById('modeToggle'),
+      inputLabel: document.getElementById('inputLabel'),
+      copyBtn: document.getElementById('copyBtn'),
+      clearBtn: document.getElementById('clearBtn'),
+      copyMessage: document.getElementById('copyMessage'),
+      resultsMeta: document.getElementById('resultsMeta'),
+      piecesResult: document.getElementById('piecesResult'),
+      areaFt2Result: document.getElementById('areaFt2Result'),
+      areaM2Result: document.getElementById('areaM2Result'),
+      weightResult: document.getElementById('weightResult')
+    };
 
-function recalc(){
-  const sku = findSKU();
-  const val = parseFloat(el('val').value);
-  if (!sku){
-    ['pcsOut','ft2Out','m2Out','tonsOut','meta'].forEach(id=>el(id).textContent='-');
-    return;
-  }
-  const pcsPerBox = sku.pcs;
-  const ft2PerPc = sku.ft2 / pcsPerBox;
-  const m2PerPc  = sku.m2  / pcsPerBox;
-  const kgPerPc  = parseKgMin(sku.kg) / pcsPerBox;
-
-  let pcs=0, ft2=0, m2=0, tons=0;
-  if (val>0){
-    if (mode==='area'){
-      ft2 = val;
-      pcs = Math.ceil(ft2 / ft2PerPc);
-      m2  = ft2 / FT2_PER_M2;
-    } else {
-      pcs = Math.ceil(val);
-      ft2 = pcs * ft2PerPc;
-      m2  = pcs * m2PerPc;
+    function parseKgMin(value) {
+      const nums = String(value).match(/[\d.]+/g);
+      return nums && nums.length ? parseFloat(nums[0]) : NaN;
     }
-    const totalKg = pcs * kgPerPc;
-    tons = totalKg / 1000;
-  }
 
-  el('pcsOut').textContent  = pcs ? fmt0.format(pcs) : '-';
-  el('ft2Out').textContent  = ft2 ? fmt2.format(ft2) : '-';
-  el('m2Out').textContent   = m2  ? fmt3.format(m2)  : '-';
-  el('tonsOut').textContent = tons? fmt3.format(tons): '-';
-  el('meta').textContent = `${sku.size} • ${sku.thk} • ${pcsPerBox} pcs/box • ${sku.ft2} ft²/box • ${sku.m2} m²/box • ~${parseKgMin(sku.kg)} kg/box`;
-}
+    function initializeSelects() {
+      // Populate size dropdown
+      const sizes = [...new Set(SKU_MASTER.map(r => r.size))].sort();
+      elements.size.innerHTML = sizes.map(s => `<option value="${s}">${s}</option>`).join('');
+      
+      // Set default to 800x3000
+      const defaultIndex = sizes.findIndex(s => s === "800x3000");
+      if (defaultIndex >= 0) elements.size.selectedIndex = defaultIndex;
+      
+      updateThickness();
+      
+      // Set default thickness to 15MM
+      setTimeout(() => {
+        const thkOptions = [...elements.thickness.options];
+        const thkIndex = thkOptions.findIndex(o => o.value === "15MM");
+        if (thkIndex >= 0) elements.thickness.selectedIndex = thkIndex;
+        calculate();
+      }, 100);
+    }
 
-function setMode(next){
-  mode = next;
-  el('btnArea').classList.toggle('on', mode==='area');
-  el('btnPcs').classList.toggle('on',  mode==='pcs');
-  el('valLabel').textContent = mode==='area' ? 'Area (ft²)' : 'Pieces';
-  el('val').placeholder = mode==='area' ? 'e.g. 2000' : 'e.g. 25';
-  recalc();
-}
+    function updateThickness() {
+      const selectedSize = elements.size.value;
+      const thicknesses = [...new Set(SKU_MASTER.filter(r => r.size === selectedSize).map(r => r.thk))];
+      elements.thickness.innerHTML = thicknesses.map(t => `<option value="${t}">${t}</option>`).join('');
+    }
 
-function bootstrap(){
-  initSize();
-  const sizeSel = el('size');
-  const idx = [...sizeSel.options].findIndex(o=>o.value==="800x3000");
-  if (idx>=0) sizeSel.selectedIndex = idx;
-  initThk();
-  const thkSel = el('thk');
-  const tIdx = [...thkSel.options].findIndex(o=>o.value==="15MM");
-  if (tIdx>=0) thkSel.selectedIndex = tIdx;
-  setMode('area');
-}
+    function findSKU() {
+      return SKU_MASTER.find(r => r.size === elements.size.value && r.thk === elements.thickness.value);
+    }
 
-el('size').addEventListener('input', ()=>{ initThk(); recalc(); });
-el('thk').addEventListener('input', recalc);
-el('val').addEventListener('input', recalc);      // live updates
-el('btnArea').addEventListener('click', ()=>setMode('area'));
-el('btnPcs').addEventListener('click',  ()=>setMode('pcs'));
-el('q2').addEventListener('click',  ()=>{ el('val').value=''; recalc(); });
+    function calculate() {
+      const sku = findSKU();
+      const quantity = parseFloat(elements.quantity.value);
+      
+      if (!sku) {
+        resetResults();
+        return;
+      }
 
-// Copy to clipboard & message
-el('copyBtn').addEventListener('click', () => {
-  const size = el('size').value;
-  const thk = el('thk').value;
-  const pieces = el('pcsOut').textContent;
-  const areaFt2 = el('ft2Out').textContent;
-  const areaM2 = el('m2Out').textContent;
-  const weight = el('tonsOut').textContent;
+      const pcsPerBox = sku.pcs;
+      const ft2PerPc = sku.ft2 / pcsPerBox;
+      const m2PerPc = sku.m2 / pcsPerBox;
+      const kgPerPc = parseKgMin(sku.kg) / pcsPerBox;
 
-  const text = `size:- ${size} ${thk}\nPieces:- ${pieces}\nArea (ft²):- ${areaFt2}\nArea (m²):- ${areaM2}\nWeight (tons):- ${weight}`;
+      let pieces = 0, areaFt2 = 0, areaM2 = 0, weight = 0;
 
-  navigator.clipboard.writeText(text).catch(err => {
-    console.error('Copy failed:', err);
-  });
+      if (quantity > 0) {
+        if (currentMode === 'area') {
+          areaFt2 = quantity;
+          pieces = Math.ceil(areaFt2 / ft2PerPc);
+          areaM2 = areaFt2 / FT2_PER_M2;
+        } else {
+          pieces = Math.ceil(quantity);
+          areaFt2 = pieces * ft2PerPc;
+          areaM2 = pieces * m2PerPc;
+        }
+        weight = (pieces * kgPerPc) / 1000; // Convert to tons
+      }
 
-  const copyMsg = document.getElementById('copyMsg');
-  copyMsg.textContent = 'Copied!';
-  setTimeout(() => { copyMsg.textContent = ''; }, 1500);
-});
+      // Update results
+      elements.piecesResult.textContent = pieces ? fmt.format(pieces) : '-';
+      elements.areaFt2Result.textContent = areaFt2 ? fmt.format(areaFt2) : '-';
+      elements.areaM2Result.textContent = areaM2 ? fmt3.format(areaM2) : '-';
+      elements.weightResult.textContent = weight ? fmt3.format(weight) : '-';
+      
+      elements.resultsMeta.textContent = `${sku.size} • ${sku.thk} • ${pcsPerBox} pcs/box • ${sku.ft2} ft²/box • ${sku.m2} m²/box • ~${parseKgMin(sku.kg)} kg/box`;
+    }
 
-bootstrap();
-</script>
+    function resetResults() {
+      ['piecesResult', 'areaFt2Result', 'areaM2Result', 'weightResult'].forEach(id => {
+        elements[id].textContent = '-';
+      });
+      elements.resultsMeta.textContent = 'Select tile specifications to see calculations';
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      elements.modeToggle.classList.toggle('pieces-mode', mode === 'pieces');
+      
+      const options = elements.modeToggle.querySelectorAll('.mode-option');
+      options.forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.mode === mode);
+      });
+      
+      elements.inputLabel.textContent = mode === 'area' ? 'Area (ft²)' : 'Pieces';
+      elements.quantity.placeholder = mode === 'area' ? 'e.g. 2000' : 'e.g. 25';
+      
+      calculate();
+    }
+
+    function copyToClipboard() {
+      const sku = findSKU();
+      if (!sku || !elements.quantity.value) return;
+
+      const text = `size:- ${sku.size} ${sku.thk}
+Pieces:- ${elements.piecesResult.textContent}
+Area (ft²):- ${elements.areaFt2Result.textContent}
+Area (m²):- ${elements.areaM2Result.textContent}
+Weight (tons):- ${elements.weightResult.textContent}`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        elements.copyMessage.classList.add('show');
+        setTimeout(() => {
+          elements.copyMessage.classList.remove('show');
+        }, 2000);
+      }).catch(err => {
+        console.error('Copy failed:', err);
+      });
+    }
+
+    function clearForm() {
+      elements.quantity.value = '';
+      calculate();
+    }
+
+    // Event listeners
+    elements.size.addEventListener('change', () => {
+      updateThickness();
+      calculate();
+    });
+
+    elements.thickness.addEventListener('change', calculate);
+    elements.quantity.addEventListener('input', calculate);
+
+    elements.modeToggle.addEventListener('click', (e) => {
+      const option = e.target.closest('.mode-option');
+      if (option) {
+        setMode(option.dataset.mode);
+      }
+    });
+
+    elements.copyBtn.addEventListener('click', copyToClipboard);
+    elements.clearBtn.addEventListener('click', clearForm);
+
+    // Initialize
+    initializeSelects();
+  </script>
 </body>
 </html>

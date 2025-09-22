@@ -102,6 +102,12 @@
       position: relative;
       overflow: hidden;
       border: 1px solid var(--glass-border);
+      transition: all 0.3s ease;
+    }
+
+    .mode-switch:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     }
 
     .mode-switch-option {
@@ -113,7 +119,7 @@
       font-size: 0.875rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       z-index: 2;
       text-align: center;
@@ -121,6 +127,7 @@
 
     .mode-switch-option.active {
       color: var(--text-primary);
+      transform: translateY(-1px);
     }
 
     .mode-switch::after {
@@ -132,8 +139,9 @@
       width: calc(50% - 4px);
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
       border-radius: calc(var(--border-radius-sm) - 4px);
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
     }
 
     .mode-switch.advanced-mode::after {
@@ -196,7 +204,19 @@
       overflow: visible;
       max-width: 100%;
       transform: translateY(0);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: cardSlideIn 0.5s ease-out;
+    }
+
+    @keyframes cardSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .calculator-card::before {
@@ -211,36 +231,43 @@
     }
 
     .calculator-card:hover {
-      transform: translateY(-2px);
+      transform: translateY(-4px) scale(1.01);
       box-shadow: 
         0 32px 64px -12px rgb(0 0 0 / 0.4),
         0 0 0 1px rgba(255, 255, 255, 0.05);
     }
 
-    /* Delete button for advanced mode */
+    /* Delete button - Fixed positioning */
     .delete-card-btn {
       position: absolute;
       top: 1rem;
       right: 1rem;
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       border: none;
-      background: rgba(239, 68, 68, 0.2);
+      background: rgba(239, 68, 68, 0.1);
       color: #ef4444;
       cursor: pointer;
       display: none;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
     }
 
     .delete-card-btn:hover {
-      background: rgba(239, 68, 68, 0.3);
-      transform: scale(1.1);
+      background: rgba(239, 68, 68, 0.2);
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
     }
 
-    .advanced-mode .delete-card-btn {
+    .delete-card-btn:active {
+      transform: scale(0.95);
+    }
+
+    .container.advanced-mode .delete-card-btn {
       display: flex;
     }
 
@@ -293,7 +320,7 @@
       color: var(--text-primary);
       font-size: 1rem;
       font-weight: 400;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       outline: none;
     }
 
@@ -334,6 +361,7 @@
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
       background: rgba(255, 255, 255, 0.05);
+      transform: translateY(-1px);
     }
 
     /* Mode toggle */
@@ -405,7 +433,7 @@
       border-radius: var(--border-radius);
       padding: 1.25rem;
       text-align: center;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
       min-height: 80px;
@@ -423,7 +451,7 @@
       height: 2px;
       background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
       transform: translateX(-100%);
-      transition: transform 0.3s ease;
+      transition: transform 0.4s ease;
     }
 
     .result-item:hover::before {
@@ -431,8 +459,9 @@
     }
 
     .result-item:hover {
-      transform: translateY(-2px);
+      transform: translateY(-3px) scale(1.02);
       background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     }
 
     .result-label {
@@ -477,19 +506,26 @@
       font-size: 0.875rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       margin-bottom: 1.5rem;
       display: none;
+      align-items: center;
+      justify-content: center;
     }
 
     .add-more-btn:hover {
       background: rgba(16, 185, 129, 0.15);
       border-color: rgba(16, 185, 129, 0.5);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
     }
 
-    .advanced-mode .add-more-btn {
-      display: block;
+    .add-more-btn:active {
+      transform: translateY(-1px) scale(0.98);
+    }
+
+    .container.advanced-mode .add-more-btn {
+      display: flex;
     }
 
     /* Grand Total Section for Advanced Mode */
@@ -500,9 +536,21 @@
       padding: 1.5rem;
       margin-bottom: 1.5rem;
       display: none;
+      animation: grandTotalSlideIn 0.6s ease-out;
     }
 
-    .advanced-mode .grand-total {
+    @keyframes grandTotalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .container.advanced-mode .grand-total {
       display: block;
     }
 
@@ -528,6 +576,12 @@
       background: rgba(255, 255, 255, 0.05);
       border-radius: var(--border-radius-sm);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .grand-total-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     }
 
     .grand-total-label {
@@ -591,7 +645,7 @@
     }
 
     .share-btn:hover {
-      transform: translateY(-3px);
+      transform: translateY(-4px) scale(1.05);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     }
 
@@ -656,7 +710,7 @@
       font-weight: 500;
       backdrop-filter: blur(10px);
       opacity: 0;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1000;
     }
 
@@ -839,12 +893,12 @@
           <div class="grand-total-value" id="grandTotalPieces">-</div>
         </div>
         <div class="grand-total-item">
-          <div class="grand-total-label">Total Weight</div>
-          <div class="grand-total-value" id="grandTotalWeight">-</div>
+          <div class="grand-total-label">Total Area</div>
+          <div class="grand-total-value" id="grandTotalArea">-</div>
         </div>
         <div class="grand-total-item">
-          <div class="grand-total-label">Base Amount</div>
-          <div class="grand-total-value" id="grandTotalAmount">-</div>
+          <div class="grand-total-label">Total Weight</div>
+          <div class="grand-total-value" id="grandTotalWeight">-</div>
         </div>
         <div class="grand-total-item">
           <div class="grand-total-label">Final Amount</div>
@@ -1005,27 +1059,23 @@
 
     function updateGrandTotal() {
       const cards = document.querySelectorAll('.calculator-card');
-      let totalPieces = 0, totalWeight = 0, totalBaseAmount = 0, totalFinalAmount = 0;
+      let totalPieces = 0, totalArea = 0, totalWeight = 0, totalFinalAmount = 0;
 
       cards.forEach(card => {
-        const cardId = parseInt(card.dataset.cardId);
         const pieces = parseFloat(card.querySelector('.pieces-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
+        const area = parseFloat(card.querySelector('.area-ft2-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
         const weight = parseFloat(card.querySelector('.weight-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
         const finalAmount = parseFloat(card.querySelector('.total-price-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
         
-        const pricePerFt2 = parseFloat(card.querySelector('.price').value || 0);
-        const areaFt2 = parseFloat(card.querySelector('.area-ft2-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
-        const baseAmount = pricePerFt2 > 0 && areaFt2 > 0 ? areaFt2 * pricePerFt2 : 0;
-
         totalPieces += pieces;
+        totalArea += area;
         totalWeight += weight;
-        totalBaseAmount += baseAmount;
         totalFinalAmount += finalAmount;
       });
 
       document.getElementById('grandTotalPieces').textContent = totalPieces > 0 ? fmt.format(totalPieces) : '-';
+      document.getElementById('grandTotalArea').textContent = totalArea > 0 ? fmt.format(totalArea) + ' ft²' : '-';
       document.getElementById('grandTotalWeight').textContent = totalWeight > 0 ? fmt3.format(totalWeight) + ' tons' : '-';
-      document.getElementById('grandTotalAmount').textContent = totalBaseAmount > 0 ? '₹' + new Intl.NumberFormat('en-IN').format(Math.round(totalBaseAmount)) : '-';
       document.getElementById('grandFinalAmount').textContent = totalFinalAmount > 0 ? '₹' + new Intl.NumberFormat('en-IN').format(Math.round(totalFinalAmount)) : '-';
     }
 
@@ -1050,6 +1100,9 @@
     }
 
     function addMoreCard() {
+      // Only allow in advanced mode
+      if (currentAppMode !== 'advanced') return;
+      
       const cardId = cardCounter++;
       const cardsContainer = document.getElementById('calculatorCards');
       
@@ -1142,13 +1195,18 @@
     }
 
     function deleteCard(cardId) {
+      // Don't allow deleting if only one card remains
       if (document.querySelectorAll('.calculator-card').length <= 1) return;
       
       const card = document.querySelector(`[data-card-id="${cardId}"]`);
       if (card) {
-        card.remove();
-        delete cardModes[cardId];
-        updateGrandTotal();
+        // Add fade out animation
+        card.style.animation = 'fadeOut 0.3s ease-out';
+        setTimeout(() => {
+          card.remove();
+          delete cardModes[cardId];
+          updateGrandTotal();
+        }, 300);
       }
     }
 
@@ -1177,10 +1235,41 @@
       });
     }
 
+    function resetAllCards() {
+      // Remove extra cards in advanced mode
+      const cards = document.querySelectorAll('.calculator-card');
+      cards.forEach((card, index) => {
+        if (index > 0) {
+          card.remove();
+        }
+      });
+      
+      // Reset first card
+      const firstCard = document.querySelector('[data-card-id="0"]');
+      if (firstCard) {
+        firstCard.querySelector('.quantity').value = '';
+        firstCard.querySelector('.price').value = '';
+        firstCard.querySelector('.gst').selectedIndex = 0;
+        cardModes[0] = 'area';
+        setCardMode(0, 'area');
+        calculateCard(0);
+      }
+      
+      // Reset counter
+      cardCounter = 1;
+      cardModes = { 0: 'area' };
+    }
+
     function switchMode(mode) {
+      const prevMode = currentAppMode;
       currentAppMode = mode;
       const container = document.querySelector('.container');
       const modeSwitch = document.getElementById('modeSwitch');
+      
+      // Reset when switching modes
+      if (prevMode !== mode) {
+        resetAllCards();
+      }
       
       if (mode === 'advanced') {
         container.classList.add('advanced-mode');
@@ -1217,7 +1306,7 @@
         if (!sku || !quantity) return '';
 
         text = `Size: ${sku.size} (${sku.thk})
-Pieces: ${card.querySelector('.pieces-result').textContent} pcs
+Pieces: ${card.querySelector('.pieces-result').textContent}
 Area: ${card.querySelector('.area-ft2-result').textContent} (sq feet)
 Weight: ${card.querySelector('.weight-result').textContent} tons`;
 
@@ -1225,10 +1314,10 @@ Weight: ${card.querySelector('.weight-result').textContent} tons`;
           const areaValue = parseFloat(card.querySelector('.area-ft2-result').textContent.replace(/,/g, ''));
           const basePrice = areaValue * pricePerFt2;
           if (gstRate > 0) {
-            text += `\nTotal Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(basePrice))}`;
-            text += `\nTotal Amount (incl. ${gstRate}% GST): ${card.querySelector('.total-price-result').textContent}`;
+            text += `\nAmount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(basePrice))}`;
+            text += `\nAmount (incl. ${gstRate}% GST): ${card.querySelector('.total-price-result').textContent}`;
           } else {
-            text += `\nTotal Amount: ${card.querySelector('.total-price-result').textContent}`;
+            text += `\nAmount: ${card.querySelector('.total-price-result').textContent}`;
           }
         }
       } else {
@@ -1245,12 +1334,19 @@ Weight: ${card.querySelector('.weight-result').textContent} tons`;
           if (sku && quantity) {
             text += `ITEM ${index + 1}:\n`;
             text += `Size: ${sku.size} (${sku.thk})\n`;
-            text += `Pieces: ${card.querySelector('.pieces-result').textContent} pcs\n`;
+            text += `Pieces: ${card.querySelector('.pieces-result').textContent}\n`;
             text += `Area: ${card.querySelector('.area-ft2-result').textContent} (sq feet)\n`;
             text += `Weight: ${card.querySelector('.weight-result').textContent} tons\n`;
             
             if (pricePerFt2 > 0 && card.querySelector('.total-price-result').textContent !== '-') {
-              text += `Amount: ${card.querySelector('.total-price-result').textContent}\n`;
+              const areaValue = parseFloat(card.querySelector('.area-ft2-result').textContent.replace(/,/g, ''));
+              const basePrice = areaValue * pricePerFt2;
+              if (gstRate > 0) {
+                text += `Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(basePrice))}\n`;
+                text += `Amount (incl. ${gstRate}% GST): ${card.querySelector('.total-price-result').textContent}\n`;
+              } else {
+                text += `Amount: ${card.querySelector('.total-price-result').textContent}\n`;
+              }
             }
             text += '\n';
           }
@@ -1259,14 +1355,11 @@ Weight: ${card.querySelector('.weight-result').textContent} tons`;
         // Add grand totals
         text += 'GRAND TOTAL:\n';
         text += `Total Pieces: ${document.getElementById('grandTotalPieces').textContent}\n`;
+        text += `Total Area: ${document.getElementById('grandTotalArea').textContent}\n`;
         text += `Total Weight: ${document.getElementById('grandTotalWeight').textContent}\n`;
-        const baseAmount = document.getElementById('grandTotalAmount').textContent;
         const finalAmount = document.getElementById('grandFinalAmount').textContent;
-        if (baseAmount !== '-' && finalAmount !== '-' && baseAmount !== finalAmount) {
-          text += `Base Amount: ${baseAmount}\n`;
-          text += `Final Amount: ${finalAmount}`;
-        } else if (finalAmount !== '-') {
-          text += `Total Amount: ${finalAmount}`;
+        if (finalAmount !== '-') {
+          text += `Final Amount (incl. GST): ${finalAmount}`;
         }
       }
       
@@ -1322,6 +1415,22 @@ Weight: ${card.querySelector('.weight-result').textContent} tons`;
       const body = encodeURIComponent(text);
       window.location.href = `mailto:?subject=${subject}&body=${body}`;
     }
+
+    // Add fadeOut animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(-20px) scale(0.95);
+        }
+      }
+    `;
+    document.head.appendChild(style);
 
     // Event Listeners
     document.getElementById('modeSwitch').addEventListener('click', (e) => {

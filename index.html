@@ -75,7 +75,7 @@
         radial-gradient(at 20% 80%, hsla(355,100%,93%,0.05) 0, transparent 50%);
       color: var(--text-primary);
       min-height: 100vh;
-      min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+      min-height: 100dvh;
       overflow-x: hidden;
       font-feature-settings: 'cv11', 'ss01';
       font-variation-settings: 'opsz' 32;
@@ -131,7 +131,7 @@
       66% { transform: translateY(20px) rotate(240deg); }
     }
 
-    /* Main card - Perfectly centered */
+    /* Main card */
     .calculator-card {
       width: 100%;
       background: var(--glass);
@@ -166,7 +166,7 @@
         0 0 0 1px rgba(255, 255, 255, 0.05);
     }
 
-    /* Form section - Compact layout */
+    /* Form sections */
     .form-section {
       margin-bottom: 1.5rem;
     }
@@ -184,6 +184,19 @@
 
     .form-group.full-width {
       grid-column: span 2;
+    }
+
+    /* Section headers */
+    .section-header {
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--glass-border);
     }
 
     /* Labels */
@@ -231,7 +244,7 @@
       padding-left: 2.5rem;
     }
 
-    /* Fix dropdown styling for desktop */
+    /* Fix dropdown styling */
     .form-select {
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -303,7 +316,7 @@
       margin-bottom: 1.5rem;
     }
 
-    /* Results - 2x2 Grid */
+    /* Results grid */
     .results-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -379,7 +392,7 @@
       margin-bottom: 1.5rem;
     }
 
-    /* Share Buttons */
+    /* Share section */
     .share-section {
       display: flex;
       justify-content: center;
@@ -472,7 +485,7 @@
       fill: white;
     }
 
-    /* Copy message - Fixed position for PWA */
+    /* Copy message */
     .copy-message {
       position: fixed;
       top: calc(20px + var(--safe-area-top));
@@ -496,7 +509,7 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Responsive - Mobile optimizations */
+    /* Responsive */
     @media (max-width: 480px) {
       .calculator-card { 
         padding: 1.25rem;
@@ -524,7 +537,7 @@
       }
     }
 
-    /* Loading state */
+    /* Loading animation */
     .loading .result-value {
       animation: pulse 1.5s infinite;
     }
@@ -534,21 +547,18 @@
       50% { opacity: 0.5; }
     }
 
-    /* PWA fullscreen detection */
+    /* PWA styles */
     @media (display-mode: standalone) {
       .calculator-card {
-        /* Additional styling when running as PWA */
         box-shadow: 
           var(--shadow-lg),
           0 0 0 1px rgba(255, 255, 255, 0.03);
       }
     }
 
-    /* iOS standalone mode detection */
     @supports (-webkit-touch-callout: none) {
       @media (display-mode: standalone) {
         body {
-          /* iOS-specific PWA adjustments */
           -webkit-touch-callout: none;
           -webkit-user-select: none;
         }
@@ -593,26 +603,27 @@
 
       <!-- Price Section -->
       <div class="price-section">
+        <div class="section-header">Price/Sq Feet</div>
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Price per ft² (Optional)</label>
             <div class="price-input-container">
-              <input type="number" id="priceInput" class="form-input price-input" placeholder="Enter price per ft²..." min="0" step="0.01" inputmode="decimal">
+              <input type="number" id="priceInput" class="form-input price-input" placeholder="Enter price..." min="0" step="0.01" inputmode="decimal">
             </div>
           </div>
           <div class="form-group">
             <label class="form-label">GST</label>
             <select id="gstSelect" class="form-select">
               <option value="0">Without GST</option>
-              <option value="5">5%</option>
-              <option value="12">12%</option>
               <option value="18">18%</option>
+              <option value="12">12%</option>
+              <option value="5">5%</option>
             </select>
           </div>
         </div>
       </div>
 
-      <!-- Results in 2x2 Grid -->
+      <!-- Results Grid -->
       <div class="results-grid">
         <div class="result-item">
           <div class="result-label">Pieces</div>
@@ -627,7 +638,7 @@
           <div class="result-value" id="weightResult">-</div>
         </div>
         <div class="result-item" id="totalPriceItem">
-          <div class="result-label">Total Price</div>
+          <div class="result-label">Total Amount</div>
           <div class="result-value" id="totalPriceResult">-</div>
         </div>
       </div>
@@ -635,7 +646,7 @@
       <!-- Meta Information -->
       <div class="results-meta" id="resultsMeta">Select tile specifications to see calculations</div>
 
-      <!-- Share Buttons with Copy and Clear -->
+      <!-- Share Section -->
       <div class="share-section">
         <button class="share-btn share-whatsapp" id="shareWhatsapp">
           <svg class="share-icon" viewBox="0 0 24 24">
@@ -726,12 +737,10 @@
     }
 
     function initializeSelect() {
-      // Create combined size + thickness options
       elements.sizeThickness.innerHTML = SKU_MASTER.map((sku, index) => 
         `<option value="${index}">${sku.size} (${sku.thk})</option>`
       ).join('');
       
-      // Set default to 800x3000 (15MM)
       const defaultIndex = SKU_MASTER.findIndex(s => s.size === "800x3000" && s.thk === "15MM");
       if (defaultIndex >= 0) elements.sizeThickness.selectedIndex = defaultIndex;
       
@@ -771,9 +780,8 @@
           areaFt2 = pieces * ft2PerPc;
           areaM2 = pieces * m2PerPc;
         }
-        weight = (pieces * kgPerPc) / 1000; // Convert to tons
+        weight = (pieces * kgPerPc) / 1000;
         
-        // Calculate total price with GST if price per ft2 is provided
         if (pricePerFt2 > 0) {
           const basePrice = areaFt2 * pricePerFt2;
           const gstAmount = basePrice * (gstRate / 100);
@@ -781,12 +789,10 @@
         }
       }
 
-      // Update results
       elements.piecesResult.textContent = pieces ? fmt.format(pieces) : '-';
       elements.areaFt2Result.textContent = areaFt2 ? fmt.format(areaFt2) : '-';
       elements.weightResult.textContent = weight ? fmt3.format(weight) : '-';
       
-      // Update total price
       if (totalPrice > 0) {
         elements.totalPriceResult.textContent = '₹' + fmtPrice.format(totalPrice);
         elements.totalPriceItem.style.display = 'flex';
@@ -827,35 +833,26 @@
       if (!sku || !elements.quantity.value) return '';
 
       let text = `Size: ${sku.size} (${sku.thk})
-Pieces: ${elements.piecesResult.textContent}
-Area (ft²): ${elements.areaFt2Result.textContent}
-Weight (tons): ${elements.weightResult.textContent}`;
+Pieces: ${elements.piecesResult.textContent} pcs
+Area: ${elements.areaFt2Result.textContent} (sq feet)
+Weight: ${elements.weightResult.textContent} tons`;
 
-      // Add price only if entered
       if (pricePerFt2 > 0 && elements.totalPriceResult.textContent !== '-') {
-        const gstText = gstRate > 0 ? ` (incl. ${gstRate}% GST)` : '';
-        text += `\nTotal Price${gstText}: ${elements.totalPriceResult.textContent}`;
+        if (gstRate > 0) {
+          const basePrice = parseFloat(elements.areaFt2Result.textContent) * pricePerFt2;
+          text += `\nTotal Amount: ₹${fmtPrice.format(basePrice)}`;
+          text += `\nTotal Amount (incl. ${gstRate}% GST): ${elements.totalPriceResult.textContent}`;
+        } else {
+          text += `\nTotal Amount: ${elements.totalPriceResult.textContent}`;
+        }
       }
 
       return text;
     }
 
     function copyToClipboard() {
-      const sku = getSelectedSKU();
-      const pricePerFt2 = parseFloat(elements.priceInput.value);
-      const gstRate = parseFloat(elements.gstSelect.value);
-      if (!sku || !elements.quantity.value) return;
-
-      let text = `size:- ${sku.size} ${sku.thk}
-Pieces:- ${elements.piecesResult.textContent}
-Area (ft²):- ${elements.areaFt2Result.textContent}
-Weight (tons):- ${elements.weightResult.textContent}`;
-
-      // Add price only if entered
-      if (pricePerFt2 > 0 && elements.totalPriceResult.textContent !== '-') {
-        const gstText = gstRate > 0 ? ` (incl. ${gstRate}% GST)` : '';
-        text += `\nTotal Price${gstText}:- ${elements.totalPriceResult.textContent}`;
-      }
+      const text = getShareText();
+      if (!text) return;
 
       navigator.clipboard.writeText(text).then(() => {
         elements.copyMessage.classList.add('show');
@@ -878,8 +875,7 @@ Weight (tons):- ${elements.weightResult.textContent}`;
     function shareWhatsApp() {
       const text = getShareText();
       if (!text) return;
-      const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-      window.open(url, '_blank');
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
     }
 
     function shareSMS() {
@@ -915,7 +911,6 @@ Weight (tons):- ${elements.weightResult.textContent}`;
     elements.copyBtn.addEventListener('click', copyToClipboard);
     elements.clearBtn.addEventListener('click', clearForm);
 
-    // Share button event listeners
     document.getElementById('shareWhatsapp').addEventListener('click', shareWhatsApp);
     document.getElementById('shareSMS').addEventListener('click', shareSMS);
     document.getElementById('shareEmail').addEventListener('click', shareEmail);
@@ -923,10 +918,8 @@ Weight (tons):- ${elements.weightResult.textContent}`;
     // Initialize
     initializeSelect();
 
-    // PWA detection and fullscreen handling
     if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
       console.log('Running as PWA');
-      // Additional PWA-specific initialization if needed
     }
   </script>
 </body>

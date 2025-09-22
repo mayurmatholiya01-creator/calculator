@@ -210,6 +210,27 @@
       outline: none;
     }
 
+    /* Price input with rupee symbol */
+    .price-input-container {
+      position: relative;
+    }
+
+    .price-input-container::before {
+      content: '₹';
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      font-size: 1rem;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .form-input.price-input {
+      padding-left: 2.5rem;
+    }
+
     /* Fix dropdown styling for desktop */
     .form-select {
       -webkit-appearance: none;
@@ -271,6 +292,15 @@
 
     .mode-toggle.pieces-mode::after {
       transform: translateX(100%);
+    }
+
+    /* Price section */
+    .price-section {
+      background: rgba(255, 215, 0, 0.05);
+      border: 1px solid rgba(255, 215, 0, 0.1);
+      border-radius: var(--border-radius-sm);
+      padding: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     /* Action buttons */
@@ -361,6 +391,15 @@
       background: rgba(255, 255, 255, 0.05);
     }
 
+    .result-item.price-highlight {
+      background: rgba(255, 215, 0, 0.1);
+      border-color: rgba(255, 215, 0, 0.3);
+    }
+
+    .result-item.price-highlight::before {
+      background: linear-gradient(90deg, #ffd700, #ffa500);
+    }
+
     .result-label {
       color: var(--text-secondary);
       font-size: 0.75rem;
@@ -376,6 +415,12 @@
       font-weight: 600;
       line-height: 1;
       background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .result-item.price-highlight .result-value {
+      background: linear-gradient(135deg, #ffd700, #ffa500);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -589,6 +634,18 @@
         </div>
       </div>
 
+      <!-- Price Section -->
+      <div class="price-section">
+        <div class="form-row">
+          <div class="form-group full-width">
+            <label class="form-label">Price per ft² (Optional)</label>
+            <div class="price-input-container">
+              <input type="number" id="priceInput" class="form-input price-input" placeholder="Enter price per ft²..." min="0" step="0.01" inputmode="decimal">
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Action Buttons Side by Side -->
       <div class="actions">
         <button class="btn btn-primary" id="copyBtn">Copy Details</button>
@@ -606,12 +663,12 @@
           <div class="result-value" id="areaFt2Result">-</div>
         </div>
         <div class="result-item">
-          <div class="result-label">Area (m²)</div>
-          <div class="result-value" id="areaM2Result">-</div>
-        </div>
-        <div class="result-item">
           <div class="result-label">Weight (tons)</div>
           <div class="result-value" id="weightResult">-</div>
+        </div>
+        <div class="result-item price-highlight" id="totalPriceItem">
+          <div class="result-label">Total Price</div>
+          <div class="result-value" id="totalPriceResult">-</div>
         </div>
       </div>
 
@@ -669,14 +726,16 @@
     SKU_MASTER.sort((a, b) => a.ft2 - b.ft2);
 
     const FT2_PER_M2 = 10.7639;
-    const fmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
-    const fmt3 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 3 });
+    const fmt = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 });
+    const fmt3 = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 });
+    const fmtPrice = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
 
     let currentMode = 'area';
 
     const elements = {
       sizeThickness: document.getElementById('sizeThickness'),
       quantity: document.getElementById('quantity'),
+      priceInput: document.getElementById('priceInput'),
       modeToggle: document.getElementById('modeToggle'),
       inputLabel: document.getElementById('inputLabel'),
       copyBtn: document.getElementById('copyBtn'),
@@ -685,8 +744,9 @@
       resultsMeta: document.getElementById('resultsMeta'),
       piecesResult: document.getElementById('piecesResult'),
       areaFt2Result: document.getElementById('areaFt2Result'),
-      areaM2Result: document.getElementById('areaM2Result'),
-      weightResult: document.getElementById('weightResult')
+      weightResult: document.getElementById('weightResult'),
+      totalPriceResult: document.getElementById('totalPriceResult'),
+      totalPriceItem: document.getElementById('totalPriceItem')
     };
 
     function parseKgMin(value) {
@@ -715,6 +775,7 @@
     function calculate() {
       const sku = getSelectedSKU();
       const quantity = parseFloat(elements.quantity.value);
+      const pricePerFt2 = parseFloat(elements.priceInput.value);
       
       if (!sku) {
         resetResults();
@@ -726,7 +787,7 @@
       const m2PerPc = sku.m2 / pcsPerBox;
       const kgPerPc = parseKgMin(sku.kg) / pcsPerBox;
 
-      let pieces = 0, areaFt2 = 0, areaM2 = 0, weight = 0;
+      let pieces = 0, areaFt2 = 0, areaM2 = 0, weight = 0, totalPrice = 0;
 
       if (quantity > 0) {
         if (currentMode === 'area') {
@@ -739,19 +800,32 @@
           areaM2 = pieces * m2PerPc;
         }
         weight = (pieces * kgPerPc) / 1000; // Convert to tons
+        
+        // Calculate total price if price per ft2 is provided
+        if (pricePerFt2 > 0) {
+          totalPrice = areaFt2 * pricePerFt2;
+        }
       }
 
       // Update results
       elements.piecesResult.textContent = pieces ? fmt.format(pieces) : '-';
       elements.areaFt2Result.textContent = areaFt2 ? fmt.format(areaFt2) : '-';
-      elements.areaM2Result.textContent = areaM2 ? fmt3.format(areaM2) : '-';
       elements.weightResult.textContent = weight ? fmt3.format(weight) : '-';
+      
+      // Update total price
+      if (totalPrice > 0) {
+        elements.totalPriceResult.textContent = '₹' + fmtPrice.format(totalPrice);
+        elements.totalPriceItem.style.display = 'flex';
+      } else {
+        elements.totalPriceResult.textContent = '-';
+        elements.totalPriceItem.style.display = 'flex';
+      }
       
       elements.resultsMeta.textContent = `${pcsPerBox} pcs/box • ${sku.ft2} ft²/box • ${sku.m2} m²/box • ~${parseKgMin(sku.kg)} kg/box`;
     }
 
     function resetResults() {
-      ['piecesResult', 'areaFt2Result', 'areaM2Result', 'weightResult'].forEach(id => {
+      ['piecesResult', 'areaFt2Result', 'weightResult', 'totalPriceResult'].forEach(id => {
         elements[id].textContent = '-';
       });
       elements.resultsMeta.textContent = 'Select tile specifications to see calculations';
@@ -774,24 +848,36 @@
 
     function getShareText() {
       const sku = getSelectedSKU();
+      const pricePerFt2 = parseFloat(elements.priceInput.value);
       if (!sku || !elements.quantity.value) return '';
 
-      return `Size: ${sku.size} (${sku.thk})
+      let text = `Size: ${sku.size} (${sku.thk})
 Pieces: ${elements.piecesResult.textContent}
 Area (ft²): ${elements.areaFt2Result.textContent}
-Area (m²): ${elements.areaM2Result.textContent}
 Weight (tons): ${elements.weightResult.textContent}`;
+
+      // Add price only if entered
+      if (pricePerFt2 > 0 && elements.totalPriceResult.textContent !== '-') {
+        text += `\nTotal Price: ${elements.totalPriceResult.textContent}`;
+      }
+
+      return text;
     }
 
     function copyToClipboard() {
       const sku = getSelectedSKU();
+      const pricePerFt2 = parseFloat(elements.priceInput.value);
       if (!sku || !elements.quantity.value) return;
 
-      const text = `size:- ${sku.size} ${sku.thk}
+      let text = `size:- ${sku.size} ${sku.thk}
 Pieces:- ${elements.piecesResult.textContent}
 Area (ft²):- ${elements.areaFt2Result.textContent}
-Area (m²):- ${elements.areaM2Result.textContent}
 Weight (tons):- ${elements.weightResult.textContent}`;
+
+      // Add price only if entered
+      if (pricePerFt2 > 0 && elements.totalPriceResult.textContent !== '-') {
+        text += `\nTotal Price:- ${elements.totalPriceResult.textContent}`;
+      }
 
       navigator.clipboard.writeText(text).then(() => {
         elements.copyMessage.classList.add('show');
@@ -805,6 +891,7 @@ Weight (tons):- ${elements.weightResult.textContent}`;
 
     function clearForm() {
       elements.quantity.value = '';
+      elements.priceInput.value = '';
       calculate();
     }
 
@@ -836,6 +923,7 @@ Weight (tons):- ${elements.weightResult.textContent}`;
     // Event listeners
     elements.sizeThickness.addEventListener('change', calculate);
     elements.quantity.addEventListener('input', calculate);
+    elements.priceInput.addEventListener('input', calculate);
 
     elements.modeToggle.addEventListener('click', (e) => {
       const option = e.target.closest('.mode-option');

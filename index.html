@@ -42,15 +42,24 @@
       --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -2px rgb(0 0 0 / 0.1);
       --shadow-lg: 0 25px 50px -12px rgb(0 0 0 / 0.5);
       
-      --border-radius: 16px;
-      --border-radius-sm: 12px;
-      --border-radius-lg: 20px;
+      --border-radius: 12px;
+      --border-radius-sm: 10px;
+      --border-radius-lg: 16px;
       
       /* Safe area variables for notch devices */
       --safe-area-top: env(safe-area-inset-top);
       --safe-area-bottom: env(safe-area-inset-bottom);
       --safe-area-left: env(safe-area-inset-left);
       --safe-area-right: env(safe-area-inset-right);
+    }
+
+    /* Advanced mode color overrides */
+    .container.advanced-mode {
+      --primary: #10b981;
+      --primary-light: #34d399;
+      --primary-dark: #059669;
+      --glass: rgba(16, 185, 129, 0.08);
+      --glass-border: rgba(16, 185, 129, 0.15);
     }
 
     * {
@@ -85,20 +94,28 @@
       justify-content: center;
     }
 
+    /* Advanced mode background change */
+    .container.advanced-mode ~ body {
+      background-image: 
+        radial-gradient(at 40% 20%, hsla(158,100%,74%,0.12) 0, transparent 50%),
+        radial-gradient(at 80% 0%, hsla(149,100%,56%,0.08) 0, transparent 50%),
+        radial-gradient(at 20% 80%, hsla(355,100%,93%,0.05) 0, transparent 50%);
+    }
+
     .container {
       width: 100%;
-      max-width: 800px;
-      padding: max(1rem, var(--safe-area-left)) max(1rem, var(--safe-area-right));
+      max-width: 720px; /* Reduced from 800px */
+      padding: max(0.75rem, var(--safe-area-left)) max(0.75rem, var(--safe-area-right)); /* Reduced padding */
       margin: 0 auto;
     }
 
     /* Mode Switch */
     .mode-switch {
       display: flex;
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--glass);
       border-radius: var(--border-radius-sm);
-      padding: 4px;
-      margin-bottom: 1.5rem;
+      padding: 3px; /* Reduced from 4px */
+      margin-bottom: 1.25rem; /* Reduced from 1.5rem */
       position: relative;
       overflow: hidden;
       border: 1px solid var(--glass-border);
@@ -112,11 +129,11 @@
 
     .mode-switch-option {
       flex: 1;
-      padding: 0.875rem 1.5rem;
+      padding: 0.75rem 1.25rem; /* Reduced padding */
       background: none;
       border: none;
       color: var(--text-secondary);
-      font-size: 0.875rem;
+      font-size: 0.8rem; /* Reduced from 0.875rem */
       font-weight: 500;
       cursor: pointer;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -133,12 +150,12 @@
     .mode-switch::after {
       content: '';
       position: absolute;
-      top: 4px;
-      left: 4px;
-      bottom: 4px;
-      width: calc(50% - 4px);
+      top: 3px;
+      left: 3px;
+      bottom: 3px;
+      width: calc(50% - 3px);
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      border-radius: calc(var(--border-radius-sm) - 4px);
+      border-radius: calc(var(--border-radius-sm) - 3px);
       transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1;
       box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
@@ -146,6 +163,7 @@
 
     .mode-switch.advanced-mode::after {
       transform: translateX(100%);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
 
     /* Floating orbs animation */
@@ -160,8 +178,8 @@
     }
     
     .orb:nth-child(1) {
-      width: 200px;
-      height: 200px;
+      width: 180px; /* Reduced from 200px */
+      height: 180px;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       top: 10%;
       left: -5%;
@@ -169,8 +187,8 @@
     }
     
     .orb:nth-child(2) {
-      width: 150px;
-      height: 150px;
+      width: 120px; /* Reduced from 150px */
+      height: 120px;
       background: linear-gradient(135deg, var(--accent), var(--primary));
       bottom: 10%;
       right: -5%;
@@ -187,8 +205,8 @@
     .calculator-cards {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
+      gap: 0.875rem; /* Reduced from 1rem */
+      margin-bottom: 1.25rem; /* Reduced from 1.5rem */
     }
 
     .calculator-card {
@@ -198,7 +216,7 @@
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
       border-radius: var(--border-radius-lg);
-      padding: 1.5rem;
+      padding: 1.25rem; /* Reduced from 1.5rem */
       box-shadow: var(--shadow-lg);
       position: relative;
       overflow: visible;
@@ -231,22 +249,22 @@
     }
 
     .calculator-card:hover {
-      transform: translateY(-4px) scale(1.01);
+      transform: translateY(-3px) scale(1.005); /* Reduced scale from 1.01 */
       box-shadow: 
-        0 32px 64px -12px rgb(0 0 0 / 0.4),
+        0 25px 50px -12px rgb(0 0 0 / 0.4),
         0 0 0 1px rgba(255, 255, 255, 0.05);
     }
 
-    /* Delete button - Fixed positioning */
+    /* Delete button - Perfect corner positioning */
     .delete-card-btn {
       position: absolute;
-      top: 1rem;
-      right: 1rem;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
+      top: -6px;
+      right: -6px;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--border-radius-sm);
       border: none;
-      background: rgba(239, 68, 68, 0.1);
+      background: rgba(239, 68, 68, 0.15);
       color: #ef4444;
       cursor: pointer;
       display: none;
@@ -254,12 +272,13 @@
       justify-content: center;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 10;
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+      border: 2px solid var(--bg-primary);
     }
 
     .delete-card-btn:hover {
-      background: rgba(239, 68, 68, 0.2);
-      transform: scale(1.1) rotate(5deg);
+      background: rgba(239, 68, 68, 0.25);
+      transform: scale(1.1);
       box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
     }
 
@@ -271,16 +290,16 @@
       display: flex;
     }
 
-    /* Form sections */
+    /* Form sections - Compact */
     .form-section {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem; /* Reduced from 1.5rem */
     }
 
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      gap: 0.875rem; /* Reduced from 1rem */
+      margin-bottom: 0.875rem; /* Reduced from 1rem */
     }
 
     .form-group {
@@ -294,17 +313,17 @@
     /* GST label centered - Normal weight */
     .gst-label-centered {
       text-align: center;
-      font-size: 0.875rem;
+      font-size: 0.8rem; /* Reduced from 0.875rem */
       font-weight: 500;
       color: var(--text-secondary);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem; /* Reduced from 0.5rem */
     }
 
     /* Labels */
     .form-label {
       display: block;
-      margin-bottom: 0.5rem;
-      font-size: 0.875rem;
+      margin-bottom: 0.4rem; /* Reduced from 0.5rem */
+      font-size: 0.8rem; /* Reduced from 0.875rem */
       font-weight: 500;
       color: var(--text-secondary);
       transition: color 0.2s ease;
@@ -313,12 +332,12 @@
     /* Inputs */
     .form-input, .form-select {
       width: 100%;
-      padding: 0.875rem 1rem;
+      padding: 0.75rem 0.875rem; /* Reduced padding */
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--border-radius-sm);
       color: var(--text-primary);
-      font-size: 1rem;
+      font-size: 0.9rem; /* Reduced from 1rem */
       font-weight: 400;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       outline: none;
@@ -332,17 +351,17 @@
     .price-input-container::before {
       content: '₹';
       position: absolute;
-      left: 1rem;
+      left: 0.875rem;
       top: 50%;
       transform: translateY(-50%);
       color: var(--text-secondary);
-      font-size: 1rem;
+      font-size: 0.9rem;
       z-index: 2;
       pointer-events: none;
     }
 
     .form-input.price-input {
-      padding-left: 2.5rem;
+      padding-left: 2.25rem; /* Reduced from 2.5rem */
     }
 
     /* Fix dropdown styling */
@@ -352,8 +371,8 @@
       appearance: none;
       background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23ffffff' stroke-width='2' fill='none'/></svg>");
       background-repeat: no-repeat;
-      background-position: right 1rem center;
-      background-size: 12px 8px;
+      background-position: right 0.875rem center;
+      background-size: 10px 6px; /* Reduced size */
       cursor: pointer;
     }
 
@@ -369,18 +388,18 @@
       display: flex;
       background: rgba(255, 255, 255, 0.03);
       border-radius: var(--border-radius-sm);
-      padding: 4px;
+      padding: 3px; /* Reduced from 4px */
       position: relative;
       overflow: hidden;
     }
 
     .mode-option {
       flex: 1;
-      padding: 0.75rem 1rem;
+      padding: 0.6rem 0.875rem; /* Reduced padding */
       background: none;
       border: none;
       color: var(--text-secondary);
-      font-size: 0.875rem;
+      font-size: 0.8rem; /* Reduced from 0.875rem */
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -395,12 +414,12 @@
     .mode-toggle::after {
       content: '';
       position: absolute;
-      top: 4px;
-      left: 4px;
-      bottom: 4px;
-      width: calc(50% - 4px);
+      top: 3px;
+      left: 3px;
+      bottom: 3px;
+      width: calc(50% - 3px);
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      border-radius: calc(var(--border-radius-sm) - 4px);
+      border-radius: calc(var(--border-radius-sm) - 3px);
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1;
     }
@@ -414,8 +433,8 @@
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--border-radius-sm);
-      padding: 1rem;
-      margin-bottom: 1.5rem;
+      padding: 0.875rem; /* Reduced from 1rem */
+      margin-bottom: 1.25rem; /* Reduced from 1.5rem */
     }
 
     /* Results grid */
@@ -423,20 +442,20 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      gap: 0.875rem; /* Reduced from 1rem */
+      margin-bottom: 0.875rem; /* Reduced from 1rem */
     }
 
     .result-item {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--border-radius);
-      padding: 1.25rem;
+      padding: 1rem; /* Reduced from 1.25rem */
       text-align: center;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
-      min-height: 80px;
+      min-height: 70px; /* Reduced from 80px */
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -459,23 +478,23 @@
     }
 
     .result-item:hover {
-      transform: translateY(-3px) scale(1.02);
+      transform: translateY(-2px) scale(1.02);
       background: rgba(255, 255, 255, 0.05);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Reduced shadow */
     }
 
     .result-label {
       color: var(--text-secondary);
-      font-size: 0.75rem;
+      font-size: 0.7rem; /* Reduced from 0.75rem */
       font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem; /* Reduced from 0.5rem */
     }
 
     .result-value {
       color: var(--text-primary);
-      font-size: 1.5rem;
+      font-size: 1.3rem; /* Reduced from 1.5rem */
       font-weight: 600;
       line-height: 1;
       background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
@@ -486,28 +505,48 @@
     /* Meta info */
     .results-meta {
       color: var(--text-muted);
-      font-size: 0.75rem;
+      font-size: 0.7rem; /* Reduced from 0.75rem */
       text-align: center;
-      padding: 0.75rem;
+      padding: 0.6rem; /* Reduced from 0.75rem */
       background: rgba(255, 255, 255, 0.02);
       border-radius: var(--border-radius-sm);
       border: 1px solid rgba(255, 255, 255, 0.05);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem; /* Reduced from 1.5rem */
+    }
+
+    /* Share section moved below meta */
+    .basic-share-section {
+      display: flex;
+      justify-content: center;
+      gap: 0.875rem; /* Reduced from 1rem */
+      margin-top: 0.875rem; /* Reduced from 1rem */
+      padding: 0.875rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: var(--border-radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .container:not(.advanced-mode) .share-section {
+      display: none;
+    }
+
+    .container:not(.advanced-mode) .basic-share-section {
+      display: flex;
     }
 
     /* Add more button */
     .add-more-btn {
       width: 100%;
-      padding: 1rem;
+      padding: 0.875rem; /* Reduced from 1rem */
       background: rgba(16, 185, 129, 0.1);
       border: 2px dashed rgba(16, 185, 129, 0.3);
       border-radius: var(--border-radius-sm);
       color: var(--success);
-      font-size: 0.875rem;
+      font-size: 0.8rem; /* Reduced from 0.875rem */
       font-weight: 500;
       cursor: pointer;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem; /* Reduced from 1.5rem */
       display: none;
       align-items: center;
       justify-content: center;
@@ -516,8 +555,8 @@
     .add-more-btn:hover {
       background: rgba(16, 185, 129, 0.15);
       border-color: rgba(16, 185, 129, 0.5);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+      transform: translateY(-2px); /* Reduced from -3px */
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2); /* Reduced shadow */
     }
 
     .add-more-btn:active {
@@ -528,13 +567,13 @@
       display: flex;
     }
 
-    /* Grand Total Section for Advanced Mode */
+    /* Grand Total Section - 2x2 Grid Layout */
     .grand-total {
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(6, 182, 212, 0.1));
-      border: 1px solid rgba(99, 102, 241, 0.2);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(6, 182, 212, 0.15));
+      border: 1px solid rgba(16, 185, 129, 0.25);
       border-radius: var(--border-radius-lg);
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
+      padding: 1.25rem; /* Reduced from 1.5rem */
+      margin-bottom: 1.25rem; /* Reduced from 1.5rem */
       display: none;
       animation: grandTotalSlideIn 0.6s ease-out;
     }
@@ -556,7 +595,7 @@
 
     .grand-total-header {
       text-align: center;
-      font-size: 1rem;
+      font-size: 0.9rem; /* Reduced from 1rem */
       font-weight: 600;
       color: var(--text-primary);
       margin-bottom: 1rem;
@@ -567,37 +606,38 @@
     .grand-total-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+      grid-template-rows: 1fr 1fr;
+      gap: 0.875rem; /* Reduced from 1rem */
     }
 
     .grand-total-item {
       text-align: center;
-      padding: 1rem;
-      background: rgba(255, 255, 255, 0.05);
+      padding: 0.875rem; /* Reduced from 1rem */
+      background: rgba(255, 255, 255, 0.08);
       border-radius: var(--border-radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       transition: all 0.3s ease;
     }
 
     .grand-total-item:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Reduced shadow */
     }
 
     .grand-total-label {
       color: var(--text-secondary);
-      font-size: 0.75rem;
+      font-size: 0.7rem; /* Reduced from 0.75rem */
       font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem; /* Reduced from 0.5rem */
     }
 
     .grand-total-value {
       color: var(--text-primary);
-      font-size: 1.25rem;
+      font-size: 1.1rem; /* Reduced from 1.25rem */
       font-weight: 600;
-      background: linear-gradient(135deg, #ffd700, #ffa500);
+      background: linear-gradient(135deg, #34d399, #10b981);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -606,13 +646,13 @@
     .share-section {
       display: flex;
       justify-content: center;
-      gap: 1rem;
-      margin-top: 1rem;
+      gap: 0.875rem; /* Reduced from 1rem */
+      margin-top: 0.875rem; /* Reduced from 1rem */
     }
 
     .share-btn {
-      width: 48px;
-      height: 48px;
+      width: 44px; /* Reduced from 48px */
+      height: 44px;
       border-radius: 50%;
       border: none;
       cursor: pointer;
@@ -640,13 +680,13 @@
     }
 
     .share-btn:active::before {
-      width: 100px;
-      height: 100px;
+      width: 80px; /* Reduced from 100px */
+      height: 80px;
     }
 
     .share-btn:hover {
-      transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Reduced shadow */
     }
 
     .share-whatsapp {
@@ -654,7 +694,7 @@
     }
 
     .share-whatsapp:hover {
-      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); /* Reduced shadow */
     }
 
     .share-sms {
@@ -662,7 +702,7 @@
     }
 
     .share-sms:hover {
-      box-shadow: 0 8px 25px rgba(6, 182, 212, 0.4);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4); /* Reduced shadow */
     }
 
     .share-email {
@@ -670,7 +710,7 @@
     }
 
     .share-email:hover {
-      box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
+      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4); /* Reduced shadow */
     }
 
     .share-copy {
@@ -678,7 +718,7 @@
     }
 
     .share-copy:hover {
-      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); /* Reduced shadow */
     }
 
     .share-clear {
@@ -686,12 +726,12 @@
     }
 
     .share-clear:hover {
-      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4); /* Reduced shadow */
     }
 
     .share-icon {
-      width: 20px;
-      height: 20px;
+      width: 18px; /* Reduced from 20px */
+      height: 18px;
       fill: white;
     }
 
@@ -701,12 +741,12 @@
       top: calc(20px + var(--safe-area-top));
       left: 50%;
       transform: translateX(-50%) translateY(-100px);
-      padding: 0.75rem 1.5rem;
+      padding: 0.6rem 1.25rem; /* Reduced padding */
       background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(6, 182, 212, 0.9));
       border: 1px solid rgba(16, 185, 129, 0.3);
       border-radius: var(--border-radius-sm);
       color: white;
-      font-size: 0.875rem;
+      font-size: 0.8rem; /* Reduced from 0.875rem */
       font-weight: 500;
       backdrop-filter: blur(10px);
       opacity: 0;
@@ -721,33 +761,39 @@
 
     /* Responsive */
     @media (max-width: 480px) {
-      .calculator-card { 
-        padding: 1.25rem;
-        border-radius: var(--border-radius);
-        margin: 0.5rem;
+      .container {
+        max-width: 100%;
+        padding: 0.5rem;
       }
-      .form-row { gap: 0.75rem; }
+      .calculator-card { 
+        padding: 1rem;
+        border-radius: var(--border-radius);
+      }
+      .form-row { gap: 0.6rem; }
       .results-grid { 
-        gap: 0.75rem;
+        gap: 0.6rem;
       }
       .result-item { 
-        padding: 1rem;
-        min-height: 70px;
+        padding: 0.75rem;
+        min-height: 60px;
       }
-      .result-value { font-size: 1.25rem; }
-      .results-meta { font-size: 0.7rem; }
-      .share-section { gap: 0.75rem; }
+      .result-value { font-size: 1.1rem; }
+      .results-meta { font-size: 0.65rem; }
+      .basic-share-section, .share-section { gap: 0.6rem; }
       .share-btn { 
-        width: 42px; 
-        height: 42px; 
+        width: 38px; 
+        height: 38px; 
       }
       .share-icon { 
-        width: 18px; 
-        height: 18px; 
+        width: 16px; 
+        height: 16px; 
       }
       .grand-total-grid { 
-        grid-template-columns: 1fr;
-        gap: 0.75rem; 
+        gap: 0.6rem; 
+      }
+      .mode-switch-option {
+        padding: 0.6rem 1rem;
+        font-size: 0.75rem;
       }
     }
 
@@ -796,7 +842,7 @@
       <!-- First calculator card -->
       <div class="calculator-card" data-card-id="0">
         <button class="delete-card-btn" onclick="deleteCard(0)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
           </svg>
         </button>
@@ -873,12 +919,41 @@
 
         <!-- Meta Information -->
         <div class="results-meta">Select tile specifications to see calculations</div>
+
+        <!-- Basic Mode Share Section (below meta info) -->
+        <div class="basic-share-section">
+          <button class="share-btn share-whatsapp" onclick="shareWhatsApp()">
+            <svg class="share-icon" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/>
+            </svg>
+          </button>
+          <button class="share-btn share-sms" onclick="shareSMS()">
+            <svg class="share-icon" viewBox="0 0 24 24">
+              <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
+            </svg>
+          </button>
+          <button class="share-btn share-email" onclick="shareEmail()">
+            <svg class="share-icon" viewBox="0 0 24 24">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+          </button>
+          <button class="share-btn share-copy" onclick="copyToClipboard()">
+            <svg class="share-icon" viewBox="0 0 24 24">
+              <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+            </svg>
+          </button>
+          <button class="share-btn share-clear" onclick="clearAll()">
+            <svg class="share-icon" viewBox="0 0 24 24">
+              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
 
     <!-- Add More Button (Advanced Mode Only) -->
     <button class="add-more-btn" id="addMoreBtn">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 6px;">
         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
       </svg>
       Add More Item
@@ -907,7 +982,7 @@
       </div>
     </div>
 
-    <!-- Share Section -->
+    <!-- Advanced Mode Share Section -->
     <div class="share-section">
       <button class="share-btn share-whatsapp" id="shareWhatsapp">
         <svg class="share-icon" viewBox="0 0 24 24">
@@ -1112,7 +1187,7 @@
       
       newCard.innerHTML = `
         <button class="delete-card-btn" onclick="deleteCard(${cardId})">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
           </svg>
         </button>
@@ -1290,6 +1365,7 @@
       }
     }
 
+    // Enhanced getShareText function with professional logic
     function getShareText() {
       const cards = document.querySelectorAll('.calculator-card');
       let text = '';
@@ -1321,8 +1397,12 @@ Weight: ${card.querySelector('.weight-result').textContent} tons`;
           }
         }
       } else {
-        // Advanced mode - multiple items
+        // Advanced mode - multiple items with professional logic
         text = 'TILE CALCULATION DETAILS\n\n';
+        
+        let hasAnyGst = false;
+        let totalBaseAmount = 0;
+        let totalGstAmount = 0;
         
         cards.forEach((card, index) => {
           const cardId = parseInt(card.dataset.cardId);
@@ -1341,25 +1421,40 @@ Weight: ${card.querySelector('.weight-result').textContent} tons`;
             if (pricePerFt2 > 0 && card.querySelector('.total-price-result').textContent !== '-') {
               const areaValue = parseFloat(card.querySelector('.area-ft2-result').textContent.replace(/,/g, ''));
               const basePrice = areaValue * pricePerFt2;
+              const gstAmount = basePrice * (gstRate / 100);
+              const finalAmount = basePrice + gstAmount;
+              
+              totalBaseAmount += basePrice;
+              totalGstAmount += gstAmount;
+              
               if (gstRate > 0) {
                 text += `Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(basePrice))}\n`;
-                text += `Amount (incl. ${gstRate}% GST): ${card.querySelector('.total-price-result').textContent}\n`;
+                text += `Amount (incl. ${gstRate}% GST): ₹${new Intl.NumberFormat('en-IN').format(Math.round(finalAmount))}\n`;
+                hasAnyGst = true;
               } else {
-                text += `Amount: ${card.querySelector('.total-price-result').textContent}\n`;
+                text += `Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(basePrice))}\n`;
               }
             }
             text += '\n';
           }
         });
         
-        // Add grand totals
+        // Add grand totals with professional logic
         text += 'GRAND TOTAL:\n';
         text += `Total Pieces: ${document.getElementById('grandTotalPieces').textContent}\n`;
         text += `Total Area: ${document.getElementById('grandTotalArea').textContent}\n`;
         text += `Total Weight: ${document.getElementById('grandTotalWeight').textContent}\n`;
-        const finalAmount = document.getElementById('grandFinalAmount').textContent;
-        if (finalAmount !== '-') {
-          text += `Final Amount (incl. GST): ${finalAmount}`;
+        
+        // Smart total amount display
+        if (totalBaseAmount > 0) {
+          if (hasAnyGst) {
+            // Show both base and final amounts if there's any GST involved
+            text += `Base Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(totalBaseAmount))}\n`;
+            text += `Final Amount (incl. GST): ₹${new Intl.NumberFormat('en-IN').format(Math.round(totalBaseAmount + totalGstAmount))}`;
+          } else {
+            // Show only final amount if no GST anywhere
+            text += `Final Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(totalBaseAmount))}`;
+          }
         }
       }
       

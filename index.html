@@ -186,27 +186,12 @@
       grid-column: span 2;
     }
 
-    /* Section headers */
-    .section-header {
-      text-align: center;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--glass-border);
-    }
-
-    /* Individual GST label centered */
+    /* Individual GST label centered - Normal weight */
     .gst-label-centered {
       text-align: center;
       font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      font-weight: 500;
+      color: var(--text-secondary);
       margin-bottom: 0.5rem;
     }
 
@@ -614,7 +599,6 @@
 
       <!-- Price Section -->
       <div class="price-section">
-        <div class="section-header">Price/Sq Feet</div>
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Price/sq feet</label>
@@ -720,7 +704,6 @@
     const FT2_PER_M2 = 10.7639;
     const fmt = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 });
     const fmt3 = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 });
-    const fmtPrice = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
 
     let currentMode = 'area';
 
@@ -805,7 +788,7 @@
       elements.weightResult.textContent = weight ? fmt3.format(weight) : '-';
       
       if (totalPrice > 0) {
-        elements.totalPriceResult.textContent = '₹' + fmtPrice.format(totalPrice);
+        elements.totalPriceResult.textContent = '₹' + new Intl.NumberFormat('en-IN').format(Math.round(totalPrice));
         elements.totalPriceItem.style.display = 'flex';
       } else {
         elements.totalPriceResult.textContent = '-';
@@ -849,9 +832,10 @@ Area: ${elements.areaFt2Result.textContent} (sq feet)
 Weight: ${elements.weightResult.textContent} tons`;
 
       if (pricePerFt2 > 0 && elements.totalPriceResult.textContent !== '-') {
-        const basePrice = parseFloat(elements.areaFt2Result.textContent) * pricePerFt2;
+        const areaValue = parseFloat(elements.areaFt2Result.textContent.replace(/,/g, ''));
+        const basePrice = areaValue * pricePerFt2;
         if (gstRate > 0) {
-          text += `\nTotal Amount: ₹${fmtPrice.format(basePrice)}`;
+          text += `\nTotal Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(basePrice))}`;
           text += `\nTotal Amount (incl. ${gstRate}% GST): ${elements.totalPriceResult.textContent}`;
         } else {
           text += `\nTotal Amount: ${elements.totalPriceResult.textContent}`;

@@ -53,7 +53,7 @@
       --safe-area-right: env(safe-area-inset-right);
     }
 
-    /* Advanced mode color overrides */
+    /* Advanced mode color overrides with smooth transition */
     .container.advanced-mode {
       --primary: #10b981;
       --primary-light: #34d399;
@@ -69,14 +69,13 @@
     }
 
     html {
-      /* Fullscreen PWA support for iOS */
       min-height: calc(100% + var(--safe-area-top));
       padding: var(--safe-area-top) var(--safe-area-right) var(--safe-area-bottom) var(--safe-area-left);
       background-attachment: fixed;
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
       background: var(--bg-primary);
       background-image: 
         radial-gradient(at 40% 20%, hsla(228,100%,74%,0.12) 0, transparent 50%),
@@ -92,10 +91,11 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Advanced mode background change */
-    .container.advanced-mode ~ body {
+    /* Advanced mode background with smooth transition */
+    body.advanced-bg {
       background-image: 
         radial-gradient(at 40% 20%, hsla(158,100%,74%,0.12) 0, transparent 50%),
         radial-gradient(at 80% 0%, hsla(149,100%,56%,0.08) 0, transparent 50%),
@@ -104,22 +104,30 @@
 
     .container {
       width: 100%;
-      max-width: 720px; /* Reduced from 800px */
-      padding: max(0.75rem, var(--safe-area-left)) max(0.75rem, var(--safe-area-right)); /* Reduced padding */
+      max-width: 720px;
+      padding: max(0.75rem, var(--safe-area-left)) max(0.75rem, var(--safe-area-right));
       margin: 0 auto;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Mode Switch */
+    /* Smooth mode transition wrapper */
+    .mode-transition-wrapper {
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Mode Switch with enhanced transitions */
     .mode-switch {
       display: flex;
       background: var(--glass);
       border-radius: var(--border-radius-sm);
-      padding: 3px; /* Reduced from 4px */
-      margin-bottom: 1.25rem; /* Reduced from 1.5rem */
+      padding: 3px;
+      margin-bottom: 1.25rem;
       position: relative;
       overflow: hidden;
       border: 1px solid var(--glass-border);
-      transition: all 0.3s ease;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
 
     .mode-switch:hover {
@@ -129,14 +137,14 @@
 
     .mode-switch-option {
       flex: 1;
-      padding: 0.75rem 1.25rem; /* Reduced padding */
+      padding: 0.75rem 1.25rem;
       background: none;
       border: none;
       color: var(--text-secondary);
-      font-size: 0.8rem; /* Reduced from 0.875rem */
+      font-size: 0.8rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       z-index: 2;
       text-align: center;
@@ -156,7 +164,7 @@
       width: calc(50% - 3px);
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
       border-radius: calc(var(--border-radius-sm) - 3px);
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1;
       box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
     }
@@ -175,10 +183,11 @@
       animation: float 20s infinite linear;
       z-index: -1;
       pointer-events: none;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .orb:nth-child(1) {
-      width: 180px; /* Reduced from 200px */
+      width: 180px;
       height: 180px;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       top: 10%;
@@ -187,7 +196,7 @@
     }
     
     .orb:nth-child(2) {
-      width: 120px; /* Reduced from 150px */
+      width: 120px;
       height: 120px;
       background: linear-gradient(135deg, var(--accent), var(--primary));
       bottom: 10%;
@@ -201,12 +210,12 @@
       66% { transform: translateY(20px) rotate(240deg); }
     }
 
-    /* Calculator cards */
+    /* Calculator cards with enhanced transitions */
     .calculator-cards {
       display: flex;
       flex-direction: column;
-      gap: 0.875rem; /* Reduced from 1rem */
-      margin-bottom: 1.25rem; /* Reduced from 1.5rem */
+      gap: 0.875rem;
+      margin-bottom: 1.25rem;
     }
 
     .calculator-card {
@@ -216,20 +225,20 @@
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
       border-radius: var(--border-radius-lg);
-      padding: 1.25rem; /* Reduced from 1.5rem */
+      padding: 1.25rem;
       box-shadow: var(--shadow-lg);
       position: relative;
       overflow: visible;
       max-width: 100%;
       transform: translateY(0);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      animation: cardSlideIn 0.5s ease-out;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: cardSlideIn 0.8s ease-out;
     }
 
     @keyframes cardSlideIn {
       from {
         opacity: 0;
-        transform: translateY(20px) scale(0.95);
+        transform: translateY(30px) scale(0.95);
       }
       to {
         opacity: 1;
@@ -246,20 +255,21 @@
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
       opacity: 0.5;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .calculator-card:hover {
-      transform: translateY(-3px) scale(1.005); /* Reduced scale from 1.01 */
+      transform: translateY(-3px) scale(1.005);
       box-shadow: 
         0 25px 50px -12px rgb(0 0 0 / 0.4),
         0 0 0 1px rgba(255, 255, 255, 0.05);
     }
 
-    /* Delete button - Perfect corner positioning */
+    /* Perfect delete button positioning with contained shadow */
     .delete-card-btn {
       position: absolute;
-      top: -6px;
-      right: -6px;
+      top: -8px;
+      right: -8px;
       width: 32px;
       height: 32px;
       border-radius: var(--border-radius-sm);
@@ -272,14 +282,16 @@
       justify-content: center;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 10;
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
       border: 2px solid var(--bg-primary);
+      box-shadow: inset 0 2px 8px rgba(239, 68, 68, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .delete-card-btn:hover {
       background: rgba(239, 68, 68, 0.25);
       transform: scale(1.1);
-      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+      box-shadow: inset 0 2px 8px rgba(239, 68, 68, 0.3);
     }
 
     .delete-card-btn:active {
@@ -292,14 +304,14 @@
 
     /* Form sections - Compact */
     .form-section {
-      margin-bottom: 1.25rem; /* Reduced from 1.5rem */
+      margin-bottom: 1.25rem;
     }
 
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.875rem; /* Reduced from 1rem */
-      margin-bottom: 0.875rem; /* Reduced from 1rem */
+      gap: 0.875rem;
+      margin-bottom: 0.875rem;
     }
 
     .form-group {
@@ -310,37 +322,59 @@
       grid-column: span 2;
     }
 
-    /* GST label centered - Normal weight */
+    /* GST label centered */
     .gst-label-centered {
       text-align: center;
-      font-size: 0.8rem; /* Reduced from 0.875rem */
+      font-size: 0.8rem;
       font-weight: 500;
       color: var(--text-secondary);
-      margin-bottom: 0.4rem; /* Reduced from 0.5rem */
+      margin-bottom: 0.4rem;
+      transition: all 0.3s ease;
     }
 
     /* Labels */
     .form-label {
       display: block;
-      margin-bottom: 0.4rem; /* Reduced from 0.5rem */
-      font-size: 0.8rem; /* Reduced from 0.875rem */
+      margin-bottom: 0.4rem;
+      font-size: 0.8rem;
       font-weight: 500;
       color: var(--text-secondary);
-      transition: color 0.2s ease;
+      transition: all 0.3s ease;
     }
 
-    /* Inputs */
+    /* Inputs with perfect styling for all platforms */
     .form-input, .form-select {
       width: 100%;
-      padding: 0.75rem 0.875rem; /* Reduced padding */
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.75rem 0.875rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: var(--border-radius-sm);
       color: var(--text-primary);
-      font-size: 0.9rem; /* Reduced from 1rem */
+      font-size: 0.9rem;
       font-weight: 400;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       outline: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+
+    /* Fix for dropdown styling on all platforms */
+    .form-select {
+      background-color: rgba(255, 255, 255, 0.05) !important;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23a1a1aa' stroke-width='2' fill='none'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 0.875rem center;
+      background-size: 10px 6px;
+      cursor: pointer;
+      padding-right: 2.5rem;
+    }
+
+    /* Fix for desktop dropdown options */
+    .form-select option {
+      background-color: var(--bg-secondary) !important;
+      color: var(--text-primary) !important;
+      padding: 0.5rem;
     }
 
     /* Price input with rupee symbol */
@@ -361,26 +395,20 @@
     }
 
     .form-input.price-input {
-      padding-left: 2.25rem; /* Reduced from 2.5rem */
-    }
-
-    /* Fix dropdown styling */
-    .form-select {
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23ffffff' stroke-width='2' fill='none'/></svg>");
-      background-repeat: no-repeat;
-      background-position: right 0.875rem center;
-      background-size: 10px 6px; /* Reduced size */
-      cursor: pointer;
+      padding-left: 2.25rem;
     }
 
     .form-input:focus, .form-select:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 99, 102, 241), 0.1);
+      background: rgba(255, 255, 255, 0.08);
       transform: translateY(-1px);
+    }
+
+    /* Advanced mode focus styles */
+    .container.advanced-mode .form-input:focus,
+    .container.advanced-mode .form-select:focus {
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
     }
 
     /* Mode toggle */
@@ -388,21 +416,22 @@
       display: flex;
       background: rgba(255, 255, 255, 0.03);
       border-radius: var(--border-radius-sm);
-      padding: 3px; /* Reduced from 4px */
+      padding: 3px;
       position: relative;
       overflow: hidden;
+      transition: all 0.3s ease;
     }
 
     .mode-option {
       flex: 1;
-      padding: 0.6rem 0.875rem; /* Reduced padding */
+      padding: 0.6rem 0.875rem;
       background: none;
       border: none;
       color: var(--text-secondary);
-      font-size: 0.8rem; /* Reduced from 0.875rem */
+      font-size: 0.8rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
       position: relative;
       z-index: 2;
     }
@@ -420,7 +449,7 @@
       width: calc(50% - 3px);
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
       border-radius: calc(var(--border-radius-sm) - 3px);
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1;
     }
 
@@ -433,8 +462,9 @@
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--border-radius-sm);
-      padding: 0.875rem; /* Reduced from 1rem */
-      margin-bottom: 1.25rem; /* Reduced from 1.5rem */
+      padding: 0.875rem;
+      margin-bottom: 1.25rem;
+      transition: all 0.3s ease;
     }
 
     /* Results grid */
@@ -442,20 +472,20 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
-      gap: 0.875rem; /* Reduced from 1rem */
-      margin-bottom: 0.875rem; /* Reduced from 1rem */
+      gap: 0.875rem;
+      margin-bottom: 0.875rem;
     }
 
     .result-item {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--border-radius);
-      padding: 1rem; /* Reduced from 1.25rem */
+      padding: 1rem;
       text-align: center;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
-      min-height: 70px; /* Reduced from 80px */
+      min-height: 70px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -480,21 +510,21 @@
     .result-item:hover {
       transform: translateY(-2px) scale(1.02);
       background: rgba(255, 255, 255, 0.05);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Reduced shadow */
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     }
 
     .result-label {
       color: var(--text-secondary);
-      font-size: 0.7rem; /* Reduced from 0.75rem */
+      font-size: 0.7rem;
       font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 0.4rem; /* Reduced from 0.5rem */
+      margin-bottom: 0.4rem;
     }
 
     .result-value {
       color: var(--text-primary);
-      font-size: 1.3rem; /* Reduced from 1.5rem */
+      font-size: 1.3rem;
       font-weight: 600;
       line-height: 1;
       background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
@@ -505,58 +535,59 @@
     /* Meta info */
     .results-meta {
       color: var(--text-muted);
-      font-size: 0.7rem; /* Reduced from 0.75rem */
+      font-size: 0.7rem;
       text-align: center;
-      padding: 0.6rem; /* Reduced from 0.75rem */
+      padding: 0.6rem;
       background: rgba(255, 255, 255, 0.02);
       border-radius: var(--border-radius-sm);
       border: 1px solid rgba(255, 255, 255, 0.05);
-      margin-bottom: 1rem; /* Reduced from 1.5rem */
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
     }
 
-    /* Share section moved below meta */
+    /* Basic mode share section (below meta info) */
     .basic-share-section {
       display: flex;
       justify-content: center;
-      gap: 0.875rem; /* Reduced from 1rem */
-      margin-top: 0.875rem; /* Reduced from 1rem */
+      gap: 0.875rem;
+      margin-top: 0.875rem;
       padding: 0.875rem;
       background: rgba(255, 255, 255, 0.02);
       border-radius: var(--border-radius-sm);
       border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .container:not(.advanced-mode) .share-section {
+    /* Hide basic share section in advanced mode */
+    .container.advanced-mode .basic-share-section {
       display: none;
     }
 
-    .container:not(.advanced-mode) .basic-share-section {
-      display: flex;
-    }
-
-    /* Add more button */
+    /* Add more button with enhanced animation */
     .add-more-btn {
       width: 100%;
-      padding: 0.875rem; /* Reduced from 1rem */
+      padding: 0.875rem;
       background: rgba(16, 185, 129, 0.1);
       border: 2px dashed rgba(16, 185, 129, 0.3);
       border-radius: var(--border-radius-sm);
       color: var(--success);
-      font-size: 0.8rem; /* Reduced from 0.875rem */
+      font-size: 0.8rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      margin-bottom: 1.25rem; /* Reduced from 1.5rem */
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-bottom: 1.25rem;
       display: none;
       align-items: center;
       justify-content: center;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
     .add-more-btn:hover {
       background: rgba(16, 185, 129, 0.15);
       border-color: rgba(16, 185, 129, 0.5);
-      transform: translateY(-2px); /* Reduced from -3px */
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2); /* Reduced shadow */
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2);
     }
 
     .add-more-btn:active {
@@ -565,37 +596,32 @@
 
     .container.advanced-mode .add-more-btn {
       display: flex;
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    /* Grand Total Section - 2x2 Grid Layout */
+    /* Grand Total Section - Enhanced with perfect transitions */
     .grand-total {
       background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(6, 182, 212, 0.15));
       border: 1px solid rgba(16, 185, 129, 0.25);
       border-radius: var(--border-radius-lg);
-      padding: 1.25rem; /* Reduced from 1.5rem */
-      margin-bottom: 1.25rem; /* Reduced from 1.5rem */
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
       display: none;
-      animation: grandTotalSlideIn 0.6s ease-out;
-    }
-
-    @keyframes grandTotalSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.9);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      opacity: 0;
+      transform: translateY(30px) scale(0.9);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .container.advanced-mode .grand-total {
       display: block;
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
 
     .grand-total-header {
       text-align: center;
-      font-size: 0.9rem; /* Reduced from 1rem */
+      font-size: 0.9rem;
       font-weight: 600;
       color: var(--text-primary);
       margin-bottom: 1rem;
@@ -607,12 +633,12 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
-      gap: 0.875rem; /* Reduced from 1rem */
+      gap: 0.875rem;
     }
 
     .grand-total-item {
       text-align: center;
-      padding: 0.875rem; /* Reduced from 1rem */
+      padding: 0.875rem;
       background: rgba(255, 255, 255, 0.08);
       border-radius: var(--border-radius-sm);
       border: 1px solid rgba(255, 255, 255, 0.15);
@@ -621,37 +647,47 @@
 
     .grand-total-item:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Reduced shadow */
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     }
 
     .grand-total-label {
       color: var(--text-secondary);
-      font-size: 0.7rem; /* Reduced from 0.75rem */
+      font-size: 0.7rem;
       font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 0.4rem; /* Reduced from 0.5rem */
+      margin-bottom: 0.4rem;
     }
 
     .grand-total-value {
       color: var(--text-primary);
-      font-size: 1.1rem; /* Reduced from 1.25rem */
+      font-size: 1.1rem;
       font-weight: 600;
       background: linear-gradient(135deg, #34d399, #10b981);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    /* Share section */
+    /* Advanced mode share section with smooth reveal */
     .share-section {
-      display: flex;
+      display: none;
       justify-content: center;
-      gap: 0.875rem; /* Reduced from 1rem */
-      margin-top: 0.875rem; /* Reduced from 1rem */
+      gap: 0.875rem;
+      margin-top: 0.875rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
+    .container.advanced-mode .share-section {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Share buttons with enhanced effects */
     .share-btn {
-      width: 44px; /* Reduced from 48px */
+      width: 44px;
       height: 44px;
       border-radius: 50%;
       border: none;
@@ -680,13 +716,13 @@
     }
 
     .share-btn:active::before {
-      width: 80px; /* Reduced from 100px */
+      width: 80px;
       height: 80px;
     }
 
     .share-btn:hover {
       transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Reduced shadow */
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     }
 
     .share-whatsapp {
@@ -694,7 +730,7 @@
     }
 
     .share-whatsapp:hover {
-      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); /* Reduced shadow */
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
     }
 
     .share-sms {
@@ -702,7 +738,7 @@
     }
 
     .share-sms:hover {
-      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4); /* Reduced shadow */
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
     }
 
     .share-email {
@@ -710,7 +746,7 @@
     }
 
     .share-email:hover {
-      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4); /* Reduced shadow */
+      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4);
     }
 
     .share-copy {
@@ -718,7 +754,7 @@
     }
 
     .share-copy:hover {
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); /* Reduced shadow */
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
     }
 
     .share-clear {
@@ -726,32 +762,34 @@
     }
 
     .share-clear:hover {
-      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4); /* Reduced shadow */
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
     }
 
     .share-icon {
-      width: 18px; /* Reduced from 20px */
+      width: 18px;
       height: 18px;
       fill: white;
     }
 
-    /* Copy message */
+    /* Copy message with enhanced animation */
     .copy-message {
       position: fixed;
       top: calc(20px + var(--safe-area-top));
       left: 50%;
       transform: translateX(-50%) translateY(-100px);
-      padding: 0.6rem 1.25rem; /* Reduced padding */
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(6, 182, 212, 0.9));
+      padding: 0.6rem 1.25rem;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.95), rgba(6, 182, 212, 0.95));
       border: 1px solid rgba(16, 185, 129, 0.3);
       border-radius: var(--border-radius-sm);
       color: white;
-      font-size: 0.8rem; /* Reduced from 0.875rem */
+      font-size: 0.8rem;
       font-weight: 500;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       opacity: 0;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1000;
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
     }
 
     .copy-message.show {
@@ -759,7 +797,7 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Responsive */
+    /* Responsive design for all platforms */
     @media (max-width: 480px) {
       .container {
         max-width: 100%;
@@ -795,6 +833,53 @@
         padding: 0.6rem 1rem;
         font-size: 0.75rem;
       }
+      .delete-card-btn {
+        top: -6px;
+        right: -6px;
+        width: 28px;
+        height: 28px;
+      }
+    }
+
+    /* Tablet optimizations */
+    @media (min-width: 481px) and (max-width: 768px) {
+      .container {
+        max-width: 90%;
+        padding: 1rem;
+      }
+      
+      .calculator-card {
+        padding: 1.5rem;
+      }
+      
+      .form-select {
+        font-size: 1rem;
+      }
+    }
+
+    /* Desktop optimizations */
+    @media (min-width: 769px) {
+      .container {
+        max-width: 720px;
+        padding: 1.5rem;
+      }
+      
+      .calculator-card {
+        padding: 2rem;
+      }
+      
+      .form-select {
+        font-size: 1rem;
+        padding: 0.875rem 1rem;
+        padding-right: 2.75rem;
+      }
+      
+      .delete-card-btn {
+        width: 36px;
+        height: 36px;
+        top: -10px;
+        right: -10px;
+      }
     }
 
     /* Loading animation */
@@ -824,6 +909,23 @@
         }
       }
     }
+
+    /* High contrast mode for accessibility */
+    @media (prefers-contrast: high) {
+      .form-input, .form-select {
+        border-width: 2px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    /* Reduced motion for accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -831,184 +933,186 @@
   <div class="orb"></div>
   
   <div class="container">
-    <!-- Mode Switch -->
-    <div class="mode-switch" id="modeSwitch">
-      <button class="mode-switch-option active" data-mode="basic">Basic</button>
-      <button class="mode-switch-option" data-mode="advanced">Advanced</button>
-    </div>
+    <div class="mode-transition-wrapper">
+      <!-- Mode Switch -->
+      <div class="mode-switch" id="modeSwitch">
+        <button class="mode-switch-option active" data-mode="basic">Basic</button>
+        <button class="mode-switch-option" data-mode="advanced">Advanced</button>
+      </div>
 
-    <!-- Calculator Cards Container -->
-    <div class="calculator-cards" id="calculatorCards">
-      <!-- First calculator card -->
-      <div class="calculator-card" data-card-id="0">
-        <button class="delete-card-btn" onclick="deleteCard(0)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-          </svg>
-        </button>
-
-        <div class="form-section">
-          <!-- Tile Size with thickness combined -->
-          <div class="form-row">
-            <div class="form-group full-width">
-              <label class="form-label">Tile Size & Thickness</label>
-              <select class="form-select size-thickness" data-card="0"></select>
-            </div>
-          </div>
-
-          <!-- Mode Toggle -->
-          <div class="form-row">
-            <div class="form-group full-width">
-              <label class="form-label">Calculation Mode</label>
-              <div class="mode-toggle" data-card="0">
-                <button class="mode-option active" data-mode="area">Area (ft²)</button>
-                <button class="mode-option" data-mode="pieces">Pieces</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Quantity Input -->
-          <div class="form-row">
-            <div class="form-group full-width">
-              <label class="form-label input-label">Area (ft²)</label>
-              <input type="number" class="form-input quantity" data-card="0" placeholder="Enter value..." min="0" step="0.01" inputmode="decimal">
-            </div>
-          </div>
-        </div>
-
-        <!-- Price Section -->
-        <div class="price-section">
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Price/sq feet</label>
-              <div class="price-input-container">
-                <input type="number" class="form-input price-input price" data-card="0" placeholder="Enter price..." min="0" step="0.01" inputmode="decimal">
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="gst-label-centered">GST</div>
-              <select class="form-select gst" data-card="0">
-                <option value="0">Without GST</option>
-                <option value="18">18%</option>
-                <option value="12">12%</option>
-                <option value="5">5%</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- Results Grid -->
-        <div class="results-grid">
-          <div class="result-item">
-            <div class="result-label">Pieces</div>
-            <div class="result-value pieces-result">-</div>
-          </div>
-          <div class="result-item">
-            <div class="result-label">Area (ft²)</div>
-            <div class="result-value area-ft2-result">-</div>
-          </div>
-          <div class="result-item">
-            <div class="result-label">Weight (tons)</div>
-            <div class="result-value weight-result">-</div>
-          </div>
-          <div class="result-item">
-            <div class="result-label">Total Amount</div>
-            <div class="result-value total-price-result">-</div>
-          </div>
-        </div>
-
-        <!-- Meta Information -->
-        <div class="results-meta">Select tile specifications to see calculations</div>
-
-        <!-- Basic Mode Share Section (below meta info) -->
-        <div class="basic-share-section">
-          <button class="share-btn share-whatsapp" onclick="shareWhatsApp()">
-            <svg class="share-icon" viewBox="0 0 24 24">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/>
-            </svg>
-          </button>
-          <button class="share-btn share-sms" onclick="shareSMS()">
-            <svg class="share-icon" viewBox="0 0 24 24">
-              <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
-            </svg>
-          </button>
-          <button class="share-btn share-email" onclick="shareEmail()">
-            <svg class="share-icon" viewBox="0 0 24 24">
-              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-            </svg>
-          </button>
-          <button class="share-btn share-copy" onclick="copyToClipboard()">
-            <svg class="share-icon" viewBox="0 0 24 24">
-              <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-            </svg>
-          </button>
-          <button class="share-btn share-clear" onclick="clearAll()">
-            <svg class="share-icon" viewBox="0 0 24 24">
+      <!-- Calculator Cards Container -->
+      <div class="calculator-cards" id="calculatorCards">
+        <!-- First calculator card -->
+        <div class="calculator-card" data-card-id="0">
+          <button class="delete-card-btn" onclick="deleteCard(0)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
               <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
             </svg>
           </button>
+
+          <div class="form-section">
+            <!-- Tile Size with thickness combined -->
+            <div class="form-row">
+              <div class="form-group full-width">
+                <label class="form-label">Tile Size & Thickness</label>
+                <select class="form-select size-thickness" data-card="0"></select>
+              </div>
+            </div>
+
+            <!-- Mode Toggle -->
+            <div class="form-row">
+              <div class="form-group full-width">
+                <label class="form-label">Calculation Mode</label>
+                <div class="mode-toggle" data-card="0">
+                  <button class="mode-option active" data-mode="area">Area (ft²)</button>
+                  <button class="mode-option" data-mode="pieces">Pieces</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quantity Input -->
+            <div class="form-row">
+              <div class="form-group full-width">
+                <label class="form-label input-label">Area (ft²)</label>
+                <input type="number" class="form-input quantity" data-card="0" placeholder="Enter value..." min="0" step="0.01" inputmode="decimal">
+              </div>
+            </div>
+          </div>
+
+          <!-- Price Section -->
+          <div class="price-section">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Price/sq feet</label>
+                <div class="price-input-container">
+                  <input type="number" class="form-input price-input price" data-card="0" placeholder="Enter price..." min="0" step="0.01" inputmode="decimal">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="gst-label-centered">GST</div>
+                <select class="form-select gst" data-card="0">
+                  <option value="0">Without GST</option>
+                  <option value="18">18%</option>
+                  <option value="12">12%</option>
+                  <option value="5">5%</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Results Grid -->
+          <div class="results-grid">
+            <div class="result-item">
+              <div class="result-label">Pieces</div>
+              <div class="result-value pieces-result">-</div>
+            </div>
+            <div class="result-item">
+              <div class="result-label">Area (ft²)</div>
+              <div class="result-value area-ft2-result">-</div>
+            </div>
+            <div class="result-item">
+              <div class="result-label">Weight (tons)</div>
+              <div class="result-value weight-result">-</div>
+            </div>
+            <div class="result-item">
+              <div class="result-label">Total Amount</div>
+              <div class="result-value total-price-result">-</div>
+            </div>
+          </div>
+
+          <!-- Meta Information -->
+          <div class="results-meta">Select tile specifications to see calculations</div>
+
+          <!-- Basic Mode Share Section (below meta info, hidden in advanced mode) -->
+          <div class="basic-share-section">
+            <button class="share-btn share-whatsapp" onclick="shareWhatsApp()">
+              <svg class="share-icon" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/>
+              </svg>
+            </button>
+            <button class="share-btn share-sms" onclick="shareSMS()">
+              <svg class="share-icon" viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
+              </svg>
+            </button>
+            <button class="share-btn share-email" onclick="shareEmail()">
+              <svg class="share-icon" viewBox="0 0 24 24">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg>
+            </button>
+            <button class="share-btn share-copy" onclick="copyToClipboard()">
+              <svg class="share-icon" viewBox="0 0 24 24">
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+              </svg>
+            </button>
+            <button class="share-btn share-clear" onclick="clearAll()">
+              <svg class="share-icon" viewBox="0 0 24 24">
+                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Add More Button (Advanced Mode Only) -->
-    <button class="add-more-btn" id="addMoreBtn">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 6px;">
-        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-      </svg>
-      Add More Item
-    </button>
+      <!-- Add More Button (Advanced Mode Only) -->
+      <button class="add-more-btn" id="addMoreBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 6px;">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+        Add More Item
+      </button>
 
-    <!-- Grand Total (Advanced Mode Only) -->
-    <div class="grand-total">
-      <div class="grand-total-header">Grand Total</div>
-      <div class="grand-total-grid">
-        <div class="grand-total-item">
-          <div class="grand-total-label">Total Pieces</div>
-          <div class="grand-total-value" id="grandTotalPieces">-</div>
-        </div>
-        <div class="grand-total-item">
-          <div class="grand-total-label">Total Area</div>
-          <div class="grand-total-value" id="grandTotalArea">-</div>
-        </div>
-        <div class="grand-total-item">
-          <div class="grand-total-label">Total Weight</div>
-          <div class="grand-total-value" id="grandTotalWeight">-</div>
-        </div>
-        <div class="grand-total-item">
-          <div class="grand-total-label">Final Amount</div>
-          <div class="grand-total-value" id="grandFinalAmount">-</div>
+      <!-- Grand Total (Advanced Mode Only) -->
+      <div class="grand-total">
+        <div class="grand-total-header">Grand Total</div>
+        <div class="grand-total-grid">
+          <div class="grand-total-item">
+            <div class="grand-total-label">Total Pieces</div>
+            <div class="grand-total-value" id="grandTotalPieces">-</div>
+          </div>
+          <div class="grand-total-item">
+            <div class="grand-total-label">Total Area</div>
+            <div class="grand-total-value" id="grandTotalArea">-</div>
+          </div>
+          <div class="grand-total-item">
+            <div class="grand-total-label">Total Weight</div>
+            <div class="grand-total-value" id="grandTotalWeight">-</div>
+          </div>
+          <div class="grand-total-item">
+            <div class="grand-total-label">Final Amount</div>
+            <div class="grand-total-value" id="grandFinalAmount">-</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Advanced Mode Share Section -->
-    <div class="share-section">
-      <button class="share-btn share-whatsapp" id="shareWhatsapp">
-        <svg class="share-icon" viewBox="0 0 24 24">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/>
-        </svg>
-      </button>
-      <button class="share-btn share-sms" id="shareSMS">
-        <svg class="share-icon" viewBox="0 0 24 24">
-          <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
-        </svg>
-      </button>
-      <button class="share-btn share-email" id="shareEmail">
-        <svg class="share-icon" viewBox="0 0 24 24">
-          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-        </svg>
-      </button>
-      <button class="share-btn share-copy" id="copyBtn">
-        <svg class="share-icon" viewBox="0 0 24 24">
-          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-        </svg>
-      </button>
-      <button class="share-btn share-clear" id="clearBtn">
-        <svg class="share-icon" viewBox="0 0 24 24">
-          <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-        </svg>
-      </button>
+      <!-- Advanced Mode Share Section -->
+      <div class="share-section">
+        <button class="share-btn share-whatsapp" id="shareWhatsapp">
+          <svg class="share-icon" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/>
+          </svg>
+        </button>
+        <button class="share-btn share-sms" id="shareSMS">
+          <svg class="share-icon" viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
+          </svg>
+        </button>
+        <button class="share-btn share-email" id="shareEmail">
+          <svg class="share-icon" viewBox="0 0 24 24">
+            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+        </button>
+        <button class="share-btn share-copy" id="copyBtn">
+          <svg class="share-icon" viewBox="0 0 24 24">
+            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+          </svg>
+        </button>
+        <button class="share-btn share-clear" id="clearBtn">
+          <svg class="share-icon" viewBox="0 0 24 24">
+            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1047,7 +1151,8 @@
 
     let currentAppMode = 'basic';
     let cardCounter = 1;
-    let cardModes = { 0: 'area' }; // Track mode for each card
+    let cardModes = { 0: 'area' };
+    let transitionTimeout = null;
 
     function parseKgMin(value) {
       const nums = String(value).match(/[\d.]+/g);
@@ -1340,18 +1445,30 @@
       currentAppMode = mode;
       const container = document.querySelector('.container');
       const modeSwitch = document.getElementById('modeSwitch');
+      const body = document.body;
+      
+      // Clear any existing transition timeout
+      if (transitionTimeout) clearTimeout(transitionTimeout);
       
       // Reset when switching modes
       if (prevMode !== mode) {
         resetAllCards();
       }
       
+      // Smooth transition with proper timing
       if (mode === 'advanced') {
         container.classList.add('advanced-mode');
         modeSwitch.classList.add('advanced-mode');
+        body.classList.add('advanced-bg');
+        
+        // Staggered reveal of advanced elements
+        transitionTimeout = setTimeout(() => {
+          updateGrandTotal();
+        }, 200);
       } else {
         container.classList.remove('advanced-mode');
         modeSwitch.classList.remove('advanced-mode');
+        body.classList.remove('advanced-bg');
       }
       
       // Update mode switch buttons
@@ -1359,10 +1476,6 @@
       options.forEach(opt => {
         opt.classList.toggle('active', opt.dataset.mode === mode);
       });
-      
-      if (mode === 'advanced') {
-        updateGrandTotal();
-      }
     }
 
     // Enhanced getShareText function with professional logic
@@ -1547,8 +1660,22 @@ Weight: ${card.querySelector('.weight-result').textContent} tons`;
     setupCardEventListeners(0);
     calculateCard(0);
 
+    // PWA detection
     if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
       console.log('Running as PWA');
+    }
+
+    // Enhanced error handling
+    window.addEventListener('error', (e) => {
+      console.error('Application error:', e.error);
+    });
+
+    // Performance optimization
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        // Preload any heavy operations here
+        console.log('TilesPro Calculator initialized');
+      });
     }
   </script>
 </body>

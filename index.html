@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
   
   <!-- PWA Meta Tags -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiBmaWxsPSIjNjM2NmYxIi8+Cjx0ZXh0IHg9IjkwIiB5PSI5MCIgZm9udC1mYW1pbHk9IkludGVyIiBmb250LXNpemU9IjYwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+VDwvdGV4dD4KPHN2Zz4=" />
   
   <title>TilesPro Calculator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlRpbGVzUHJvIENhbGN1bGF0b3IiLAogICJzaG9ydF9uYW1lIjogIlRpbGVzUHJvIiwKICAiZGVzY3JpcHRpb24iOiAiUHJvZmVzc2lvbmFsIHRpbGUgY2FsY3VsYXRpb24gYXBwIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwYTBhMGIiLAogICJ0aGVtZV9jb2xvciI6ICIjNjM2NmYxIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRnd0lpQm9aV2xuYUhROUlqRTRNQ0lpSUhacFpYZENiM2c5SWpBZ01DQXhPREFnTVRnd0lpQm1hV3hzUFNKdWIyNWxJaUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lQZ29nUEhKbFkzUWdkMmxrZEdnOUlqRTRNQ0lpSUdobGFXZG9kRDBpTVRnd0lpQm1hV3hzUFNJalEwTXlOREZHT1VFaUx6NEtJRHgwWlhoMElIZzlJamt3SWlCNVBTSTVNQ0lpSUdadmJuUXRabUZ0YVd4NVBTSkpiblJsY2lJZ1ptOXVkQzF6YVhwbFBTSTJNQ0lpSUdacGJHeDBhWFpoSUdacGJHeDBhWFpsUFNKM2FHbDBaU0lpSUhSbGVIUXRZVzVqYUc5eVBTSnRhV1JrYkdVaUlHUnZiV2x1WVc1MExXSmhjMlZzYVc1bFBTSnRhV1JrYkdVaVBsUThMM1JsZEhRK0NqeHpkbWMrIiwKICAgICAgInNpemVzIjogIjE4MHgxODAiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0KfQ==" />
   
   <style>
@@ -31,234 +31,200 @@
       --bg-primary: #0a0a0b;
       --bg-secondary: #121214;
       --bg-tertiary: #1a1a1e;
-      --glass: rgba(255, 255, 255, 0.08);
-      --glass-border: rgba(255, 255, 255, 0.12);
-      --glass-hover: rgba(255, 255, 255, 0.12);
+      --glass: rgba(255, 255, 255, 0.04);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-hover: rgba(255, 255, 255, 0.06);
       
       --text-primary: #ffffff;
       --text-secondary: #d1d5db;
       --text-muted: #9ca3af;
       
-      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-      --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -2px rgb(0 0 0 / 0.1);
-      --shadow-lg: 0 25px 50px -12px rgb(0 0 0 / 0.5);
-      --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.25);
       
-      --border-radius: 12px;
-      --border-radius-sm: 10px;
-      --border-radius-lg: 16px;
+      --border-radius: 10px;
+      --border-radius-sm: 8px;
+      --border-radius-lg: 14px;
       
-      /* Safe area variables for notch devices */
       --safe-area-top: env(safe-area-inset-top);
       --safe-area-bottom: env(safe-area-inset-bottom);
       --safe-area-left: env(safe-area-inset-left);
       --safe-area-right: env(safe-area-inset-right);
     }
 
-    /* Advanced mode color overrides with enhanced contrast */
+    /* Advanced mode subtle changes */
     .container.advanced-mode {
       --primary: #10b981;
       --primary-light: #34d399;
       --primary-dark: #059669;
-      --glass: rgba(16, 185, 129, 0.12);
-      --glass-border: rgba(16, 185, 129, 0.2);
-      --glass-hover: rgba(16, 185, 129, 0.16);
-      --shadow-glow: 0 0 20px rgba(16, 185, 129, 0.3);
-      --text-secondary: #d1fae5;
-      --text-muted: #a7f3d0;
+      --glass: rgba(16, 185, 129, 0.05);
+      --glass-border: rgba(16, 185, 129, 0.1);
+      --glass-hover: rgba(16, 185, 129, 0.08);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      /* Hardware acceleration optimization */
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
     }
 
     html {
-      min-height: calc(100% + var(--safe-area-top));
+      min-height: 100vh;
       padding: var(--safe-area-top) var(--safe-area-right) var(--safe-area-bottom) var(--safe-area-left);
-      background-attachment: fixed;
+      /* Prevent zoom on input focus */
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg-primary);
       background-image: 
-        radial-gradient(at 40% 20%, hsla(228,100%,74%,0.15) 0, transparent 50%),
-        radial-gradient(at 80% 0%, hsla(189,100%,56%,0.12) 0, transparent 50%),
-        radial-gradient(at 20% 80%, hsla(355,100%,93%,0.08) 0, transparent 50%);
+        radial-gradient(at 40% 20%, hsla(228,100%,74%,0.06) 0, transparent 50%),
+        radial-gradient(at 80% 0%, hsla(189,100%,56%,0.05) 0, transparent 50%);
       color: var(--text-primary);
       min-height: 100vh;
-      min-height: 100dvh;
       overflow-x: hidden;
-      font-feature-settings: 'cv11', 'ss01';
-      font-variation-settings: 'opsz' 32;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: background-image 0.4s ease;
+      /* Performance optimizations */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeSpeed;
     }
 
-    /* Advanced mode background with enhanced contrast */
+    /* Subtle advanced mode background */
     body.advanced-bg {
       background-image: 
-        radial-gradient(at 40% 20%, hsla(158,100%,74%,0.18) 0, transparent 50%),
-        radial-gradient(at 80% 0%, hsla(149,100%,56%,0.15) 0, transparent 50%),
-        radial-gradient(at 20% 80%, hsla(355,100%,93%,0.08) 0, transparent 50%);
+        radial-gradient(at 40% 20%, hsla(158,100%,74%,0.08) 0, transparent 50%),
+        radial-gradient(at 80% 0%, hsla(149,100%,56%,0.06) 0, transparent 50%);
     }
 
     .container {
       width: 100%;
-      max-width: 720px;
-      padding: max(0.75rem, var(--safe-area-left)) max(0.75rem, var(--safe-area-right));
+      max-width: 648px; /* 10% smaller than 720px */
+      padding: 0.7rem; /* Reduced padding */
       margin: 0 auto;
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s ease;
     }
 
-    /* Smooth mode transition wrapper */
-    .mode-transition-wrapper {
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* Mode Switch with enhanced visuals and glow effects */
+    /* Optimized mode switch */
     .mode-switch {
       display: flex;
       background: var(--glass);
       border-radius: var(--border-radius-sm);
-      padding: 4px;
-      margin-bottom: 1.25rem;
+      padding: 3px;
+      margin-bottom: 1.1rem;
       position: relative;
       overflow: hidden;
       border: 1px solid var(--glass-border);
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: var(--shadow), var(--shadow-glow);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .mode-switch:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg), var(--shadow-glow);
-      border-color: var(--primary);
+      transform: translateY(-1px);
     }
 
     .mode-switch-option {
       flex: 1;
-      padding: 0.875rem 1.5rem;
+      padding: 0.75rem 1.2rem;
       background: none;
       border: none;
       color: var(--text-secondary);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s ease;
       position: relative;
       z-index: 2;
       text-align: center;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
     }
 
     .mode-switch-option.active {
       color: var(--text-primary);
-      transform: translateY(-1px);
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     }
 
     .mode-switch::after {
       content: '';
       position: absolute;
-      top: 4px;
-      left: 4px;
-      bottom: 4px;
-      width: calc(50% - 4px);
+      top: 3px;
+      left: 3px;
+      bottom: 3px;
+      width: calc(50% - 3px);
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      border-radius: calc(var(--border-radius-sm) - 4px);
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: calc(var(--border-radius-sm) - 3px);
+      transition: all 0.3s ease;
       z-index: 1;
-      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
     .mode-switch.advanced-mode::after {
       transform: translateX(100%);
-      background: linear-gradient(135deg, var(--success), #34d399);
-      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
-    /* Enhanced floating orbs with glow */
+    /* Minimal floating orbs for performance */
     .orb {
       position: fixed;
       border-radius: 50%;
-      opacity: 0.4;
-      filter: blur(40px);
-      animation: float 25s infinite linear;
+      opacity: 0.15;
+      filter: blur(30px);
+      animation: float 30s infinite linear;
       z-index: -1;
       pointer-events: none;
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
     }
     
     .orb:nth-child(1) {
-      width: 200px;
-      height: 200px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      top: 15%;
-      left: -8%;
-      animation-delay: 0s;
-      box-shadow: 0 0 60px rgba(99, 102, 241, 0.3);
+      width: 120px;
+      height: 120px;
+      background: var(--primary);
+      top: 20%;
+      left: -10%;
     }
     
     .orb:nth-child(2) {
-      width: 150px;
-      height: 150px;
-      background: linear-gradient(135deg, var(--accent), var(--primary));
-      bottom: 15%;
-      right: -8%;
-      animation-delay: -12s;
-      box-shadow: 0 0 50px rgba(236, 72, 153, 0.3);
+      width: 80px;
+      height: 80px;
+      background: var(--accent);
+      bottom: 20%;
+      right: -10%;
+      animation-delay: -15s;
     }
 
     @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
-      25% { transform: translateY(-30px) rotate(90deg) scale(1.1); }
-      50% { transform: translateY(0px) rotate(180deg) scale(0.9); }
-      75% { transform: translateY(30px) rotate(270deg) scale(1.1); }
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
     }
 
-    /* Calculator cards with enhanced glass morphism */
+    /* Optimized calculator cards */
     .calculator-cards {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      margin-bottom: 1.25rem;
+      gap: 0.9rem;
+      margin-bottom: 1.1rem;
     }
 
     .calculator-card {
       width: 100%;
       background: var(--glass);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border: 1px solid var(--glass-border);
       border-radius: var(--border-radius-lg);
-      padding: 1.5rem;
-      box-shadow: var(--shadow-lg), var(--shadow-glow);
+      padding: 1.35rem; /* 10% smaller */
+      box-shadow: var(--shadow);
       position: relative;
-      overflow: visible;
-      max-width: 100%;
-      transform: translateY(0);
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      animation: cardSlideIn 0.8s ease-out;
-    }
-
-    @keyframes cardSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(40px) scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      transition: all 0.3s ease;
+      will-change: transform;
     }
 
     .calculator-card::before {
@@ -267,75 +233,56 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 2px;
+      height: 1px;
       background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
-      opacity: 0.8;
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+      opacity: 0.5;
     }
 
     .calculator-card:hover {
-      transform: translateY(-5px) scale(1.01);
-      box-shadow: 
-        0 35px 70px -15px rgb(0 0 0 / 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.08),
-        var(--shadow-glow);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
       background: var(--glass-hover);
     }
 
-    /* Perfect delete button with enhanced styling */
+    /* Optimized delete button */
     .delete-card-btn {
       position: absolute;
-      top: -12px;
-      right: -12px;
-      width: 36px;
-      height: 36px;
+      top: -8px;
+      right: -8px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       border: none;
-      background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.9));
+      background: linear-gradient(135deg, #ef4444, #dc2626);
       color: white;
       cursor: pointer;
       display: none;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 15;
-      border: 3px solid var(--bg-primary);
-      box-shadow: 
-        0 4px 15px rgba(239, 68, 68, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
-        0 0 0 1px rgba(239, 68, 68, 0.3);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      transition: all 0.2s ease;
+      z-index: 10;
+      border: 2px solid var(--bg-primary);
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
     }
 
     .delete-card-btn:hover {
-      background: linear-gradient(135deg, rgba(239, 68, 68, 1), rgba(220, 38, 38, 1));
-      transform: scale(1.15) rotate(5deg);
-      box-shadow: 
-        0 8px 25px rgba(239, 68, 68, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3),
-        0 0 0 2px rgba(239, 68, 68, 0.4);
-    }
-
-    .delete-card-btn:active {
-      transform: scale(0.95) rotate(0deg);
+      transform: scale(1.1);
     }
 
     .container.advanced-mode .delete-card-btn {
       display: flex;
     }
 
-    /* Form sections */
+    /* Optimized form elements */
     .form-section {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.1rem;
     }
 
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      gap: 0.9rem;
+      margin-bottom: 0.9rem;
     }
 
     .form-group {
@@ -346,71 +293,62 @@
       grid-column: span 2;
     }
 
-    /* GST label with enhanced styling */
     .gst-label-centered {
       text-align: center;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--text-secondary);
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transition: all 0.3s ease;
-    }
-
-    /* Labels with enhanced contrast */
-    .form-label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      transition: all 0.3s ease;
+      margin-bottom: 0.4rem;
       text-transform: uppercase;
       letter-spacing: 0.3px;
     }
 
-    /* Enhanced inputs and dropdowns with perfect desktop styling */
+    .form-label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
+    }
+
+    /* Mobile-optimized inputs with zoom fix */
     .form-input, .form-select {
       width: 100%;
-      padding: 1rem 1.25rem;
+      padding: 0.9rem 1.1rem;
       background: var(--glass);
-      border: 1.5px solid var(--glass-border);
+      border: 1px solid var(--glass-border);
       border-radius: var(--border-radius-sm);
       color: var(--text-primary);
-      font-size: 0.95rem;
+      font-size: 16px; /* Prevents zoom on iOS */
       font-weight: 500;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
       outline: none;
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+      /* Optimization for mobile */
+      -webkit-tap-highlight-color: transparent;
     }
 
-    /* Perfect dropdown styling for all platforms */
+    /* Perfect dropdown for all platforms */
     .form-select {
-      background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'><path d='M1 1l6 6 6-6' stroke='%23d1d5db' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+      background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23d1d5db' stroke-width='2' fill='none'/></svg>");
       background-repeat: no-repeat;
-      background-position: right 1.25rem center;
-      background-size: 14px 10px;
+      background-position: right 1.1rem center;
+      background-size: 12px 8px;
       cursor: pointer;
-      padding-right: 3rem;
-      font-weight: 500;
+      padding-right: 2.5rem;
     }
 
-    /* Enhanced dropdown options for desktop */
     .form-select option {
       background: var(--bg-secondary) !important;
       color: var(--text-primary) !important;
-      padding: 1rem;
-      font-weight: 500;
-      border: none;
+      padding: 0.5rem;
     }
 
-    /* Price input with enhanced rupee symbol */
+    /* Price input optimization */
     .price-input-container {
       position: relative;
     }
@@ -418,140 +356,113 @@
     .price-input-container::before {
       content: '₹';
       position: absolute;
-      left: 1.25rem;
+      left: 1.1rem;
       top: 50%;
       transform: translateY(-50%);
       color: var(--text-secondary);
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 600;
       z-index: 2;
       pointer-events: none;
     }
 
     .form-input.price-input {
-      padding-left: 2.75rem;
+      padding-left: 2.4rem;
     }
 
-    /* Enhanced focus states with glow effects */
+    /* Optimized focus states */
     .form-input:focus, .form-select:focus {
       border-color: var(--primary);
-      box-shadow: 
-        0 0 0 3px rgba(var(--primary-rgb, 99, 102, 241), 0.15),
-        var(--shadow-glow),
-        inset 0 2px 4px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 0 0 2px rgba(var(--primary-rgb, 99, 102, 241), 0.1);
       background: var(--glass-hover);
-      transform: translateY(-2px);
     }
 
     .form-input:hover, .form-select:hover {
       border-color: var(--primary);
       background: var(--glass-hover);
-      transform: translateY(-1px);
     }
 
-    /* Advanced mode focus styles */
-    .container.advanced-mode .form-input:focus,
-    .container.advanced-mode .form-select:focus {
-      box-shadow: 
-        0 0 0 3px rgba(16, 185, 129, 0.15),
-        0 0 20px rgba(16, 185, 129, 0.3),
-        inset 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    /* Enhanced mode toggle */
+    /* Mode toggle optimization */
     .mode-toggle {
       display: flex;
       background: var(--glass);
       border-radius: var(--border-radius-sm);
-      padding: 4px;
+      padding: 3px;
       position: relative;
       overflow: hidden;
-      transition: all 0.3s ease;
       border: 1px solid var(--glass-border);
-      backdrop-filter: blur(20px);
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .mode-option {
       flex: 1;
-      padding: 0.75rem 1rem;
+      padding: 0.65rem 0.9rem;
       background: none;
       border: none;
       color: var(--text-secondary);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       position: relative;
       z-index: 2;
       text-transform: uppercase;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.2px;
     }
 
     .mode-option.active {
       color: var(--text-primary);
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     }
 
     .mode-toggle::after {
       content: '';
       position: absolute;
-      top: 4px;
-      left: 4px;
-      bottom: 4px;
-      width: calc(50% - 4px);
+      top: 3px;
+      left: 3px;
+      bottom: 3px;
+      width: calc(50% - 3px);
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      border-radius: calc(var(--border-radius-sm) - 4px);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: calc(var(--border-radius-sm) - 3px);
+      transition: all 0.2s ease;
       z-index: 1;
-      box-shadow: var(--shadow-glow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
     .mode-toggle.pieces-mode::after {
       transform: translateX(100%);
     }
 
-    /* Enhanced price section */
+    /* Price section */
     .price-section {
       background: var(--glass);
       border: 1px solid var(--glass-border);
       border-radius: var(--border-radius-sm);
-      padding: 1.25rem;
-      margin-bottom: 1.25rem;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(20px);
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 1.1rem;
+      margin-bottom: 1.1rem;
+      backdrop-filter: blur(10px);
     }
 
-    .price-section:hover {
-      background: var(--glass-hover);
-      transform: translateY(-1px);
-    }
-
-    /* Enhanced results grid with glow effects */
+    /* Optimized results grid */
     .results-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
+      gap: 0.9rem;
+      margin-bottom: 0.9rem;
     }
 
     .result-item {
       background: var(--glass);
       border: 1px solid var(--glass-border);
       border-radius: var(--border-radius);
-      padding: 1.25rem;
+      padding: 1.1rem;
       text-align: center;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
       position: relative;
       overflow: hidden;
-      min-height: 80px;
+      min-height: 72px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      backdrop-filter: blur(20px);
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(10px);
     }
 
     .result-item::before {
@@ -560,11 +471,10 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
       transform: translateX(-100%);
-      transition: transform 0.4s ease;
-      border-radius: var(--border-radius) var(--border-radius) 0 0;
+      transition: transform 0.3s ease;
     }
 
     .result-item:hover::before {
@@ -572,108 +482,81 @@
     }
 
     .result-item:hover {
-      transform: translateY(-4px) scale(1.03);
+      transform: translateY(-1px);
       background: var(--glass-hover);
-      box-shadow: 
-        0 10px 30px rgba(0, 0, 0, 0.2),
-        var(--shadow-glow),
-        inset 0 2px 4px rgba(0, 0, 0, 0.03);
-      border-color: var(--primary);
     }
 
     .result-label {
       color: var(--text-secondary);
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.5rem;
+      letter-spacing: 0.3px;
+      margin-bottom: 0.4rem;
     }
 
     .result-value {
       color: var(--text-primary);
-      font-size: 1.4rem;
+      font-size: 1.25rem;
       font-weight: 700;
       line-height: 1;
-      background: linear-gradient(135deg, var(--text-primary), var(--primary-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     }
 
-    /* Enhanced meta info */
+    /* Meta info */
     .results-meta {
       color: var(--text-muted);
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 500;
       text-align: center;
-      padding: 0.875rem;
+      padding: 0.8rem;
       background: var(--glass);
       border-radius: var(--border-radius-sm);
       border: 1px solid var(--glass-border);
-      margin-bottom: 1rem;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(20px);
+      margin-bottom: 0.9rem;
     }
 
-    .results-meta:hover {
-      background: var(--glass-hover);
-      color: var(--text-secondary);
-    }
-
-    /* Enhanced basic mode share section */
+    /* Basic share section */
     .basic-share-section {
       display: flex;
       justify-content: center;
-      gap: 1rem;
-      margin-top: 1rem;
-      padding: 1rem;
+      gap: 0.9rem;
+      margin-top: 0.9rem;
+      padding: 0.9rem;
       background: var(--glass);
       border-radius: var(--border-radius-sm);
       border: 1px solid var(--glass-border);
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(20px);
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(10px);
     }
 
-    /* Hide basic share section in advanced mode */
     .container.advanced-mode .basic-share-section {
       display: none;
     }
 
-    /* Enhanced add more button */
+    /* Add more button */
     .add-more-btn {
       width: 100%;
-      padding: 1rem;
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(6, 182, 212, 0.15));
+      padding: 0.9rem;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
       border: 2px dashed var(--success);
       border-radius: var(--border-radius-sm);
       color: var(--success);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      margin-bottom: 1.25rem;
+      transition: all 0.3s ease;
+      margin-bottom: 1.1rem;
       display: none;
       align-items: center;
       justify-content: center;
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(10px);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      backdrop-filter: blur(20px);
+      letter-spacing: 0.3px;
     }
 
     .add-more-btn:hover {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(6, 182, 212, 0.25));
-      border-color: var(--success);
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
-      color: var(--text-primary);
-    }
-
-    .add-more-btn:active {
-      transform: translateY(-1px) scale(0.98);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(6, 182, 212, 0.15));
+      transform: translateY(-1px);
     }
 
     .container.advanced-mode .add-more-btn {
@@ -682,94 +565,81 @@
       transform: translateY(0);
     }
 
-    /* Enhanced Grand Total Section */
+    /* Grand total section */
     .grand-total {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
-      border: 2px solid rgba(16, 185, 129, 0.3);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
+      border: 1px solid rgba(16, 185, 129, 0.2);
       border-radius: var(--border-radius-lg);
-      padding: 1.5rem;
-      margin-bottom: 1.25rem;
+      padding: 1.35rem;
+      margin-bottom: 1.1rem;
       display: none;
       opacity: 0;
-      transform: translateY(30px) scale(0.9);
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(25px);
-      box-shadow: 
-        0 20px 40px rgba(16, 185, 129, 0.2),
-        inset 0 2px 4px rgba(255, 255, 255, 0.1);
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
     }
 
     .container.advanced-mode .grand-total {
       display: block;
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: translateY(0);
     }
 
     .grand-total-header {
       text-align: center;
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: var(--text-primary);
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.1rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      letter-spacing: 0.5px;
     }
 
     .grand-total-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
-      gap: 1rem;
+      gap: 0.9rem;
     }
 
     .grand-total-item {
       text-align: center;
-      padding: 1rem;
-      background: rgba(255, 255, 255, 0.12);
+      padding: 0.9rem;
+      background: rgba(255, 255, 255, 0.08);
       border-radius: var(--border-radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      transition: all 0.3s ease;
-      backdrop-filter: blur(20px);
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
     }
 
     .grand-total-item:hover {
-      transform: translateY(-3px);
-      box-shadow: 
-        0 10px 30px rgba(0, 0, 0, 0.15),
-        inset 0 2px 4px rgba(0, 0, 0, 0.05);
-      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.12);
     }
 
     .grand-total-label {
       color: var(--text-secondary);
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.5rem;
+      letter-spacing: 0.3px;
+      margin-bottom: 0.4rem;
     }
 
     .grand-total-value {
       color: var(--text-primary);
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 700;
-      background: linear-gradient(135deg, #34d399, #10b981);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 10px rgba(52, 211, 153, 0.3);
     }
 
-    /* Enhanced share buttons */
+    /* Share section */
     .share-section {
       display: none;
       justify-content: center;
-      gap: 1rem;
-      margin-top: 1rem;
+      gap: 0.9rem;
+      margin-top: 0.9rem;
       opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateY(10px);
+      transition: all 0.3s ease;
     }
 
     .container.advanced-mode .share-section {
@@ -778,120 +648,72 @@
       transform: translateY(0);
     }
 
+    /* Optimized share buttons */
     .share-btn {
-      width: 48px;
-      height: 48px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
       position: relative;
       overflow: hidden;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .share-btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      transition: all 0.5s ease;
-      transform: translate(-50%, -50%);
-    }
-
-    .share-btn:active::before {
-      width: 100px;
-      height: 100px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
     }
 
     .share-btn:hover {
-      transform: translateY(-5px) scale(1.1);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transform: translateY(-2px) scale(1.05);
     }
 
     .share-whatsapp {
       background: linear-gradient(135deg, #25D366, #128C7E);
-      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-    }
-
-    .share-whatsapp:hover {
-      box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
     }
 
     .share-sms {
       background: linear-gradient(135deg, var(--secondary), #0891b2);
-      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
-    }
-
-    .share-sms:hover {
-      box-shadow: 0 10px 30px rgba(6, 182, 212, 0.5);
     }
 
     .share-email {
       background: linear-gradient(135deg, var(--accent), #db2777);
-      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
-    }
-
-    .share-email:hover {
-      box-shadow: 0 10px 30px rgba(236, 72, 153, 0.5);
     }
 
     .share-copy {
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-    }
-
-    .share-copy:hover {
-      box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5);
     }
 
     .share-clear {
       background: linear-gradient(135deg, var(--warning), #f97316);
-      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-    }
-
-    .share-clear:hover {
-      box-shadow: 0 10px 30px rgba(245, 158, 11, 0.5);
     }
 
     .share-icon {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       fill: white;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
     }
 
-    /* Enhanced copy message */
+    /* Copy message */
     .copy-message {
       position: fixed;
       top: calc(20px + var(--safe-area-top));
       left: 50%;
-      transform: translateX(-50%) translateY(-100px);
-      padding: 0.875rem 1.5rem;
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.95), rgba(6, 182, 212, 0.95));
-      border: 1px solid rgba(16, 185, 129, 0.3);
+      transform: translateX(-50%) translateY(-60px);
+      padding: 0.8rem 1.4rem;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(6, 182, 212, 0.9));
       border-radius: var(--border-radius-sm);
       color: white;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
+      backdrop-filter: blur(10px);
       opacity: 0;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s ease;
       z-index: 1000;
-      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
     }
 
     .copy-message.show {
@@ -899,127 +721,113 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Responsive enhancements */
+    /* Mobile-first responsive optimizations */
     @media (max-width: 480px) {
       .container {
-        max-width: 100%;
         padding: 0.5rem;
       }
       
       .calculator-card { 
-        padding: 1.25rem;
-        border-radius: var(--border-radius);
+        padding: 1.1rem;
       }
       
       .form-input, .form-select {
-        padding: 0.875rem 1rem;
-        font-size: 0.9rem;
-      }
-      
-      .form-select {
-        padding-right: 2.5rem;
+        padding: 0.8rem 1rem;
+        font-size: 16px; /* Prevents zoom */
       }
       
       .delete-card-btn {
-        top: -10px;
-        right: -10px;
-        width: 32px;
-        height: 32px;
+        top: -6px;
+        right: -6px;
+        width: 24px;
+        height: 24px;
       }
       
       .mode-switch-option {
-        padding: 0.75rem 1rem;
+        padding: 0.65rem 0.9rem;
         font-size: 0.75rem;
+      }
+      
+      .result-item {
+        padding: 0.9rem;
+        min-height: 60px;
+      }
+      
+      .result-value {
+        font-size: 1.1rem;
       }
     }
 
     /* Tablet optimizations */
     @media (min-width: 481px) and (max-width: 768px) {
       .container {
-        max-width: 95%;
-        padding: 1rem;
+        max-width: 600px;
+        padding: 0.8rem;
       }
       
       .calculator-card {
-        padding: 1.75rem;
-      }
-      
-      .form-input, .form-select {
-        padding: 1rem 1.25rem;
-        font-size: 1rem;
+        padding: 1.4rem;
       }
     }
 
     /* Desktop optimizations */
     @media (min-width: 769px) {
       .container {
-        max-width: 720px;
-        padding: 1.5rem;
+        max-width: 648px;
+        padding: 1rem;
       }
       
       .calculator-card {
-        padding: 2rem;
-      }
-      
-      .form-input, .form-select {
-        padding: 1.125rem 1.5rem;
-        font-size: 1rem;
-      }
-      
-      .form-select {
-        padding-right: 3.5rem;
+        padding: 1.6rem;
       }
       
       .delete-card-btn {
-        width: 40px;
-        height: 40px;
-        top: -15px;
-        right: -15px;
+        width: 32px;
+        height: 32px;
+        top: -10px;
+        right: -10px;
       }
     }
 
-    /* Loading animation */
-    .loading .result-value {
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.05); }
-    }
-
-    /* PWA enhancements */
-    @media (display-mode: standalone) {
-      .calculator-card {
-        box-shadow: 
-          var(--shadow-lg),
-          var(--shadow-glow),
-          0 0 0 1px rgba(255, 255, 255, 0.05);
-      }
-    }
-
-    @supports (-webkit-touch-callout: none) {
-      @media (display-mode: standalone) {
-        body {
-          -webkit-touch-callout: none;
-          -webkit-user-select: none;
-        }
-      }
-    }
-
-    /* Accessibility enhancements */
-    @media (prefers-contrast: high) {
-      .form-input, .form-select {
-        border-width: 2px;
-        background: rgba(255, 255, 255, 0.15);
-      }
-    }
-
+    /* Performance optimizations */
     @media (prefers-reduced-motion: reduce) {
       * {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+        transition-duration: 0.1s !important;
+      }
+    }
+
+    /* Loading optimization */
+    .loading .result-value {
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Hardware acceleration for smooth scrolling */
+    body {
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Smooth zoom handling for mobile inputs */
+    .form-input:focus {
+      transform: none !important;
+    }
+    
+    /* Fix viewport zoom on mobile */
+    @media screen and (max-width: 480px) {
+      html {
+        /* Prevent zoom on small screens */
+        -webkit-text-size-adjust: none;
+        text-size-adjust: none;
+      }
+      
+      .form-input, .form-select {
+        font-size: 16px !important; /* Critical for preventing zoom */
       }
     }
   </style>
@@ -1029,186 +837,184 @@
   <div class="orb"></div>
   
   <div class="container">
-    <div class="mode-transition-wrapper">
-      <!-- Mode Switch -->
-      <div class="mode-switch" id="modeSwitch">
-        <button class="mode-switch-option active" data-mode="basic">Basic</button>
-        <button class="mode-switch-option" data-mode="advanced">Advanced</button>
-      </div>
+    <!-- Mode Switch -->
+    <div class="mode-switch" id="modeSwitch">
+      <button class="mode-switch-option active" data-mode="basic">Basic</button>
+      <button class="mode-switch-option" data-mode="advanced">Advanced</button>
+    </div>
 
-      <!-- Calculator Cards Container -->
-      <div class="calculator-cards" id="calculatorCards">
-        <!-- First calculator card -->
-        <div class="calculator-card" data-card-id="0">
-          <button class="delete-card-btn" onclick="deleteCard(0)">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-            </svg>
-          </button>
-
-          <div class="form-section">
-            <!-- Tile Size with thickness combined -->
-            <div class="form-row">
-              <div class="form-group full-width">
-                <label class="form-label">Tile Size & Thickness</label>
-                <select class="form-select size-thickness" data-card="0"></select>
-              </div>
-            </div>
-
-            <!-- Mode Toggle -->
-            <div class="form-row">
-              <div class="form-group full-width">
-                <label class="form-label">Calculation Mode</label>
-                <div class="mode-toggle" data-card="0">
-                  <button class="mode-option active" data-mode="area">Area (ft²)</button>
-                  <button class="mode-option" data-mode="pieces">Pieces</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Quantity Input -->
-            <div class="form-row">
-              <div class="form-group full-width">
-                <label class="form-label input-label">Area (ft²)</label>
-                <input type="number" class="form-input quantity" data-card="0" placeholder="Enter value..." min="0" step="0.01" inputmode="decimal">
-              </div>
-            </div>
-          </div>
-
-          <!-- Price Section -->
-          <div class="price-section">
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Price/sq feet</label>
-                <div class="price-input-container">
-                  <input type="number" class="form-input price-input price" data-card="0" placeholder="Enter price..." min="0" step="0.01" inputmode="decimal">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="gst-label-centered">GST</div>
-                <select class="form-select gst" data-card="0">
-                  <option value="0">Without GST</option>
-                  <option value="18">18%</option>
-                  <option value="12">12%</option>
-                  <option value="5">5%</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <!-- Results Grid -->
-          <div class="results-grid">
-            <div class="result-item">
-              <div class="result-label">Pieces</div>
-              <div class="result-value pieces-result">-</div>
-            </div>
-            <div class="result-item">
-              <div class="result-label">Area (ft²)</div>
-              <div class="result-value area-ft2-result">-</div>
-            </div>
-            <div class="result-item">
-              <div class="result-label">Weight (tons)</div>
-              <div class="result-value weight-result">-</div>
-            </div>
-            <div class="result-item">
-              <div class="result-label">Total Amount</div>
-              <div class="result-value total-price-result">-</div>
-            </div>
-          </div>
-
-          <!-- Meta Information -->
-          <div class="results-meta">Select tile specifications to see calculations</div>
-
-          <!-- Basic Mode Share Section (hidden in advanced mode) -->
-          <div class="basic-share-section">
-            <button class="share-btn share-whatsapp" onclick="shareWhatsApp()">
-              <svg class="share-icon" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/>
-              </svg>
-            </button>
-            <button class="share-btn share-sms" onclick="shareSMS()">
-              <svg class="share-icon" viewBox="0 0 24 24">
-                <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
-              </svg>
-            </button>
-            <button class="share-btn share-email" onclick="shareEmail()">
-              <svg class="share-icon" viewBox="0 0 24 24">
-                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-              </svg>
-            </button>
-            <button class="share-btn share-copy" onclick="copyToClipboard()">
-              <svg class="share-icon" viewBox="0 0 24 24">
-                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-              </svg>
-            </button>
-            <button class="share-btn share-clear" onclick="clearAll()">
-              <svg class="share-icon" viewBox="0 0 24 24">
-                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Add More Button (Advanced Mode Only) -->
-      <button class="add-more-btn" id="addMoreBtn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
-          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-        </svg>
-        Add More Item
-      </button>
-
-      <!-- Grand Total (Advanced Mode Only) -->
-      <div class="grand-total">
-        <div class="grand-total-header">Grand Total</div>
-        <div class="grand-total-grid">
-          <div class="grand-total-item">
-            <div class="grand-total-label">Total Pieces</div>
-            <div class="grand-total-value" id="grandTotalPieces">-</div>
-          </div>
-          <div class="grand-total-item">
-            <div class="grand-total-label">Total Area</div>
-            <div class="grand-total-value" id="grandTotalArea">-</div>
-          </div>
-          <div class="grand-total-item">
-            <div class="grand-total-label">Total Weight</div>
-            <div class="grand-total-value" id="grandTotalWeight">-</div>
-          </div>
-          <div class="grand-total-item">
-            <div class="grand-total-label">Final Amount</div>
-            <div class="grand-total-value" id="grandFinalAmount">-</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Advanced Mode Share Section -->
-      <div class="share-section">
-        <button class="share-btn share-whatsapp" id="shareWhatsapp">
-          <svg class="share-icon" viewBox="0 0 24 24">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/>
-          </svg>
-        </button>
-        <button class="share-btn share-sms" id="shareSMS">
-          <svg class="share-icon" viewBox="0 0 24 24">
-            <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
-          </svg>
-        </button>
-        <button class="share-btn share-email" id="shareEmail">
-          <svg class="share-icon" viewBox="0 0 24 24">
-            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-          </svg>
-        </button>
-        <button class="share-btn share-copy" id="copyBtn">
-          <svg class="share-icon" viewBox="0 0 24 24">
-            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-          </svg>
-        </button>
-        <button class="share-btn share-clear" id="clearBtn">
-          <svg class="share-icon" viewBox="0 0 24 24">
+    <!-- Calculator Cards Container -->
+    <div class="calculator-cards" id="calculatorCards">
+      <!-- First calculator card -->
+      <div class="calculator-card" data-card-id="0">
+        <button class="delete-card-btn" onclick="deleteCard(0)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
           </svg>
         </button>
+
+        <div class="form-section">
+          <!-- Tile Size with thickness combined -->
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label class="form-label">Tile Size & Thickness</label>
+              <select class="form-select size-thickness" data-card="0"></select>
+            </div>
+          </div>
+
+          <!-- Mode Toggle -->
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label class="form-label">Calculation Mode</label>
+              <div class="mode-toggle" data-card="0">
+                <button class="mode-option active" data-mode="area">Area (ft²)</button>
+                <button class="mode-option" data-mode="pieces">Pieces</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quantity Input -->
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label class="form-label input-label">Area (ft²)</label>
+              <input type="number" class="form-input quantity" data-card="0" placeholder="Enter value..." min="0" step="0.01" inputmode="decimal">
+            </div>
+          </div>
+        </div>
+
+        <!-- Price Section -->
+        <div class="price-section">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Price/sq feet</label>
+              <div class="price-input-container">
+                <input type="number" class="form-input price-input price" data-card="0" placeholder="Enter price..." min="0" step="0.01" inputmode="decimal">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="gst-label-centered">GST</div>
+              <select class="form-select gst" data-card="0">
+                <option value="0">Without GST</option>
+                <option value="18">18%</option>
+                <option value="12">12%</option>
+                <option value="5">5%</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Grid -->
+        <div class="results-grid">
+          <div class="result-item">
+            <div class="result-label">Pieces</div>
+            <div class="result-value pieces-result">-</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Area (ft²)</div>
+            <div class="result-value area-ft2-result">-</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Weight (tons)</div>
+            <div class="result-value weight-result">-</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Total Amount</div>
+            <div class="result-value total-price-result">-</div>
+          </div>
+        </div>
+
+        <!-- Meta Information -->
+        <div class="results-meta">Select tile specifications to see calculations</div>
+
+        <!-- Basic Mode Share Section -->
+        <div class="basic-share-section">
+          <button class="share-btn share-whatsapp" onclick="shareWhatsApp()">
+            <svg class="share-icon" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/>
+            </svg>
+          </button>
+          <button class="share-btn share-sms" onclick="shareSMS()">
+            <svg class="share-icon" viewBox="0 0 24 24">
+              <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
+            </svg>
+          </button>
+          <button class="share-btn share-email" onclick="shareEmail()">
+            <svg class="share-icon" viewBox="0 0 24 24">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+          </button>
+          <button class="share-btn share-copy" onclick="copyToClipboard()">
+            <svg class="share-icon" viewBox="0 0 24 24">
+              <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+            </svg>
+          </button>
+          <button class="share-btn share-clear" onclick="clearAll()">
+            <svg class="share-icon" viewBox="0 0 24 24">
+              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+            </svg>
+          </button>
+        </div>
       </div>
+    </div>
+
+    <!-- Add More Button (Advanced Mode Only) -->
+    <button class="add-more-btn" id="addMoreBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 6px;">
+        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+      </svg>
+      Add More Item
+    </button>
+
+    <!-- Grand Total (Advanced Mode Only) -->
+    <div class="grand-total">
+      <div class="grand-total-header">Grand Total</div>
+      <div class="grand-total-grid">
+        <div class="grand-total-item">
+          <div class="grand-total-label">Total Pieces</div>
+          <div class="grand-total-value" id="grandTotalPieces">-</div>
+        </div>
+        <div class="grand-total-item">
+          <div class="grand-total-label">Total Area</div>
+          <div class="grand-total-value" id="grandTotalArea">-</div>
+        </div>
+        <div class="grand-total-item">
+          <div class="grand-total-label">Total Weight</div>
+          <div class="grand-total-value" id="grandTotalWeight">-</div>
+        </div>
+        <div class="grand-total-item">
+          <div class="grand-total-label">Final Amount</div>
+          <div class="grand-total-value" id="grandFinalAmount">-</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advanced Mode Share Section -->
+    <div class="share-section">
+      <button class="share-btn share-whatsapp" id="shareWhatsapp">
+        <svg class="share-icon" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/>
+        </svg>
+      </button>
+      <button class="share-btn share-sms" id="shareSMS">
+        <svg class="share-icon" viewBox="0 0 24 24">
+          <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
+        </svg>
+      </button>
+      <button class="share-btn share-email" id="shareEmail">
+        <svg class="share-icon" viewBox="0 0 24 24">
+          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+        </svg>
+      </button>
+      <button class="share-btn share-copy" id="copyBtn">
+        <svg class="share-icon" viewBox="0 0 24 24">
+          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+        </svg>
+      </button>
+      <button class="share-btn share-clear" id="clearBtn">
+        <svg class="share-icon" viewBox="0 0 24 24">
+          <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+        </svg>
+      </button>
     </div>
   </div>
 
@@ -1241,14 +1047,12 @@
     // Sort SKU_MASTER by ft2 ascending
     SKU_MASTER.sort((a, b) => a.ft2 - b.ft2);
 
-    const FT2_PER_M2 = 10.7639;
     const fmt = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 });
     const fmt3 = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 });
 
     let currentAppMode = 'basic';
     let cardCounter = 1;
     let cardModes = { 0: 'area' };
-    let transitionTimeout = null;
 
     function parseKgMin(value) {
       const nums = String(value).match(/[\d.]+/g);
@@ -1376,7 +1180,6 @@
     }
 
     function addMoreCard() {
-      // Only allow in advanced mode
       if (currentAppMode !== 'advanced') return;
       
       const cardId = cardCounter++;
@@ -1388,7 +1191,7 @@
       
       newCard.innerHTML = `
         <button class="delete-card-btn" onclick="deleteCard(${cardId})">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
           </svg>
         </button>
@@ -1463,7 +1266,6 @@
       
       cardsContainer.appendChild(newCard);
       
-      // Initialize the new card
       cardModes[cardId] = 'area';
       initializeSelect(cardId);
       setupCardEventListeners(cardId);
@@ -1471,18 +1273,18 @@
     }
 
     function deleteCard(cardId) {
-      // Don't allow deleting if only one card remains
       if (document.querySelectorAll('.calculator-card').length <= 1) return;
       
       const card = document.querySelector(`[data-card-id="${cardId}"]`);
       if (card) {
-        // Add fade out animation
-        card.style.animation = 'fadeOut 0.3s ease-out';
+        card.style.transition = 'all 0.2s ease';
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(-10px)';
         setTimeout(() => {
           card.remove();
           delete cardModes[cardId];
           updateGrandTotal();
-        }, 300);
+        }, 200);
       }
     }
 
@@ -1490,19 +1292,11 @@
       const card = document.querySelector(`[data-card-id="${cardId}"]`);
       if (!card) return;
 
-      // Size/thickness change
       card.querySelector('.size-thickness').addEventListener('change', () => calculateCard(cardId));
-      
-      // Quantity input
       card.querySelector('.quantity').addEventListener('input', () => calculateCard(cardId));
-      
-      // Price input
       card.querySelector('.price').addEventListener('input', () => calculateCard(cardId));
-      
-      // GST change
       card.querySelector('.gst').addEventListener('change', () => calculateCard(cardId));
       
-      // Mode toggle
       card.querySelector('.mode-toggle').addEventListener('click', (e) => {
         const option = e.target.closest('.mode-option');
         if (option) {
@@ -1512,7 +1306,6 @@
     }
 
     function resetAllCards() {
-      // Remove extra cards in advanced mode
       const cards = document.querySelectorAll('.calculator-card');
       cards.forEach((card, index) => {
         if (index > 0) {
@@ -1520,7 +1313,6 @@
         }
       });
       
-      // Reset first card
       const firstCard = document.querySelector('[data-card-id="0"]');
       if (firstCard) {
         firstCard.querySelector('.quantity').value = '';
@@ -1531,7 +1323,6 @@
         calculateCard(0);
       }
       
-      // Reset counter
       cardCounter = 1;
       cardModes = { 0: 'area' };
     }
@@ -1543,44 +1334,33 @@
       const modeSwitch = document.getElementById('modeSwitch');
       const body = document.body;
       
-      // Clear any existing transition timeout
-      if (transitionTimeout) clearTimeout(transitionTimeout);
-      
-      // Reset when switching modes
       if (prevMode !== mode) {
         resetAllCards();
       }
       
-      // Smooth transition with proper timing
       if (mode === 'advanced') {
         container.classList.add('advanced-mode');
         modeSwitch.classList.add('advanced-mode');
         body.classList.add('advanced-bg');
-        
-        // Staggered reveal of advanced elements
-        transitionTimeout = setTimeout(() => {
-          updateGrandTotal();
-        }, 200);
+        setTimeout(() => updateGrandTotal(), 100);
       } else {
         container.classList.remove('advanced-mode');
         modeSwitch.classList.remove('advanced-mode');
         body.classList.remove('advanced-bg');
       }
       
-      // Update mode switch buttons
       const options = modeSwitch.querySelectorAll('.mode-switch-option');
       options.forEach(opt => {
         opt.classList.toggle('active', opt.dataset.mode === mode);
       });
     }
 
-    // Enhanced getShareText function with professional logic
+    // Enhanced share text function
     function getShareText() {
       const cards = document.querySelectorAll('.calculator-card');
       let text = '';
       
       if (currentAppMode === 'basic') {
-        // Basic mode - single item
         const card = cards[0];
         const cardId = parseInt(card.dataset.cardId);
         const sku = getSelectedSKU(cardId);
@@ -1606,7 +1386,6 @@ Weight: ${card.querySelector('.weight-result').textContent} tons`;
           }
         }
       } else {
-        // Advanced mode - multiple items with professional logic
         text = 'TILE CALCULATION DETAILS\n\n';
         
         let hasAnyGst = false;
@@ -1648,20 +1427,16 @@ Weight: ${card.querySelector('.weight-result').textContent} tons`;
           }
         });
         
-        // Add grand totals with professional logic
         text += 'GRAND TOTAL:\n';
         text += `Total Pieces: ${document.getElementById('grandTotalPieces').textContent}\n`;
         text += `Total Area: ${document.getElementById('grandTotalArea').textContent}\n`;
         text += `Total Weight: ${document.getElementById('grandTotalWeight').textContent}\n`;
         
-        // Smart total amount display
         if (totalBaseAmount > 0) {
           if (hasAnyGst) {
-            // Show both base and final amounts if there's any GST involved
             text += `Base Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(totalBaseAmount))}\n`;
             text += `Final Amount (incl. GST): ₹${new Intl.NumberFormat('en-IN').format(Math.round(totalBaseAmount + totalGstAmount))}`;
           } else {
-            // Show only final amount if no GST anywhere
             text += `Final Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(totalBaseAmount))}`;
           }
         }
@@ -1679,7 +1454,7 @@ Weight: ${card.querySelector('.weight-result').textContent} tons`;
         copyMessage.classList.add('show');
         setTimeout(() => {
           copyMessage.classList.remove('show');
-        }, 2000);
+        }, 1500);
       }).catch(err => {
         console.error('Copy failed:', err);
       });
@@ -1720,22 +1495,6 @@ Weight: ${card.querySelector('.weight-result').textContent} tons`;
       window.location.href = `mailto:?subject=${subject}&body=${body}`;
     }
 
-    // Add fadeOut animation
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes fadeOut {
-        from {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-        to {
-          opacity: 0;
-          transform: translateY(-20px) scale(0.95);
-        }
-      }
-    `;
-    document.head.appendChild(style);
-
     // Event Listeners
     document.getElementById('modeSwitch').addEventListener('click', (e) => {
       const option = e.target.closest('.mode-switch-option');
@@ -1756,21 +1515,31 @@ Weight: ${card.querySelector('.weight-result').textContent} tons`;
     setupCardEventListeners(0);
     calculateCard(0);
 
-    // PWA detection
-    if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
-      console.log('Running as PWA');
+    // Auto zoom-out when keyboard closes on mobile
+    let initialViewportHeight = window.innerHeight;
+    
+    function handleViewportChange() {
+      const currentHeight = window.innerHeight;
+      // If viewport height increases significantly, keyboard likely closed
+      if (currentHeight > initialViewportHeight * 0.9) {
+        // Force scroll to top to ensure proper zoom-out
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          // Force viewport reset
+          const viewport = document.querySelector('meta[name=viewport]');
+          if (viewport) {
+            viewport.setAttribute('content', 'width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no');
+          }
+        }, 100);
+      }
     }
 
-    // Enhanced error handling
-    window.addEventListener('error', (e) => {
-      console.error('Application error:', e.error);
-    });
+    // Listen for viewport changes (keyboard open/close)
+    window.addEventListener('resize', handleViewportChange);
 
-    // Performance optimization
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(() => {
-        console.log('TilesPro Calculator WOW level initialized! 🚀');
-      });
+    // Enhanced performance monitoring
+    if (window.performance) {
+      console.log('TilesPro Butter Smooth initialized! 🧈');
     }
   </script>
 </body>

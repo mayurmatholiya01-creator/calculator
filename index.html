@@ -296,54 +296,11 @@
 
     /* Price section */
     .price-section {
-      background: rgba(255, 215, 0, 0.05);
-      border: 1px solid rgba(255, 215, 0, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--border-radius-sm);
       padding: 1rem;
       margin-bottom: 1.5rem;
-    }
-
-    /* Action buttons */
-    .actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .btn {
-      padding: 0.875rem 1.5rem;
-      border: none;
-      border-radius: var(--border-radius-sm);
-      font-size: 0.875rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      color: white;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text-secondary);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--text-primary);
-      transform: translateY(-1px);
     }
 
     /* Results - 2x2 Grid */
@@ -391,15 +348,6 @@
       background: rgba(255, 255, 255, 0.05);
     }
 
-    .result-item.price-highlight {
-      background: rgba(255, 215, 0, 0.1);
-      border-color: rgba(255, 215, 0, 0.3);
-    }
-
-    .result-item.price-highlight::before {
-      background: linear-gradient(90deg, #ffd700, #ffa500);
-    }
-
     .result-label {
       color: var(--text-secondary);
       font-size: 0.75rem;
@@ -415,12 +363,6 @@
       font-weight: 600;
       line-height: 1;
       background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .result-item.price-highlight .result-value {
-      background: linear-gradient(135deg, #ffd700, #ffa500);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -441,13 +383,13 @@
     .share-section {
       display: flex;
       justify-content: center;
-      gap: 1.5rem;
+      gap: 1rem;
       margin-top: 1rem;
     }
 
     .share-btn {
-      width: 56px;
-      height: 56px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       border: none;
       cursor: pointer;
@@ -508,9 +450,25 @@
       box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
     }
 
+    .share-copy {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    }
+
+    .share-copy:hover {
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+    }
+
+    .share-clear {
+      background: linear-gradient(135deg, var(--warning), #f97316);
+    }
+
+    .share-clear:hover {
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+    }
+
     .share-icon {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       fill: white;
     }
 
@@ -546,7 +504,6 @@
         margin: 0.5rem;
       }
       .form-row { gap: 0.75rem; }
-      .actions { gap: 0.75rem; }
       .results-grid { 
         gap: 0.75rem;
       }
@@ -556,14 +513,14 @@
       }
       .result-value { font-size: 1.25rem; }
       .results-meta { font-size: 0.7rem; }
-      .share-section { gap: 1rem; }
+      .share-section { gap: 0.75rem; }
       .share-btn { 
-        width: 48px; 
-        height: 48px; 
+        width: 42px; 
+        height: 42px; 
       }
       .share-icon { 
-        width: 20px; 
-        height: 20px; 
+        width: 18px; 
+        height: 18px; 
       }
     }
 
@@ -637,19 +594,22 @@
       <!-- Price Section -->
       <div class="price-section">
         <div class="form-row">
-          <div class="form-group full-width">
+          <div class="form-group">
             <label class="form-label">Price per ft² (Optional)</label>
             <div class="price-input-container">
               <input type="number" id="priceInput" class="form-input price-input" placeholder="Enter price per ft²..." min="0" step="0.01" inputmode="decimal">
             </div>
           </div>
+          <div class="form-group">
+            <label class="form-label">GST</label>
+            <select id="gstSelect" class="form-select">
+              <option value="0">Without GST</option>
+              <option value="5">5%</option>
+              <option value="12">12%</option>
+              <option value="18">18%</option>
+            </select>
+          </div>
         </div>
-      </div>
-
-      <!-- Action Buttons Side by Side -->
-      <div class="actions">
-        <button class="btn btn-primary" id="copyBtn">Copy Details</button>
-        <button class="btn btn-secondary" id="clearBtn">Clear</button>
       </div>
 
       <!-- Results in 2x2 Grid -->
@@ -666,7 +626,7 @@
           <div class="result-label">Weight (tons)</div>
           <div class="result-value" id="weightResult">-</div>
         </div>
-        <div class="result-item price-highlight" id="totalPriceItem">
+        <div class="result-item" id="totalPriceItem">
           <div class="result-label">Total Price</div>
           <div class="result-value" id="totalPriceResult">-</div>
         </div>
@@ -675,7 +635,7 @@
       <!-- Meta Information -->
       <div class="results-meta" id="resultsMeta">Select tile specifications to see calculations</div>
 
-      <!-- Share Buttons -->
+      <!-- Share Buttons with Copy and Clear -->
       <div class="share-section">
         <button class="share-btn share-whatsapp" id="shareWhatsapp">
           <svg class="share-icon" viewBox="0 0 24 24">
@@ -690,6 +650,16 @@
         <button class="share-btn share-email" id="shareEmail">
           <svg class="share-icon" viewBox="0 0 24 24">
             <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+        </button>
+        <button class="share-btn share-copy" id="copyBtn">
+          <svg class="share-icon" viewBox="0 0 24 24">
+            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+          </svg>
+        </button>
+        <button class="share-btn share-clear" id="clearBtn">
+          <svg class="share-icon" viewBox="0 0 24 24">
+            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
           </svg>
         </button>
       </div>
@@ -736,6 +706,7 @@
       sizeThickness: document.getElementById('sizeThickness'),
       quantity: document.getElementById('quantity'),
       priceInput: document.getElementById('priceInput'),
+      gstSelect: document.getElementById('gstSelect'),
       modeToggle: document.getElementById('modeToggle'),
       inputLabel: document.getElementById('inputLabel'),
       copyBtn: document.getElementById('copyBtn'),
@@ -776,6 +747,7 @@
       const sku = getSelectedSKU();
       const quantity = parseFloat(elements.quantity.value);
       const pricePerFt2 = parseFloat(elements.priceInput.value);
+      const gstRate = parseFloat(elements.gstSelect.value);
       
       if (!sku) {
         resetResults();
@@ -801,9 +773,11 @@
         }
         weight = (pieces * kgPerPc) / 1000; // Convert to tons
         
-        // Calculate total price if price per ft2 is provided
+        // Calculate total price with GST if price per ft2 is provided
         if (pricePerFt2 > 0) {
-          totalPrice = areaFt2 * pricePerFt2;
+          const basePrice = areaFt2 * pricePerFt2;
+          const gstAmount = basePrice * (gstRate / 100);
+          totalPrice = basePrice + gstAmount;
         }
       }
 
@@ -849,6 +823,7 @@
     function getShareText() {
       const sku = getSelectedSKU();
       const pricePerFt2 = parseFloat(elements.priceInput.value);
+      const gstRate = parseFloat(elements.gstSelect.value);
       if (!sku || !elements.quantity.value) return '';
 
       let text = `Size: ${sku.size} (${sku.thk})
@@ -858,7 +833,8 @@ Weight (tons): ${elements.weightResult.textContent}`;
 
       // Add price only if entered
       if (pricePerFt2 > 0 && elements.totalPriceResult.textContent !== '-') {
-        text += `\nTotal Price: ${elements.totalPriceResult.textContent}`;
+        const gstText = gstRate > 0 ? ` (incl. ${gstRate}% GST)` : '';
+        text += `\nTotal Price${gstText}: ${elements.totalPriceResult.textContent}`;
       }
 
       return text;
@@ -867,6 +843,7 @@ Weight (tons): ${elements.weightResult.textContent}`;
     function copyToClipboard() {
       const sku = getSelectedSKU();
       const pricePerFt2 = parseFloat(elements.priceInput.value);
+      const gstRate = parseFloat(elements.gstSelect.value);
       if (!sku || !elements.quantity.value) return;
 
       let text = `size:- ${sku.size} ${sku.thk}
@@ -876,7 +853,8 @@ Weight (tons):- ${elements.weightResult.textContent}`;
 
       // Add price only if entered
       if (pricePerFt2 > 0 && elements.totalPriceResult.textContent !== '-') {
-        text += `\nTotal Price:- ${elements.totalPriceResult.textContent}`;
+        const gstText = gstRate > 0 ? ` (incl. ${gstRate}% GST)` : '';
+        text += `\nTotal Price${gstText}:- ${elements.totalPriceResult.textContent}`;
       }
 
       navigator.clipboard.writeText(text).then(() => {
@@ -892,6 +870,7 @@ Weight (tons):- ${elements.weightResult.textContent}`;
     function clearForm() {
       elements.quantity.value = '';
       elements.priceInput.value = '';
+      elements.gstSelect.selectedIndex = 0;
       calculate();
     }
 
@@ -924,6 +903,7 @@ Weight (tons):- ${elements.weightResult.textContent}`;
     elements.sizeThickness.addEventListener('change', calculate);
     elements.quantity.addEventListener('input', calculate);
     elements.priceInput.addEventListener('input', calculate);
+    elements.gstSelect.addEventListener('change', calculate);
 
     elements.modeToggle.addEventListener('click', (e) => {
       const option = e.target.closest('.mode-option');

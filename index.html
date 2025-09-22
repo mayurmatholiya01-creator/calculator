@@ -652,6 +652,8 @@
       {size:"1200x3200",thk:"15MM",pcs:1,kg:"136",ft2:41.33,m2:3.8},
       {size:"800x3200",thk:"15MM",pcs:1,kg:"74",ft2:27.56,m2:2.6},
     ];
+      // Sort SKU_MASTER by ft2 ascending
+  SKU_MASTER.sort((a, b) => a.ft2 - b.ft2);
 
     const FT2_PER_M2 = 10.7639;
     const fmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });

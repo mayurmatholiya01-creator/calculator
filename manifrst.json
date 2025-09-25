@@ -1,0 +1,33 @@
+{
+  "name": "TilesPro Calculator",
+  "short_name": "TileProCalc",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#0d1117",
+  "description": "Professional tile area and cost calculator for construction projects",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "calc-icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "calc-icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "calc-apple-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    }
+  ],
+  "categories": ["productivity", "utilities", "business", "tools"],
+  "lang": "en",
+  "dir": "ltr"
+}

@@ -1420,6 +1420,91 @@ Weight: ${card.querySelector('.weight-result').textContent} tons`;
     calculateCard(0);
 
     console.log('TilesPro Calculator - High Performance Version Ready! ⚡🚀');
+
+    // PWA Install Prompt Code (Desktop Only)
+let deferredPrompt;
+let installButton;
+
+// Create install button
+function createInstallButton() {
+  const btn = document.createElement('button');
+  btn.id = 'installBtn';
+  btn.innerHTML = `
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+      <polyline points="7,10 12,15 17,10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    Install App
+  `;
+  btn.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white; padding: 12px 20px; border: none;
+    border-radius: var(--border-radius); font-size: 14px;
+    font-weight: 600; cursor: pointer; box-shadow: var(--shadow-lg);
+    display: none; align-items: center; gap: 8px; z-index: 9999;
+    transition: all 0.3s ease; backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+  `;
+  btn.addEventListener('mouseenter', () => {
+    btn.style.transform = 'translateY(-2px)';
+    btn.style.boxShadow = '0 12px 30px rgba(99, 102, 241, 0.4)';
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = 'translateY(0)';
+    btn.style.boxShadow = 'var(--shadow-lg)';
+  });
+  document.body.appendChild(btn);
+  return btn;
+}
+
+// Listen for beforeinstallprompt event
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Only trigger on desktop platforms
+  if (/Mobi|Android/i.test(navigator.userAgent)) return;
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!installButton) installButton = createInstallButton();
+  installButton.style.display = 'flex';
+});
+
+// Handle install button click
+function handleInstallClick() {
+  if (!deferredPrompt) return;
+  installButton.style.display = 'none';
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then((choice) => {
+    if (choice.outcome === 'accepted') {
+      console.log('User accepted the install prompt');
+    } else {
+      console.log('User dismissed the install prompt');
+      setTimeout(() => {
+        if (installButton && deferredPrompt) {
+          installButton.style.display = 'flex';
+        }
+      }, 30000);
+    }
+    deferredPrompt = null;
+  });
+}
+
+// Listen for appinstalled event
+window.addEventListener('appinstalled', () => {
+  console.log('PWA was installed');
+  if (installButton) installButton.style.display = 'none';
+  showNotification('App installed successfully! 🎉', 'success');
+});
+
+// Attach click handler to the button
+document.addEventListener('click', (e) => {
+  if (e.target.id === 'installBtn' || e.target.closest('#installBtn')) {
+    handleInstallClick();
+  }
+});
+
   </script>
 </body>
 </html>

@@ -1256,93 +1256,97 @@
     }
 
     function getShareText() {
-      const cards = document.querySelectorAll('.calculator-card');
-      let text = '';
-      
-      if (currentAppMode === 'basic') {
-        const card = cards[0];
-        const cardId = parseInt(card.dataset.cardId);
-        const sku = getSelectedSKU(cardId);
-        const pricePerFt2 = parseFloat(card.querySelector('.price').value || 0);
-        const gstRate = parseFloat(card.querySelector('.gst').value || 0);
-        const quantity = card.querySelector('.quantity').value;
-        
-        if (!sku || !quantity) return '';
+  const cards = document.querySelectorAll('.calculator-card');
+  let text = '';
+  
+  if (currentAppMode === 'basic') {
+    const card = cards[0];
+    const cardId = parseInt(card.dataset.cardId);
+    const sku = getSelectedSKU(cardId);
+    const pricePerFt2 = parseFloat(card.querySelector('.price').value || 0);
+    const gstRate = parseFloat(card.querySelector('.gst').value || 0);
+    const quantity = card.querySelector('.quantity').value;
+    
+    if (!sku || !quantity) return '';
 
-        text = `Size: ${sku.size} (${sku.thk})
+    text = `Size: ${sku.size} (${sku.thk})
 Pieces: ${card.querySelector('.pieces-result').textContent}
 Area: ${card.querySelector('.area-ft2-result').textContent} (sq feet)
 Weight: ${card.querySelector('.weight-result').textContent} tons`;
 
+    if (pricePerFt2 > 0 && card.querySelector('.total-price-result').textContent !== '-') {
+      const areaValue = parseFloat(card.querySelector('.area-ft2-result').textContent.replace(/,/g, ''));
+      const basePrice = areaValue * pricePerFt2;
+      text += `\nAmount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(basePrice))}`;
+      
+      if (gstRate > 0) {
+        const gstAmount = basePrice * (gstRate / 100);
+        text += `\nGST (${gstRate}%): ₹${new Intl.NumberFormat('en-IN').format(Math.round(gstAmount))}`;
+        text += `\nAmount (incl. ${gstRate}% GST): ${card.querySelector('.total-price-result').textContent}`;
+      }
+    }
+  } else {
+    text = 'TILE CALCULATION DETAILS\n\n';
+    
+    let hasAnyGst = false;
+    let totalBaseAmount = 0;
+    let totalGstAmount = 0;
+    
+    cards.forEach((card, index) => {
+      const cardId = parseInt(card.dataset.cardId);
+      const sku = getSelectedSKU(cardId);
+      const pricePerFt2 = parseFloat(card.querySelector('.price').value || 0);
+      const gstRate = parseFloat(card.querySelector('.gst').value || 0);
+      const quantity = card.querySelector('.quantity').value;
+      
+      if (sku && quantity) {
+        text += `ITEM ${index + 1}:\n`;
+        text += `Size: ${sku.size} (${sku.thk})\n`;
+        text += `Pieces: ${card.querySelector('.pieces-result').textContent}\n`;
+        text += `Area: ${card.querySelector('.area-ft2-result').textContent} (sq feet)\n`;
+        text += `Weight: ${card.querySelector('.weight-result').textContent} tons\n`;
+        
         if (pricePerFt2 > 0 && card.querySelector('.total-price-result').textContent !== '-') {
           const areaValue = parseFloat(card.querySelector('.area-ft2-result').textContent.replace(/,/g, ''));
           const basePrice = areaValue * pricePerFt2;
-          if (gstRate > 0) {
-            text += `\nAmount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(basePrice))}`;
-            text += `\nAmount (incl. ${gstRate}% GST): ${card.querySelector('.total-price-result').textContent}`;
-          } else {
-            text += `\nAmount: ${card.querySelector('.total-price-result').textContent}`;
-          }
-        }
-      } else {
-        text = 'TILE CALCULATION DETAILS\n\n';
-        
-        let hasAnyGst = false;
-        let totalBaseAmount = 0;
-        let totalGstAmount = 0;
-        
-        cards.forEach((card, index) => {
-          const cardId = parseInt(card.dataset.cardId);
-          const sku = getSelectedSKU(cardId);
-          const pricePerFt2 = parseFloat(card.querySelector('.price').value || 0);
-          const gstRate = parseFloat(card.querySelector('.gst').value || 0);
-          const quantity = card.querySelector('.quantity').value;
+          const gstAmount = basePrice * (gstRate / 100);
+          const finalAmount = basePrice + gstAmount;
           
-          if (sku && quantity) {
-            text += `ITEM ${index + 1}:\n`;
-            text += `Size: ${sku.size} (${sku.thk})\n`;
-            text += `Pieces: ${card.querySelector('.pieces-result').textContent}\n`;
-            text += `Area: ${card.querySelector('.area-ft2-result').textContent} (sq feet)\n`;
-            text += `Weight: ${card.querySelector('.weight-result').textContent} tons\n`;
-            
-            if (pricePerFt2 > 0 && card.querySelector('.total-price-result').textContent !== '-') {
-              const areaValue = parseFloat(card.querySelector('.area-ft2-result').textContent.replace(/,/g, ''));
-              const basePrice = areaValue * pricePerFt2;
-              const gstAmount = basePrice * (gstRate / 100);
-              const finalAmount = basePrice + gstAmount;
-              
-              totalBaseAmount += basePrice;
-              totalGstAmount += gstAmount;
-              
-              if (gstRate > 0) {
-                text += `Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(basePrice))}\n`;
-                text += `Amount (incl. ${gstRate}% GST): ₹${new Intl.NumberFormat('en-IN').format(Math.round(finalAmount))}\n`;
-                hasAnyGst = true;
-              } else {
-                text += `Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(basePrice))}\n`;
-              }
-            }
-            text += '\n';
-          }
-        });
-        
-        text += 'GRAND TOTAL:\n';
-        text += `Total Pieces: ${document.getElementById('grandTotalPieces').textContent}\n`;
-        text += `Total Area: ${document.getElementById('grandTotalArea').textContent}\n`;
-        text += `Total Weight: ${document.getElementById('grandTotalWeight').textContent}\n`;
-        
-        if (totalBaseAmount > 0) {
-          if (hasAnyGst) {
-            text += `Base Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(totalBaseAmount))}\n`;
-            text += `Final Amount (incl. GST): ₹${new Intl.NumberFormat('en-IN').format(Math.round(totalBaseAmount + totalGstAmount))}`;
-          } else {
-            text += `Final Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(totalBaseAmount))}`;
+          totalBaseAmount += basePrice;
+          totalGstAmount += gstAmount;
+          
+          text += `Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(basePrice))}\n`;
+          
+          if (gstRate > 0) {
+            text += `GST (${gstRate}%): ₹${new Intl.NumberFormat('en-IN').format(Math.round(gstAmount))}\n`;
+            text += `Amount (incl. ${gstRate}% GST): ₹${new Intl.NumberFormat('en-IN').format(Math.round(finalAmount))}\n`;
+            hasAnyGst = true;
           }
         }
+        text += '\n';
       }
+    });
+    
+    text += 'GRAND TOTAL:\n';
+    text += `Total Pieces: ${document.getElementById('grandTotalPieces').textContent}\n`;
+    text += `Total Area: ${document.getElementById('grandTotalArea').textContent}\n`;
+    text += `Total Weight: ${document.getElementById('grandTotalWeight').textContent}\n`;
+    
+    if (totalBaseAmount > 0) {
+      text += `Base Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(totalBaseAmount))}\n`;
       
-      return text;
+      if (hasAnyGst) {
+        text += `Total GST: ₹${new Intl.NumberFormat('en-IN').format(Math.round(totalGstAmount))}\n`;
+        text += `Final Amount (incl. GST): ₹${new Intl.NumberFormat('en-IN').format(Math.round(totalBaseAmount + totalGstAmount))}`;
+      } else {
+        text += `Final Amount: ₹${new Intl.NumberFormat('en-IN').format(Math.round(totalBaseAmount))}`;
+      }
     }
+  }
+  
+  return text;
+}
+
 
     function copyToClipboard() {
       const text = getShareText();

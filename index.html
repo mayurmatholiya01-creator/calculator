@@ -6,295 +6,279 @@
   <title>TilesPro Calculator</title>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
   <script src="../imagedata.js"></script>
   
   <style>
     :root {
+      /* --- PREMIUM THEME COLORS --- */
       --primary: #6366f1; 
       --primary-light: #a855f7;
-      
       --bg-primary: #0a0a0b;
-      --glass: rgba(30, 30, 35, 0.6);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --glass-hover: rgba(35, 35, 40, 0.75);
       
-      --text-primary: #f0f6fc;
-      --text-secondary: #c9d1d9;
-      --text-muted: #9ca3af;
+      --glass-bg: rgba(30, 30, 35, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-highlight: rgba(255, 255, 255, 0.03);
       
-      --border-radius: 12px;
-      --border-radius-sm: 8px;
+      --text-primary: #ffffff;
+      --text-secondary: #94a3b8;
+      
+      --radius-card: 16px;
+      --radius-input: 10px;
 
-      --success: #10b981;
-      --warning: #f59e0b;
-      --error: #ef4444;
-      
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      
       --safe-area-top: env(safe-area-inset-top);
       --safe-area-bottom: env(safe-area-inset-bottom);
-      --safe-area-left: env(safe-area-inset-left);
-      --safe-area-right: env(safe-area-inset-right);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+    * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
 
     body {
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background: var(--bg-primary);
-      background-image: radial-gradient(at 50% 0%, hsla(228,100%,74%,0.1) 0, transparent 50%);
+      background-image: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 40%);
       color: var(--text-primary);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: max(10px, var(--safe-area-top)) max(10px, var(--safe-area-right)) max(10px, var(--safe-area-bottom)) max(10px, var(--safe-area-left));
-      -webkit-tap-highlight-color: transparent;
+      padding: max(15px, var(--safe-area-top)) 15px max(15px, var(--safe-area-bottom)) 15px;
     }
 
-    /* --- Compact Header --- */
+    /* --- HEADER (Clean & Minimal) --- */
     .app-header {
-      width: 100%;
-      max-width: 720px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 5px;
-      margin-bottom: 5px;
-      z-index: 100;
+      width: 100%; max-width: 600px;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0 20px 0;
     }
+    .logo-container { display: flex; align-items: center; gap: 12px; }
+    .logo-container img { height: 32px; width: auto; object-fit: contain; }
+    .header-btn { background: none; border: none; color: var(--text-secondary); padding: 8px; cursor: pointer; }
 
-    .logo-container { display: flex; align-items: center; gap: 10px; }
-    .logo-container img { height: 30px; width: auto; object-fit: contain; }
+    .container { width: 100%; max-width: 600px; padding-bottom: 40px; }
 
-    .header-icon-btn { background: transparent; border: none; cursor: pointer; padding: 5px; color: var(--text-secondary); }
-    .header-icon-btn svg { width: 20px; height: 20px; stroke: currentColor; }
-
-    .container {
-      width: 100%;
-      max-width: 720px;
-      padding-bottom: 30px;
-    }
-
-    /* --- Smart Mode Switch --- */
+    /* --- IOS STYLE SEGMENT CONTROL (Mode Switch) --- */
     .mode-switch {
       display: flex;
-      background: var(--glass);
-      border-radius: var(--border-radius-sm);
-      padding: 3px;
-      margin-bottom: 10px;
-      border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 20px;
       position: relative;
     }
-
     .mode-switch-option {
-      flex: 1;
-      padding: 8px;
+      flex: 1; padding: 10px;
       background: none; border: none;
-      color: var(--text-muted);
-      font-size: 0.8rem; font-weight: 600;
-      cursor: pointer; z-index: 2;
-      text-align: center; text-transform: uppercase;
-      transition: color 0.2s;
+      color: var(--text-secondary);
+      font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; position: relative; z-index: 2;
+      transition: color 0.3s;
     }
-
     .mode-switch-option.active { color: white; }
-
     .mode-switch::after {
-      content: ''; position: absolute; top: 3px; left: 3px; bottom: 3px;
-      width: calc(50% - 3px);
+      content: ''; position: absolute; top: 4px; left: 4px; bottom: 4px; width: calc(50% - 4px);
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      border-radius: 6px; transition: transform 0.3s ease; z-index: 1;
+      border-radius: 10px; transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); z-index: 1;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
     }
     .mode-switch.advanced-mode::after { transform: translateX(100%); }
 
-    /* --- Compact Card Design --- */
+    /* --- PREMIUM CARD DESIGN --- */
     .calculator-card {
-      background: var(--glass);
+      background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      border-radius: var(--border-radius);
-      padding: 12px; /* Tight padding */
-      margin-bottom: 10px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--radius-card);
+      padding: 20px;
+      margin-bottom: 16px;
       position: relative;
-      animation: fadeIn 0.3s ease-out;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
     .delete-card-btn {
-      position: absolute; top: -8px; right: -8px;
-      width: 24px; height: 24px;
+      position: absolute; top: -10px; right: -10px;
+      width: 28px; height: 28px;
       border-radius: 50%; border: none;
       background: #ef4444; color: white;
+      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
       display: none; align-items: center; justify-content: center;
-      z-index: 10; box-shadow: var(--shadow); cursor: pointer;
+      z-index: 10; cursor: pointer;
     }
     .container.advanced-mode .delete-card-btn { display: flex; }
 
-    /* --- Smart Inputs --- */
-    .form-group { margin-bottom: 8px; position: relative; }
+    /* --- INPUT STYLING (App Quality) --- */
+    .form-group { margin-bottom: 12px; }
     
     .form-input, .form-select {
       width: 100%;
-      padding: 8px 10px;
-      background: rgba(0,0,0,0.2);
+      padding: 12px 14px;
+      background: rgba(0,0,0,0.3);
       border: 1px solid var(--glass-border);
-      border-radius: var(--border-radius-sm);
-      color: var(--text-primary);
-      font-size: 0.9rem; font-weight: 500;
-      transition: border 0.2s;
+      border-radius: var(--radius-input);
+      color: white;
+      font-size: 1rem; font-weight: 500;
+      transition: all 0.2s;
     }
-    .form-input:focus, .form-select:focus { border-color: var(--primary); background: rgba(99, 102, 241, 0.05); }
+    .form-input:focus { 
+      border-color: var(--primary); 
+      background: rgba(99, 102, 241, 0.05);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
+    .form-input::placeholder { color: rgba(255,255,255,0.2); }
 
-    /* Search Bar */
-    .input-wrapper { position: relative; margin-bottom: 8px; }
-    .sku-search { padding-right: 30px; font-weight: 600; }
+    /* --- SEARCH BAR --- */
+    .input-wrapper { position: relative; margin-bottom: 15px; }
+    .sku-search { padding-right: 40px; font-weight: 600; letter-spacing: 0.3px; }
     .clear-sku-btn {
-        position: absolute; right: 5px; top: 50%; transform: translateY(-50%);
-        background: none; border: none; color: var(--text-muted);
+        position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+        background: none; border: none; color: var(--text-secondary);
         display: none; padding: 5px; cursor: pointer;
     }
     .clear-sku-btn.show { display: block; }
-
-    /* Search Suggestions */
+    
     .suggestions-list {
         position: absolute; top: 100%; left: 0; right: 0;
-        background: #1a1a1e; border: 1px solid var(--glass-border);
-        border-radius: 0 0 8px 8px; max-height: 200px; overflow-y: auto;
-        z-index: 50; display: none; margin-top: 2px; box-shadow: var(--shadow-lg);
+        background: #1e1e24; border: 1px solid var(--glass-border);
+        border-radius: 0 0 12px 12px; max-height: 220px; overflow-y: auto;
+        z-index: 100; display: none; margin-top: 4px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
     }
-    .suggestion-item { padding: 10px; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
-    .suggestion-item:hover { background: var(--glass-hover); color: var(--primary-light); }
+    .suggestion-item { padding: 12px 16px; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.05); color: #e2e8f0; }
+    .suggestion-item:active { background: var(--primary); color: white; }
 
-    /* --- THE SMART 5 BOX GRID --- */
+    /* --- SMART 5-BOX GRID (Professional Data Look) --- */
     .specs-container {
-        margin-bottom: 8px;
         background: rgba(255,255,255,0.02);
-        padding: 6px;
-        border-radius: var(--border-radius-sm);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-input);
+        padding: 10px;
+        margin-bottom: 15px;
     }
     .specs-grid-5 {
         display: grid;
-        /* Logic: L & W (4 digits) get 1.3fr, others get smaller space */
-        grid-template-columns: 1.3fr 1.3fr 0.8fr 0.8fr 1fr; 
-        gap: 5px;
+        /* Custom Proportions: L & W (Wide), mm & Pcs (Narrow), Kg (Medium) */
+        grid-template-columns: 1.4fr 1.4fr 0.9fr 0.9fr 1.1fr; 
+        gap: 8px;
     }
     .spec-box { display: flex; flex-direction: column; align-items: center; }
     .spec-box label { 
-        font-size: 0.55rem; color: var(--text-muted); margin-bottom: 2px; text-transform: uppercase; 
+        font-size: 0.65rem; color: var(--primary-light); margin-bottom: 4px; 
+        text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;
     }
     .spec-input {
-        width: 100%; padding: 6px 2px;
+        width: 100%; padding: 8px 4px;
         text-align: center;
-        background: rgba(0,0,0,0.3);
-        border: 1px solid var(--glass-border);
-        border-radius: 4px;
-        color: var(--text-primary);
-        font-size: 0.8rem; font-weight: 600;
+        background: rgba(0,0,0,0.4);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 6px;
+        color: white;
+        font-size: 0.9rem; font-weight: 600;
     }
-    .spec-input:focus { border-color: var(--primary); }
+    .spec-input:focus { border-color: var(--primary); background: rgba(99,102,241,0.15); }
 
-    /* --- Merged Row (Mode + Quantity) --- */
-    .smart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+    /* --- HYBRID ROW: TOGGLE & INPUT --- */
+    .smart-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; margin-bottom: 12px; align-items: center; }
     
+    /* The Colored Toggle Button */
     .mode-toggle {
       display: flex;
-      background: rgba(0,0,0,0.2);
-      border-radius: var(--border-radius-sm);
-      border: 1px solid var(--glass-border);
-      height: 36px; /* Match input height */
-      padding: 2px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 8px;
+      padding: 3px;
+      height: 48px; /* Touch friendly height */
     }
     .mode-option {
       flex: 1; background: none; border: none;
-      color: var(--text-muted); font-size: 0.7rem; font-weight: 600;
-      border-radius: 6px; cursor: pointer;
+      color: var(--text-secondary); font-size: 0.75rem; font-weight: 600;
+      border-radius: 6px; cursor: pointer; transition: all 0.2s;
     }
-    .mode-option.active { background: rgba(255,255,255,0.1); color: white; }
-    .mode-toggle.boxes-mode .mode-option:nth-child(2) { background: rgba(255,255,255,0.1); color: white; }
-    .mode-toggle.boxes-mode .mode-option:nth-child(1) { background: none; color: var(--text-muted); }
-
-    /* Price Row */
-    .price-input-container { position: relative; }
-    .price-input-container::before {
-      content: '₹'; position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
-      color: var(--text-muted); font-size: 0.9rem; pointer-events: none;
+    
+    /* ACTIVE STATE WITH COLOR */
+    .mode-option.active { 
+      background: linear-gradient(135deg, var(--primary), var(--primary-light)); 
+      color: white; 
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
     }
-    .form-input.price-input { padding-left: 20px; }
 
-    /* --- Compact Results --- */
+    /* --- PRICE ROW --- */
+    .price-container { position: relative; }
+    .price-container::before {
+      content: '₹'; position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--text-secondary); font-size: 1rem;
+    }
+    .price-input { padding-left: 28px; }
+
+    /* --- RESULTS GRID (Dashboard Style) --- */
     .results-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr; /* 4 in a row */
-      gap: 5px;
-      margin-top: 10px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px dashed var(--glass-border);
     }
     .result-item {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--glass-border);
-      border-radius: 6px;
-      padding: 6px 2px;
       text-align: center;
-      display: flex; flex-direction: column; justify-content: center;
     }
-    .result-label { font-size: 0.5rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 2px; }
-    .result-value { font-size: 0.9rem; color: white; font-weight: 700; }
-    
-    @media (max-width: 380px) {
-        .results-grid { grid-template-columns: 1fr 1fr; }
+    .result-label { font-size: 0.6rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; }
+    .result-value { 
+      font-size: 1rem; color: white; font-weight: 700; 
+      background: rgba(255,255,255,0.03); padding: 6px 2px; border-radius: 6px;
     }
+    /* Highlight Total Amount */
+    .result-item:last-child .result-value { color: #4ade80; background: rgba(74, 222, 128, 0.1); }
 
     .results-meta {
-        font-size: 0.65rem; color: var(--text-muted); text-align: center;
-        margin-top: 8px; font-style: italic; opacity: 0.8;
+        font-size: 0.75rem; color: var(--text-secondary); text-align: center;
+        margin-top: 12px; font-style: italic;
     }
 
-    /* --- Add Button --- */
+    /* --- BUTTONS --- */
     .add-more-btn {
-      width: 100%; padding: 10px;
-      background: rgba(99, 102, 241, 0.1);
+      width: 100%; padding: 14px;
+      background: rgba(99, 102, 241, 0.15);
       border: 1px dashed var(--primary);
-      border-radius: var(--border-radius-sm);
+      border-radius: 12px;
       color: var(--primary-light);
-      font-size: 0.8rem; font-weight: 600;
-      cursor: pointer; margin-bottom: 15px;
-      display: none; align-items: center; justify-content: center; gap: 5px;
+      font-size: 0.9rem; font-weight: 600; letter-spacing: 0.5px;
+      cursor: pointer; margin-bottom: 20px;
+      display: none; align-items: center; justify-content: center; gap: 8px;
+      transition: all 0.2s;
     }
-    .add-more-btn:hover { background: rgba(99, 102, 241, 0.2); }
+    .add-more-btn:active { background: rgba(99, 102, 241, 0.25); transform: scale(0.98); }
     .container.advanced-mode .add-more-btn { display: flex; }
 
-    /* --- Grand Total --- */
+    /* --- GRAND TOTAL CARD --- */
     .grand-total {
-        background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.1));
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 10px; padding: 10px; margin-bottom: 15px;
-        display: none;
+        background: linear-gradient(145deg, rgba(30, 30, 35, 0.9), rgba(20, 20, 25, 0.95));
+        border: 1px solid var(--primary);
+        border-radius: var(--radius-card); padding: 20px; margin-bottom: 20px;
+        display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
     .container.advanced-mode .grand-total { display: block; }
-    .grand-total-header { text-align: center; font-size: 0.85rem; font-weight: 700; margin-bottom: 5px; color: #fff; text-transform: uppercase; }
+    .grand-total-header { text-align: center; font-size: 0.9rem; font-weight: 700; margin-bottom: 15px; color: var(--primary-light); text-transform: uppercase; letter-spacing: 2px; }
 
-    /* --- Share Section --- */
-    .share-row { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+    /* --- SHARE BUTTONS --- */
+    .share-row { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
     .container.advanced-mode .basic-share-section { display: none; }
     
     .share-btn {
-      width: 38px; height: 38px; border-radius: 50%; border: none; cursor: pointer;
+      width: 44px; height: 44px; border-radius: 12px; border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center; transition: transform 0.2s;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     .share-btn:active { transform: scale(0.9); }
     .share-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
     .share-sms { background: linear-gradient(135deg, #06b6d4, #0891b2); }
     .share-email { background: linear-gradient(135deg, #ec4899, #db2777); }
     .share-copy { background: linear-gradient(135deg, var(--primary), var(--primary-light)); }
-    .share-clear { background: linear-gradient(135deg, var(--warning), #f97316); }
-    .share-icon { width: 16px; height: 16px; fill: white; }
+    .share-clear { background: linear-gradient(135deg, var(--text-secondary), #64748b); }
+    .share-icon { width: 20px; height: 20px; fill: white; }
 
     .copy-message {
-      position: fixed; top: 60px; left: 50%; transform: translateX(-50%) translateY(-100%);
-      background: #10b981; color: white; padding: 8px 16px; border-radius: 20px;
-      font-size: 0.8rem; font-weight: 600; opacity: 0; transition: all 0.3s; z-index: 1000;
+      position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px);
+      background: #10b981; color: white; padding: 10px 20px; border-radius: 30px;
+      font-size: 0.9rem; font-weight: 600; opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 1000; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); pointer-events: none;
     }
     .copy-message.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
@@ -307,84 +291,61 @@
         <img id="logoA" alt="Logo">
         <img id="logoGranicer2" alt="Logo2"> 
     </div>
-    <button id="refresh-btn" class="header-icon-btn" title="Refresh">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M23 4v6h-6M1 20v-6h6"/>
-            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-        </svg>
+    <button id="refresh-btn" class="header-btn">
+        <i class="fas fa-sync-alt"></i>
     </button>
   </header>
   
   <div class="container">
     <div class="mode-switch" id="modeSwitch">
-      <button class="mode-switch-option active" data-mode="basic">Basic</button>
-      <button class="mode-switch-option" data-mode="advanced">Advanced List</button>
+      <button class="mode-switch-option active" data-mode="basic">Basic Calculator</button>
+      <button class="mode-switch-option" data-mode="advanced">Multi-List</button>
     </div>
 
     <div id="calculatorCards"></div>
 
     <button class="add-more-btn" id="addMoreBtn">
-      <i class="fas fa-plus"></i> Add Another Item
+      <i class="fas fa-plus"></i> Add Another Size
     </button>
 
     <div class="grand-total">
-      <div class="grand-total-header">Total Summary</div>
-      <div class="results-grid">
-        <div class="result-item"><div class="result-label">Boxes</div><div class="result-value" id="grandTotalBoxes">-</div></div>
-        <div class="result-item"><div class="result-label">Area</div><div class="result-value" id="grandTotalArea">-</div></div>
-        <div class="result-item"><div class="result-label">Weight</div><div class="result-value" id="grandTotalWeight">-</div></div>
+      <div class="grand-total-header">Final Summary</div>
+      <div class="results-grid" style="border:none; margin:0; padding:0;">
+        <div class="result-item"><div class="result-label">Total Box</div><div class="result-value" id="grandTotalBoxes">-</div></div>
+        <div class="result-item"><div class="result-label">Total Area</div><div class="result-value" id="grandTotalArea">-</div></div>
+        <div class="result-item"><div class="result-label">Total Wt</div><div class="result-value" id="grandTotalWeight">-</div></div>
         <div class="result-item"><div class="result-label">Amount</div><div class="result-value" id="grandFinalAmount">-</div></div>
       </div>
     </div>
 
     <div class="share-row share-section" style="display:none;">
-      <button class="share-btn share-whatsapp" id="shareWhatsapp">
-        <svg class="share-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/></svg>
-      </button>
-      <button class="share-btn share-sms" id="shareSMS">
-        <svg class="share-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0 -1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg>
-      </button>
-      <button class="share-btn share-email" id="shareEmail">
-        <svg class="share-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-      </button>
-      <button class="share-btn share-copy" id="copyBtn">
-        <svg class="share-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-      </button>
-      <button class="share-btn share-clear" id="clearBtn">
-        <svg class="share-icon" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-      </button>
+      <button class="share-btn share-whatsapp" id="shareWhatsapp"><svg class="share-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/></svg></button>
+      <button class="share-btn share-sms" id="shareSMS"><svg class="share-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0 -1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg></button>
+      <button class="share-btn share-email" id="shareEmail"><svg class="share-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></button>
+      <button class="share-btn share-copy" id="copyBtn"><svg class="share-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>
+      <button class="share-btn share-clear" id="clearBtn"><svg class="share-icon" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
     </div>
   </div>
 
-  <div class="copy-message" id="copyMessage">✓ Details copied!</div>
+  <div class="copy-message" id="copyMessage">✓ Details Copied!</div>
 
   <script>
-    // --- 1. Universal SKU Database (Full Restoration) ---
     const SKU_MASTER = [
-        // Wall Tiles
         { name: "300x600 mm (12x24) Wall", l: 300, w: 600, mm: "8.5", pcs: 5, kg: 13.5 },
         { name: "300x450 mm (12x18) Wall", l: 300, w: 450, mm: "7.5", pcs: 6, kg: 10.5 },
         { name: "250x375 mm (10x15) Wall", l: 250, w: 375, mm: "7", pcs: 8, kg: 10 },
-        
-        // GVT / PGVT
         { name: "600x600 mm (2x2) GVT", l: 600, w: 600, mm: "8.5", pcs: 4, kg: 27 },
         { name: "600x1200 mm (2x4) GVT", l: 600, w: 1200, mm: "9", pcs: 2, kg: 28 },
         { name: "800x800 mm (32x32) GVT", l: 800, w: 800, mm: "9", pcs: 3, kg: 38 },
         { name: "800x1600 mm (32x64) GVT", l: 800, w: 1600, mm: "9", pcs: 2, kg: 50 },
         { name: "1000x1000 mm GVT", l: 1000, w: 1000, mm: "9", pcs: 2, kg: 40 },
-        
-        // Slabs
         { name: "1200x1200 mm (4x4)", l: 1200, w: 1200, mm: "9", pcs: 2, kg: 58 },
         { name: "1200x1800 mm (4x6)", l: 1200, w: 1800, mm: "9", pcs: 2, kg: 88 },
         { name: "1200x2400 mm (4x8) 9mm", l: 1200, w: 2400, mm: "9", pcs: 1, kg: 60 },
         { name: "1200x2400 mm (4x8) 15mm", l: 1200, w: 2400, mm: "15", pcs: 1, kg: 92 },
-        
-        // Heavy/Parking
         { name: "300x300 mm (12x12) Heavy", l: 300, w: 300, mm: "8", pcs: 10, kg: 16 },
         { name: "400x400 mm (16x16) Parking", l: 400, w: 400, mm: "9", pcs: 5, kg: 15 },
         { name: "600x600 mm Full Body (16mm)", l: 600, w: 600, mm: "16", pcs: 2, kg: 25 },
-
-        // Planks
         { name: "200x1000 mm Wood Plank", l: 200, w: 1000, mm: "9", pcs: 5, kg: 20 },
         { name: "200x1200 mm Wood Plank", l: 200, w: 1200, mm: "9", pcs: 5, kg: 23 }
     ];
@@ -393,8 +354,7 @@
         try {
             if (typeof logoA_base64 !== 'undefined') document.getElementById('logoA').src = logoA_base64;
             if (typeof logoGranicer2_base64 !== 'undefined') document.getElementById('logoGranicer2').src = logoGranicer2_base64;
-        } catch (e) { console.error("Logo error", e); }
-
+        } catch (e) {}
         document.getElementById('refresh-btn').addEventListener('click', () => location.reload());
         addMoreCard();
     });
@@ -409,34 +369,26 @@
         const cardId = cardCounter++;
         const cardsContainer = document.getElementById('calculatorCards');
         const isFirstCard = cardsContainer.children.length === 0;
-
         const newCard = document.createElement('div');
         newCard.className = 'calculator-card';
         newCard.dataset.cardId = cardId;
 
-        // --- COMPACT LAYOUT STRUCTURE ---
         newCard.innerHTML = `
-            <button class="delete-card-btn" onclick="deleteCard(${cardId})">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-                </svg>
-            </button>
+            <button class="delete-card-btn" onclick="deleteCard(${cardId})"><i class="fas fa-times"></i></button>
 
             <div class="input-wrapper">
                 <input type="text" class="form-input sku-search" data-card="${cardId}" placeholder="Search Size (e.g. 600x1200)" autocomplete="off">
-                <button class="clear-sku-btn" data-card="${cardId}" onclick="clearSkuSearch(${cardId})">
-                    <i class="fas fa-times"></i>
-                </button>
+                <button class="clear-sku-btn" data-card="${cardId}" onclick="clearSkuSearch(${cardId})"><i class="fas fa-times"></i></button>
                 <div class="suggestions-list" id="suggestions-${cardId}"></div>
             </div>
             
             <div class="specs-container">
                 <div class="specs-grid-5">
-                    <div class="spec-box"><label>L(mm)</label><input type="number" class="spec-input spec-l" data-card="${cardId}" placeholder="L"></div>
-                    <div class="spec-box"><label>W(mm)</label><input type="number" class="spec-input spec-w" data-card="${cardId}" placeholder="W"></div>
-                    <div class="spec-box"><label>Thk</label><input type="text" class="spec-input spec-mm" data-card="${cardId}" placeholder="mm"></div>
-                    <div class="spec-box"><label>Pcs</label><input type="number" class="spec-input spec-pcs" data-card="${cardId}" placeholder="Pc"></div>
-                    <div class="spec-box"><label>Kg</label><input type="number" class="spec-input spec-kg" data-card="${cardId}" placeholder="Kg"></div>
+                    <div class="spec-box"><label>L(mm)</label><input type="number" class="spec-input spec-l" data-card="${cardId}" placeholder="0"></div>
+                    <div class="spec-box"><label>W(mm)</label><input type="number" class="spec-input spec-w" data-card="${cardId}" placeholder="0"></div>
+                    <div class="spec-box"><label>Thk</label><input type="text" class="spec-input spec-mm" data-card="${cardId}" placeholder="-"></div>
+                    <div class="spec-box"><label>Pcs</label><input type="number" class="spec-input spec-pcs" data-card="${cardId}" placeholder="0"></div>
+                    <div class="spec-box"><label>Kg</label><input type="number" class="spec-input spec-kg" data-card="${cardId}" placeholder="0"></div>
                 </div>
             </div>
 
@@ -445,14 +397,12 @@
                     <button class="mode-option active" data-mode="area">Area</button>
                     <button class="mode-option" data-mode="boxes">Box</button>
                 </div>
-                <div>
-                    <input type="number" class="form-input quantity" data-card="${cardId}" placeholder="Enter Area (ft²)..." min="0" step="0.01" inputmode="decimal">
-                </div>
+                <input type="number" class="form-input quantity" data-card="${cardId}" placeholder="Enter Area..." min="0" step="0.01">
             </div>
 
             <div class="smart-row">
-                <div class="price-input-container">
-                    <input type="number" class="form-input price-input price" data-card="${cardId}" placeholder="Price/ft²" min="0" step="0.01" inputmode="decimal">
+                <div class="price-container">
+                    <input type="number" class="form-input price-input price" data-card="${cardId}" placeholder="Price/ft²" min="0" step="0.01">
                 </div>
                 <select class="form-select gst" data-card="${cardId}">
                     <option value="0">No GST</option>
@@ -468,7 +418,6 @@
                 <div class="result-item"><div class="result-label">Weight (t)</div><div class="result-value weight-result">-</div></div>
                 <div class="result-item"><div class="result-label">Total</div><div class="result-value total-price-result">-</div></div>
             </div>
-
             <div class="results-meta"></div>
 
             ${isFirstCard ? `
@@ -478,10 +427,8 @@
                 <button class="share-btn share-email" onclick="shareEmail()"><svg class="share-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></button>
                 <button class="share-btn share-copy" onclick="copyToClipboard()"><svg class="share-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>
                 <button class="share-btn share-clear" onclick="clearAll()"><svg class="share-icon" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
-            </div>
-            ` : ''}
+            </div>` : ''}
         `;
-
         cardsContainer.appendChild(newCard);
         cardModes[cardId] = 'area';
         setupCardEventListeners(cardId);
@@ -490,20 +437,13 @@
     function setupCardEventListeners(cardId) {
         const card = document.querySelector(`[data-card-id="${cardId}"]`);
         if (!card) return;
-
         card.querySelector('.sku-search').addEventListener('input', (e) => handleSkuSearch(e, cardId));
-        
         const clearBtn = card.querySelector('.clear-sku-btn');
         if (clearBtn) clearBtn.addEventListener('click', () => clearSkuSearch(cardId));
-
-        card.querySelectorAll('.spec-input').forEach(input => {
-            input.addEventListener('input', () => calculateCard(cardId));
-        });
-
+        card.querySelectorAll('.spec-input').forEach(input => input.addEventListener('input', () => calculateCard(cardId)));
         card.querySelector('.quantity').addEventListener('input', () => calculateCard(cardId));
         card.querySelector('.price').addEventListener('input', () => calculateCard(cardId));
         card.querySelector('.gst').addEventListener('change', () => calculateCard(cardId));
-
         card.querySelector('.mode-toggle').addEventListener('click', (e) => {
             const option = e.target.closest('.mode-option');
             if (option) setCardMode(cardId, option.dataset.mode);
@@ -514,20 +454,15 @@
         const query = event.target.value.toLowerCase();
         const suggestionsList = document.getElementById(`suggestions-${cardId}`);
         const clearBtn = document.querySelector(`[data-card="${cardId}"].clear-sku-btn`);
-
-        if (query.length > 0) {
-            clearBtn.classList.add('show');
-        } else {
+        if (query.length > 0) clearBtn.classList.add('show');
+        else {
             clearBtn.classList.remove('show');
-            suggestionsList.style.display = 'none';
-            return;
+            suggestionsList.style.display = 'none'; return;
         }
-
         const matches = SKU_MASTER.filter(item => item.name.toLowerCase().includes(query));
-        
         suggestionsList.innerHTML = '';
         if (matches.length > 0) {
-            matches.forEach((sku, index) => {
+            matches.forEach(sku => {
                 const div = document.createElement('div');
                 div.className = 'suggestion-item';
                 div.textContent = sku.name;
@@ -535,9 +470,7 @@
                 suggestionsList.appendChild(div);
             });
             suggestionsList.style.display = 'block';
-        } else {
-            suggestionsList.style.display = 'none';
-        }
+        } else suggestionsList.style.display = 'none';
     }
 
     function selectSku(cardId, sku) {
@@ -563,56 +496,37 @@
     function calculateCard(cardId) {
         const card = document.querySelector(`[data-card-id="${cardId}"]`);
         if (!card) return;
-
         const L = parseFloat(card.querySelector('.spec-l').value) || 0;
         const W = parseFloat(card.querySelector('.spec-w').value) || 0;
         const PCS = parseFloat(card.querySelector('.spec-pcs').value) || 0;
         const KG = parseFloat(card.querySelector('.spec-kg').value) || 0;
-        
         const quantity = parseFloat(card.querySelector('.quantity').value || 0);
         const pricePerFt2 = parseFloat(card.querySelector('.price').value || 0);
         const gstRate = parseFloat(card.querySelector('.gst').value || 0);
 
         let ft2PerBox = 0;
-        let m2PerBox = 0;
-
-        if (L > 0 && W > 0 && PCS > 0) {
-            m2PerBox = (L * W * PCS) / 1000000;
-            ft2PerBox = m2PerBox * 10.7639;
-        }
+        if (L > 0 && W > 0 && PCS > 0) ft2PerBox = ((L * W * PCS) / 1000000) * 10.7639;
 
         let numBoxes = 0, areaFt2 = 0, weight = 0, totalPrice = 0;
         const mode = cardModes[cardId] || 'area';
 
         if (quantity > 0 && ft2PerBox > 0) {
-            if (mode === 'area') {
-                numBoxes = Math.ceil(quantity / ft2PerBox);
-            } else {
-                numBoxes = Math.ceil(quantity);
-            }
+            if (mode === 'area') numBoxes = Math.ceil(quantity / ft2PerBox);
+            else numBoxes = Math.ceil(quantity);
             areaFt2 = numBoxes * ft2PerBox;
             weight = (numBoxes * KG) / 1000;
-
-            if (pricePerFt2 > 0) {
-                const basePrice = areaFt2 * pricePerFt2;
-                totalPrice = basePrice * (1 + gstRate / 100);
-            }
+            if (pricePerFt2 > 0) totalPrice = (areaFt2 * pricePerFt2) * (1 + gstRate / 100);
         }
 
         card.querySelector('.boxes-result').textContent = numBoxes ? fmt.format(numBoxes) : '-';
         card.querySelector('.area-ft2-result').textContent = areaFt2 ? fmt.format(areaFt2) : '-';
         card.querySelector('.weight-result').textContent = weight ? fmt3.format(weight) : '-';
         card.querySelector('.total-price-result').textContent = totalPrice > 0 ? '₹' + Math.round(totalPrice).toLocaleString('en-IN') : '-';
+        
+        const metaText = ft2PerBox > 0 ? `${PCS}pcs | ${ft2PerBox.toFixed(2)} ft²/box` : 'Enter details above';
+        card.querySelector('.results-meta').textContent = metaText;
 
-        if (ft2PerBox > 0) {
-            card.querySelector('.results-meta').textContent = `${PCS} pcs/box • ${ft2PerBox.toFixed(2)} ft²/box`;
-        } else {
-            card.querySelector('.results-meta').textContent = 'Enter size & details';
-        }
-
-        if (currentAppMode === 'advanced') {
-            updateGrandTotal();
-        }
+        if (currentAppMode === 'advanced') updateGrandTotal();
     }
 
     function setCardMode(cardId, mode) {
@@ -620,12 +534,9 @@
         const card = document.querySelector(`[data-card-id="${cardId}"]`);
         const modeToggle = card.querySelector('.mode-toggle');
         const quantityInput = card.querySelector('.quantity');
-
+        
         modeToggle.classList.toggle('boxes-mode', mode === 'boxes');
-        modeToggle.querySelectorAll('.mode-option').forEach(opt => {
-            opt.classList.toggle('active', opt.dataset.mode === mode);
-        });
-
+        modeToggle.querySelectorAll('.mode-option').forEach(opt => opt.classList.toggle('active', opt.dataset.mode === mode));
         quantityInput.placeholder = mode === 'area' ? 'Enter Area (ft²)' : 'Enter Boxes';
         calculateCard(cardId);
     }
@@ -633,22 +544,15 @@
     function updateGrandTotal() {
         const cards = document.querySelectorAll('.calculator-card');
         let totalBoxes = 0, totalArea = 0, totalWeight = 0, totalFinalAmount = 0;
-
         cards.forEach(card => {
-            const boxes = parseFloat(card.querySelector('.boxes-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
-            const area = parseFloat(card.querySelector('.area-ft2-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
-            const weight = parseFloat(card.querySelector('.weight-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
-            const finalAmount = parseFloat(card.querySelector('.total-price-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
-
-            totalBoxes += boxes;
-            totalArea += area;
-            totalWeight += weight;
-            totalFinalAmount += finalAmount;
+            totalBoxes += parseFloat(card.querySelector('.boxes-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
+            totalArea += parseFloat(card.querySelector('.area-ft2-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
+            totalWeight += parseFloat(card.querySelector('.weight-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
+            totalFinalAmount += parseFloat(card.querySelector('.total-price-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
         });
-
         document.getElementById('grandTotalBoxes').textContent = totalBoxes > 0 ? fmt.format(totalBoxes) : '-';
         document.getElementById('grandTotalArea').textContent = totalArea > 0 ? fmt.format(totalArea) + ' ft²' : '-';
-        document.getElementById('grandTotalWeight').textContent = totalWeight > 0 ? fmt3.format(totalWeight) + ' tons' : '-';
+        document.getElementById('grandTotalWeight').textContent = totalWeight > 0 ? fmt3.format(totalWeight) + ' t' : '-';
         document.getElementById('grandFinalAmount').textContent = totalFinalAmount > 0 ? '₹' + Math.round(totalFinalAmount).toLocaleString('en-IN') : '-';
     }
 
@@ -656,8 +560,7 @@
         currentAppMode = mode;
         const container = document.querySelector('.container');
         const modeSwitch = document.getElementById('modeSwitch');
-
-        // Reset
+        
         document.getElementById('calculatorCards').innerHTML = '';
         cardCounter = 0; cardModes = {}; addMoreCard();
 
@@ -670,111 +573,64 @@
             modeSwitch.classList.remove('advanced-mode');
             document.querySelector('.share-section').style.display = 'none';
         }
-
-        modeSwitch.querySelectorAll('.mode-switch-option').forEach(opt => {
-            opt.classList.toggle('active', opt.dataset.mode === mode);
-        });
+        modeSwitch.querySelectorAll('.mode-switch-option').forEach(opt => opt.classList.toggle('active', opt.dataset.mode === mode));
     }
 
     function deleteCard(cardId) {
         const card = document.querySelector(`[data-card-id="${cardId}"]`);
-        if (card) {
-            card.remove();
-            delete cardModes[cardId];
-            updateGrandTotal();
+        if (card) { 
+            card.style.opacity = '0'; card.style.transform = 'scale(0.9)';
+            setTimeout(() => { card.remove(); delete cardModes[cardId]; updateGrandTotal(); }, 300);
         }
     }
 
-    // --- Share Logic ---
     function getShareText() {
         const cards = document.querySelectorAll('.calculator-card');
         let text = '';
-
         if (currentAppMode === 'basic') {
             const card = cards[0];
-            const skuName = card.querySelector('.sku-search').value || 'Custom Size';
-            
-            // Get 5 box values
-            const L = card.querySelector('.spec-l').value;
-            const W = card.querySelector('.spec-w').value;
-            const Pcs = card.querySelector('.spec-pcs').value;
-
-            text = `Size: ${skuName}\nSpecs: ${L}x${W}mm | ${Pcs} pcs/box\n`;
-            text += `Boxes: ${card.querySelector('.boxes-result').textContent}\n`;
-            text += `Area: ${card.querySelector('.area-ft2-result').textContent} sq ft\n`;
-            text += `Weight: ${card.querySelector('.weight-result').textContent} tons`;
-
-            const amt = card.querySelector('.total-price-result').textContent;
-            if (amt !== '-') text += `\nAmount: ${amt}`;
+            const skuName = card.querySelector('.sku-search').value || 'Custom';
+            text = `*TILE ESTIMATE*\nSize: ${skuName}\nBoxes: ${card.querySelector('.boxes-result').textContent}\nArea: ${card.querySelector('.area-ft2-result').textContent} ft²\nTotal: ${card.querySelector('.total-price-result').textContent}`;
         } else {
-            text = 'TILE CALCULATION\n\n';
-            cards.forEach((card, index) => {
-                const skuName = card.querySelector('.sku-search').value || 'Item';
-                const boxes = card.querySelector('.boxes-result').textContent;
-                if(boxes !== '-') {
-                    text += `#${index + 1} ${skuName}\n`;
-                    text += `Boxes: ${boxes} | Area: ${card.querySelector('.area-ft2-result').textContent} ft²\n\n`;
-                }
+            text = '*TILE ESTIMATE*\n\n';
+            cards.forEach((card, i) => {
+                const b = card.querySelector('.boxes-result').textContent;
+                if(b!=='-') text += `#${i+1} ${card.querySelector('.sku-search').value || 'Item'}: ${b} Bx | ${card.querySelector('.area-ft2-result').textContent} ft²\n`;
             });
-            text += `GRAND TOTAL:\nBoxes: ${document.getElementById('grandTotalBoxes').textContent}\n`;
-            text += `Area: ${document.getElementById('grandTotalArea').textContent}\n`;
-            text += `Amount: ${document.getElementById('grandFinalAmount').textContent}`;
+            text += `\n*GRAND TOTAL: ${document.getElementById('grandFinalAmount').textContent}*`;
         }
         return text;
     }
-
-    function shareWhatsApp() {
-        const text = getShareText();
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-    }
     
-    function shareSMS() {
-        const text = getShareText();
-        window.open(`sms:?body=${encodeURIComponent(text)}`, '_self');
-    }
-    
-    function shareEmail() {
-        const text = getShareText();
-        window.location.href = `mailto:?subject=Tile Calculation&body=${encodeURIComponent(text)}`;
-    }
-
+    function shareWhatsApp() { window.open(`https://wa.me/?text=${encodeURIComponent(getShareText())}`, '_blank'); }
+    function shareSMS() { window.open(`sms:?body=${encodeURIComponent(getShareText())}`, '_self'); }
+    function shareEmail() { window.location.href = `mailto:?subject=Estimate&body=${encodeURIComponent(getShareText())}`; }
     function copyToClipboard() {
-        const text = getShareText();
-        navigator.clipboard.writeText(text).then(() => {
+        navigator.clipboard.writeText(getShareText()).then(() => {
             const msg = document.getElementById('copyMessage');
-            msg.classList.add('show');
-            setTimeout(() => msg.classList.remove('show'), 1500);
+            msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 2000);
         });
     }
-
     function clearAll() {
-        const cards = document.querySelectorAll('.calculator-card');
-        cards.forEach(card => {
+        document.querySelectorAll('.calculator-card').forEach(card => {
             card.querySelectorAll('input').forEach(i => i.value = '');
-            card.querySelector('.gst').selectedIndex = 1;
             calculateCard(card.dataset.cardId);
         });
     }
 
-    // Event Listeners
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.input-wrapper')) {
-            document.querySelectorAll('.suggestions-list').forEach(list => list.style.display = 'none');
-        }
-    });
-
     document.getElementById('modeSwitch').addEventListener('click', (e) => {
-        const option = e.target.closest('.mode-switch-option');
-        if (option) switchMode(option.dataset.mode);
+        const opt = e.target.closest('.mode-switch-option');
+        if (opt) switchMode(opt.dataset.mode);
     });
-
     document.getElementById('addMoreBtn').addEventListener('click', addMoreCard);
-
     document.getElementById('shareWhatsapp').addEventListener('click', shareWhatsApp);
     document.getElementById('shareSMS').addEventListener('click', shareSMS);
     document.getElementById('shareEmail').addEventListener('click', shareEmail);
     document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
     document.getElementById('clearBtn').addEventListener('click', clearAll);
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.input-wrapper')) document.querySelectorAll('.suggestions-list').forEach(l => l.style.display='none');
+    });
 
   </script>
 </body>

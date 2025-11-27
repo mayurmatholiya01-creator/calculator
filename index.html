@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -371,7 +370,7 @@
         id, 
         sku: '', l: '', w: '', th: '', pcs: '', kg: '', 
         mode: 'area', qty: '', price: '', gst: 18,
-        resBoxes: 0, resArea: 0, resWeight: 0, resPrice: 0 
+        resBoxes: 0, resArea: 0, resWeight: 0, resPrice: 0, resBase: 0, resGST: 0
       };
       state.cards.push(cardData);
       
@@ -647,9 +646,11 @@
       const totalArea = boxes * ft2Box;
       const totalWeight = (boxes * kg) / 1000;
       
+      let base = 0;
       let amount = 0;
+      
       if (price > 0) {
-        const base = totalArea * price;
+        base = totalArea * price;
         amount = base + (base * (gst/100));
       }
 
@@ -658,6 +659,8 @@
       c.resArea = totalArea;
       c.resWeight = totalWeight;
       c.resPrice = amount;
+      c.resBase = base;
+      c.resGST = amount - base;
 
       // Update DOM
       const el = document.getElementById(id);
@@ -714,21 +717,100 @@
 
     // --- Share Logic ---
     window.share = function(type) {
-      let text = state.mode === 'basic' ? "*TILE ESTIMATE*\n" : "*PROJECT ESTIMATE*\n";
-      const fmt = new Intl.NumberFormat('en-IN');
+      // Helpers
+      const fmt = (n) => new Intl.NumberFormat('en-IN').format(n);
+      const fmtDec = (n) => new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 }).format(n);
+      
+      let text = "";
 
-      state.cards.forEach((c, i) => {
-        if(c.resBoxes > 0) {
-           text += `\n${c.sku || 'Item ' + (i+1)}\n`;
-           text += `📦 ${c.resBoxes} Box | 📏 ${fmt.format(c.resArea)} ft²\n`;
-        }
-      });
+      if(state.mode === 'basic') {
+          // --- BASIC MODE FORMAT ---
+          const c = state.cards[0];
+          if(!c || c.resBoxes === 0) {
+              alert("Please enter details first");
+              return;
+          }
+          
+          // Construct size string: "300x600x9MM (12x24) Wall"
+          let sizeStr = `${c.l}x${c.w}`;
+          if(c.th) sizeStr += `x${c.th}MM`;
+          if(c.sku) sizeStr += ` (${c.sku})`;
+          
+          text += `Size: ${sizeStr}\n`;
+          text += `Boxes: ${c.resBoxes}\n`;
+          text += `Area: ${fmt(c.resArea)} (sq feet)\n`;
+          text += `Weight: ${fmtDec(c.resWeight)} tons\n`;
+          
+          if(c.resBase > 0) {
+              text += `Amount: ₹${fmt(Math.round(c.resBase))}\n`;
+              if(c.gst > 0) {
+                  text += `GST (${c.gst}%): ₹${fmt(Math.round(c.resGST))}\n`;
+                  text += `Amount (incl. ${c.gst}% GST): ₹${fmt(Math.round(c.resPrice))}\n`;
+              }
+          }
+      } 
+      else {
+          // --- ADVANCED MODE FORMAT ---
+          text += "TILE CALCULATION DETAILS\n\n";
+          
+          let hasItems = false;
+          state.cards.forEach((c, i) => {
+              if(c.resBoxes > 0) {
+                  hasItems = true;
+                  text += `ITEM ${i+1}:\n`;
+                  
+                  let sizeStr = `${c.l}x${c.w}`;
+                  if(c.th) sizeStr += ` (${c.th}MM)`;
+                  if(c.sku) sizeStr += ` - ${c.sku}`; // slightly different format usually better for lists
+                  
+                  text += `Size: ${sizeStr}\n`;
+                  text += `Boxes: ${c.resBoxes}\n`;
+                  text += `Area: ${fmt(c.resArea)} (sq feet)\n`;
+                  text += `Weight: ${fmtDec(c.resWeight)} tons\n`;
+                  
+                  if(c.resBase > 0) {
+                      text += `Amount: ₹${fmt(Math.round(c.resBase))}\n`;
+                      if(c.gst > 0) {
+                          text += `GST (${c.gst}%): ₹${fmt(Math.round(c.resGST))}\n`;
+                          text += `Amount (incl. ${c.gst}% GST): ₹${fmt(Math.round(c.resPrice))}\n`;
+                      }
+                  }
+                  text += "\n";
+              }
+          });
+          
+          if(!hasItems) {
+              alert("Please enter details first");
+              return;
+          }
 
-      if(state.mode === 'advanced') {
-        text += `\n------------------\n*TOTAL: ₹${document.getElementById('gt-price').innerText}*\n`;
-        text += `Weight: ${document.getElementById('gt-weight').innerText}t`;
-      } else if (state.cards[0].resPrice > 0) {
-        text += `\n💰 *Amount: ₹${fmt.format(Math.round(state.cards[0].resPrice))}*`;
+          // Grand Total
+          let totalBoxes = 0;
+          let totalArea = 0;
+          let totalWeight = 0;
+          let totalBase = 0;
+          let totalGST = 0;
+          let totalFinal = 0;
+
+          state.cards.forEach(c => {
+              totalBoxes += c.resBoxes;
+              totalArea += c.resArea;
+              totalWeight += c.resWeight;
+              totalBase += (c.resBase || 0);
+              totalGST += (c.resGST || 0);
+              totalFinal += c.resPrice;
+          });
+
+          text += `GRAND TOTAL:\n`;
+          text += `Total Boxes: ${totalBoxes}\n`;
+          text += `Total Area: ${fmtDec(totalArea)} ft²\n`;
+          text += `Total Weight: ${fmtDec(totalWeight)} tons\n`;
+          
+          if(totalFinal > 0) {
+              text += `Base Amount: ₹${fmt(Math.round(totalBase))}\n`;
+              text += `Total GST: ₹${fmt(Math.round(totalGST))}\n`;
+              text += `Final Amount (incl. GST): ₹${fmt(Math.round(totalFinal))}\n`;
+          }
       }
 
       const encoded = encodeURIComponent(text);

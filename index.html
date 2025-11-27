@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +12,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <script>
     tailwind.config = {
@@ -20,28 +21,23 @@
           fontFamily: { sans: ['Inter', 'sans-serif'] },
           colors: {
             brand: '#6366f1',
-            accent: '#a855f7',
             dark: '#050505',
-            panel: '#121215',
+            panel: '#0f0f11', 
+            border: '#27272a',
           },
           animation: {
-            'enter-spring': 'enterSpring 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
-            'pop': 'pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-            'shimmer': 'shimmer 3s linear infinite',
+            'slide-up': 'slideUp 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)',
+            'pop': 'pop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
           },
           keyframes: {
-            enterSpring: {
-              '0%': { opacity: '0', transform: 'translateY(30px) scale(0.95)' },
-              '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+            slideUp: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
             },
             pop: {
-              '0%': { transform: 'scale(1)' },
-              '50%': { transform: 'scale(1.15) translateY(-2px)', color: '#a5b4fc' },
+              '0%': { transform: 'scale(0.95)' },
+              '50%': { transform: 'scale(1.05)' },
               '100%': { transform: 'scale(1)' },
-            },
-            shimmer: {
-              '0%': { transform: 'translateX(-150%) skewX(-15deg)' },
-              '100%': { transform: 'translateX(150%) skewX(-15deg)' },
             }
           }
         }
@@ -51,168 +47,167 @@
 
   <style>
     body {
-      background-color: #050505;
-      background-image: 
-        radial-gradient(circle at 50% -20%, rgba(99, 102, 241, 0.15), transparent 60%),
-        radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.08), transparent 40%);
+      background-color: #000000;
+      /* Subtle static gradient for depth without performance cost */
+      background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #000000 60%);
       color: #e4e4e7;
       -webkit-tap-highlight-color: transparent;
-      overflow-x: hidden;
+      min-height: 100vh;
     }
     
-    /* Premium Glass Effect */
-    .glass-panel {
-      background: rgba(20, 20, 23, 0.7);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+    /* PRO PANEL: Solid dark with subtle border. Fast rendering. */
+    .pro-panel {
+      background-color: rgba(15, 15, 17, 0.96); /* High opacity */
       border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.5);
-      transition: border-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
 
-    /* Input Styling */
-    .input-field {
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* PRO INPUT: No Glow, just crisp borders */
+    .pro-input {
+      background-color: transparent;
+      border: none;
       color: white;
+      width: 100%;
     }
-    .input-field:focus {
-      border-color: #6366f1;
-      background: rgba(99, 102, 241, 0.08);
-      box-shadow: 0 0 15px rgba(99, 102, 241, 0.15);
+    .pro-input:focus {
       outline: none;
-      transform: translateY(-1px);
+    }
+    .pro-input::placeholder {
+      color: #52525b;
     }
 
-    /* Tactile Buttons */
-    .btn-press {
-      transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s;
+    .input-wrapper {
+        background-color: #18181b;
+        border: 1px solid #27272a;
+        transition: border-color 0.15s ease;
     }
-    .btn-press:active {
-      transform: scale(0.94);
-    }
-
-    /* Springy Mode Switcher */
-    .mode-slider {
-      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    .input-wrapper:focus-within {
+        border-color: #6366f1;
+        background-color: #1f1f22;
     }
 
-    /* Custom Selection */
-    ::selection { background: rgba(99, 102, 241, 0.3); color: white; }
+    /* Original 5-Box Grid Layout */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1.4fr 0.8fr 0.8fr 1fr;
+      gap: 6px;
+    }
+
+    /* Tactile Button Feedback */
+    .btn-active:active { transform: scale(0.96); transition: transform 0.05s; }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 0px; background: transparent; }
+
+    /* Sticky Header - High opacity solid color */
+    .header-scrolled {
+      background-color: rgba(0, 0, 0, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
     
-    /* Remove Spinners */
-    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-    
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 0px; background: transparent; } /* Hidden scrollbar for cleaner look */
+    /* Active Tab Text Color Override */
+    .tab-active { color: white !important; }
+    .tab-inactive { color: #9ca3af !important; }
   </style>
 </head>
-<body class="antialiased selection:bg-indigo-500/30">
+<body class="antialiased font-sans text-gray-200">
 
-  <!-- App Header -->
-  <header class="fixed top-0 inset-x-0 z-50 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" id="app-header">
-    <div class="glass-panel border-b-0 border-white/5 bg-black/80 backdrop-blur-xl">
-      <div class="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-3 group cursor-pointer" onclick="resetApp()">
-          <div class="relative w-9 h-9">
-            <div class="absolute inset-0 bg-gradient-to-br from-brand to-accent rounded-xl blur opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div class="relative w-full h-full rounded-xl bg-gradient-to-br from-brand to-accent flex items-center justify-center shadow-lg border border-white/10 btn-press">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
-            </div>
-          </div>
-          <div>
-            <h1 class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 leading-none tracking-tight">TilesPro</h1>
-            <p class="text-[10px] text-indigo-400 font-bold tracking-widest uppercase mt-0.5">Calculator</p>
-          </div>
+  <!-- Header -->
+  <header class="fixed top-0 inset-x-0 z-50 transition-colors duration-200 h-16 flex items-center" id="app-header">
+    <div class="max-w-2xl mx-auto px-5 w-full flex items-center justify-between">
+      <div class="flex items-center gap-3 cursor-pointer btn-active" onclick="window.location.reload()">
+        <!-- Brand Logo -->
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center shadow-md shadow-indigo-900/20">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
         </div>
-        <button onclick="resetApp()" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/5 text-gray-400 hover:text-white transition-colors btn-press">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-        </button>
+        <div class="flex flex-col">
+          <span class="text-base font-bold text-white tracking-tight">TilesPro</span>
+          <span class="text-[10px] text-indigo-400 font-bold uppercase tracking-widest">Calculator</span>
+        </div>
       </div>
+      <button onclick="window.location.reload()" class="w-9 h-9 rounded-full bg-[#18181b] flex items-center justify-center text-gray-400 hover:text-white border border-white/10 btn-active">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+      </button>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="pt-24 pb-20 px-3 max-w-2xl mx-auto" id="main-container">
+  <main class="pt-20 pb-10 px-4 max-w-xl mx-auto" id="main-container">
     
     <!-- Mode Switcher -->
-    <div class="glass-panel p-1.5 rounded-2xl flex mb-6 relative isolate shadow-2xl max-w-sm mx-auto overflow-hidden">
-      <div id="mode-indicator" class="mode-slider absolute top-1.5 bottom-1.5 left-1.5 w-[calc(50%-6px)] bg-gradient-to-r from-brand to-accent rounded-xl shadow-lg shadow-brand/20 -z-10"></div>
-      <button onclick="setMode('basic')" id="btn-basic" class="flex-1 py-3 text-xs font-bold uppercase tracking-wider rounded-xl transition-colors text-white btn-press">Basic</button>
-      <button onclick="setMode('advanced')" id="btn-advanced" class="flex-1 py-3 text-xs font-bold uppercase tracking-wider rounded-xl transition-colors text-gray-400 btn-press">Advanced</button>
+    <div class="pro-panel p-1 rounded-xl flex mb-4 relative isolate max-w-sm mx-auto overflow-hidden">
+      <!-- Animated Slider (Colored Gradient) -->
+      <div id="mode-indicator" class="absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-gradient-to-r from-indigo-600 to-violet-600 rounded-lg transition-transform duration-200 ease-out -z-10 shadow-lg shadow-indigo-900/30"></div>
+      
+      <button onclick="setMode('basic')" id="btn-basic" class="flex-1 py-2.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors text-white btn-active">Basic</button>
+      <button onclick="setMode('advanced')" id="btn-advanced" class="flex-1 py-2.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors text-gray-400 btn-active">Advanced</button>
     </div>
 
     <!-- Cards Container -->
-    <div id="cards-container" class="space-y-6 perspective-1000">
+    <div id="cards-container" class="space-y-4">
       <!-- Cards injected by JS -->
     </div>
 
     <!-- Add Button (Advanced Mode) -->
-    <div id="add-btn-container" class="hidden mt-6 px-1 animate-enter-spring" style="animation-delay: 0.1s;">
-      <button onclick="addCard()" class="group w-full py-5 border border-dashed border-gray-700 hover:border-brand rounded-2xl flex items-center justify-center gap-3 text-gray-400 hover:text-white transition-all bg-white/[0.01] hover:bg-brand/[0.05] btn-press">
-        <div class="w-8 h-8 rounded-full bg-gray-800 group-hover:bg-brand text-gray-400 group-hover:text-white flex items-center justify-center transition-colors shadow-lg">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" /></svg>
-        </div>
-        <span class="text-xs font-bold uppercase tracking-widest">Add New Item</span>
+    <div id="add-btn-container" class="hidden mt-4 animate-slide-up">
+      <button onclick="addCard()" class="w-full py-3.5 border-2 border-dashed border-indigo-500/30 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 hover:from-indigo-500/20 hover:to-purple-500/20 rounded-xl flex items-center justify-center gap-2 text-indigo-400 hover:text-indigo-300 transition-all btn-active">
+        <span class="text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/></svg>
+           Add More Item
+        </span>
       </button>
     </div>
 
     <!-- Grand Total (Advanced Mode) -->
-    <div id="grand-total-container" class="hidden mt-8 mb-8 animate-enter-spring" style="animation-delay: 0.2s;">
-      <div class="glass-panel rounded-3xl p-6 relative overflow-hidden group">
-        <!-- Ambient Glow -->
-        <div class="absolute -top-20 -right-20 w-40 h-40 bg-brand/30 blur-[60px] rounded-full pointer-events-none"></div>
-        <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-accent/30 blur-[60px] rounded-full pointer-events-none"></div>
-
-        <h3 class="text-center text-[10px] font-black uppercase text-gray-500 tracking-[0.3em] mb-6 relative z-10">Project Summary</h3>
+    <div id="grand-total-container" class="hidden mt-6 mb-4 animate-slide-up">
+      <div class="pro-panel rounded-2xl p-5 border-t-2 border-t-indigo-500 bg-gradient-to-b from-indigo-900/10 to-[#0f0f11]">
+        <h3 class="text-[10px] font-bold uppercase text-indigo-300 tracking-widest mb-4 text-center">Project Summary</h3>
         
-        <div class="grid grid-cols-2 gap-3 mb-5 relative z-10">
-          <div class="bg-black/40 rounded-2xl p-4 border border-white/5 text-center hover:border-white/10 transition-colors">
-            <div class="text-[9px] text-gray-400 font-bold uppercase mb-1 tracking-wider">Total Boxes</div>
-            <div class="text-2xl font-bold text-white tracking-tight num-pop" id="gt-boxes">0</div>
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div class="bg-[#18181b] rounded-lg p-3 border border-white/5 text-center shadow-inner shadow-black/20">
+            <div class="text-[9px] text-gray-500 font-bold uppercase mb-1">Boxes</div>
+            <div class="text-lg font-bold text-white tracking-tight" id="gt-boxes">0</div>
           </div>
-          <div class="bg-black/40 rounded-2xl p-4 border border-white/5 text-center hover:border-white/10 transition-colors">
-            <div class="text-[9px] text-gray-400 font-bold uppercase mb-1 tracking-wider">Total Area</div>
-            <div class="text-2xl font-bold text-white tracking-tight num-pop"><span id="gt-area">0</span> <span class="text-sm text-gray-600 font-bold ml-0.5">ft²</span></div>
+          <div class="bg-[#18181b] rounded-lg p-3 border border-white/5 text-center shadow-inner shadow-black/20">
+            <div class="text-[9px] text-gray-500 font-bold uppercase mb-1">Area</div>
+            <div class="text-lg font-bold text-white tracking-tight"><span id="gt-area">0</span> <span class="text-xs text-gray-500">ft²</span></div>
           </div>
-          <div class="bg-black/40 rounded-2xl p-4 border border-white/5 text-center col-span-2 hover:border-white/10 transition-colors">
-            <div class="text-[9px] text-gray-400 font-bold uppercase mb-1 tracking-wider">Total Weight</div>
-            <div class="text-2xl font-bold text-white tracking-tight num-pop"><span id="gt-weight">0</span> <span class="text-sm text-gray-600 font-bold ml-0.5">tons</span></div>
+          <div class="bg-[#18181b] rounded-lg p-3 border border-white/5 text-center col-span-2 flex justify-between px-6 items-center shadow-inner shadow-black/20">
+            <div class="text-[9px] text-gray-500 font-bold uppercase">Weight</div>
+            <div class="text-lg font-bold text-white tracking-tight"><span id="gt-weight">0</span> <span class="text-xs text-gray-500">tons</span></div>
           </div>
         </div>
         
-        <div class="relative overflow-hidden bg-gradient-to-r from-brand to-accent rounded-2xl p-[1px] shadow-2xl shadow-brand/20">
-            <div class="bg-[#0f0f12] rounded-2xl p-5 flex justify-between items-center relative z-10">
-                 <span class="text-xs font-bold text-indigo-200 uppercase tracking-wider">Final Estimate</span>
-                 <span class="text-3xl font-black text-white tracking-tight num-pop" id="gt-price">₹0</span>
-            </div>
-            <!-- Shimmer Overlay -->
-            <div class="absolute inset-0 z-20 pointer-events-none mix-blend-overlay">
-                <div class="w-1/2 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 animate-shimmer"></div>
-            </div>
+        <div class="bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-xl p-4 flex justify-between items-center border border-indigo-500/30">
+             <span class="text-[10px] font-bold text-indigo-300 uppercase tracking-widest">Total Amount</span>
+             <span class="text-2xl font-black text-white" id="gt-price">₹0</span>
         </div>
       </div>
     </div>
 
-    <!-- Share Actions -->
-    <div id="share-section" class="mt-8 pt-8 border-t border-white/5 flex justify-center gap-6 hidden animate-enter-spring" style="animation-delay: 0.1s;">
-      <button onclick="share('whatsapp')" class="group relative w-14 h-14 btn-press">
-         <div class="absolute inset-0 bg-[#25D366] rounded-full blur opacity-40 group-hover:opacity-80 transition-opacity"></div>
-         <div class="relative w-full h-full rounded-full bg-gradient-to-b from-[#4ade80] to-[#16a34a] flex items-center justify-center shadow-xl border border-white/10">
-             <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/></svg>
+    <!-- Share Actions (Always Visible, Compact) -->
+    <div id="share-section" class="mt-4 pt-4 border-t border-white/5 flex justify-center gap-4 animate-slide-up">
+      <button onclick="share('whatsapp')" class="flex flex-col items-center gap-1.5 btn-active group">
+         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 text-white flex items-center justify-center shadow-lg shadow-green-900/40 group-hover:scale-105 transition-transform border border-green-400/20">
+             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/></svg>
          </div>
       </button>
-      <button onclick="share('sms')" class="group relative w-14 h-14 btn-press">
-         <div class="absolute inset-0 bg-cyan-500 rounded-full blur opacity-40 group-hover:opacity-80 transition-opacity"></div>
-         <div class="relative w-full h-full rounded-full bg-gradient-to-b from-cyan-400 to-cyan-600 flex items-center justify-center shadow-xl border border-white/10">
-             <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+
+      <button onclick="share('sms')" class="flex flex-col items-center gap-1.5 btn-active group">
+         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 text-white flex items-center justify-center shadow-lg shadow-blue-900/40 group-hover:scale-105 transition-transform border border-blue-400/20">
+             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
          </div>
       </button>
-      <button onclick="share('copy')" class="group relative w-14 h-14 btn-press">
-         <div class="absolute inset-0 bg-indigo-500 rounded-full blur opacity-40 group-hover:opacity-80 transition-opacity"></div>
-         <div class="relative w-full h-full rounded-full bg-gradient-to-b from-indigo-500 to-indigo-700 flex items-center justify-center shadow-xl border border-white/10">
-             <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+
+      <button onclick="share('copy')" class="flex flex-col items-center gap-1.5 btn-active group">
+         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center shadow-lg shadow-indigo-900/40 group-hover:scale-105 transition-transform border border-indigo-400/20">
+             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+         </div>
+      </button>
+
+      <button onclick="resetApp()" class="flex flex-col items-center gap-1.5 btn-active group">
+         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-500 text-white flex items-center justify-center shadow-lg shadow-red-900/40 group-hover:scale-105 transition-transform border border-red-400/20">
+             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
          </div>
       </button>
     </div>
@@ -220,15 +215,13 @@
   </main>
 
   <!-- Copy Toast -->
-  <div id="toast" class="fixed top-24 left-1/2 -translate-x-1/2 bg-gray-900/90 backdrop-blur-xl border border-white/10 text-white px-6 py-3 rounded-2xl shadow-2xl font-bold text-sm transition-all duration-300 pointer-events-none opacity-0 translate-y-8 scale-90 z-[100] flex items-center gap-3">
-    <div class="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
-      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-    </div>
+  <div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 bg-[#27272a] text-white px-5 py-2.5 rounded-full shadow-xl font-medium text-xs transition-all duration-200 pointer-events-none opacity-0 translate-y-4 z-[100] flex items-center gap-2 border border-white/10">
+    <svg class="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
     Copied to clipboard
   </div>
 
   <script>
-    // --- HIGH PERFORMANCE CORE LOGIC (NO FRAMEWORK) ---
+    // --- HIGH PERFORMANCE JS ---
     
     // Data
     const SKU_MASTER = [
@@ -270,15 +263,12 @@
     // --- Mode Switching ---
     function setMode(mode) {
       if (state.mode === mode) return;
-      
-      // Trigger subtle haptic vibe if supported
-      if(navigator.vibrate) navigator.vibrate(10);
 
       state.mode = mode;
       
-      // Animate Switch
+      // Animations
       if (mode === 'advanced') {
-        modeIndicator.style.transform = 'translateX(100%) translateX(12px)';
+        modeIndicator.style.transform = 'translateX(100%) translateX(4px)';
         btnBasic.classList.replace('text-white', 'text-gray-400');
         btnAdvanced.classList.replace('text-gray-400', 'text-white');
       } else {
@@ -287,30 +277,17 @@
         btnBasic.classList.replace('text-gray-400', 'text-white');
       }
 
-      // Smooth content transition
-      container.style.opacity = '0';
-      container.style.transform = 'translateY(10px)';
-      
-      setTimeout(() => {
-        state.cards = [];
-        container.innerHTML = '';
-        addCard();
-        updateUI();
-        
-        requestAnimationFrame(() => {
-            container.style.transition = 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1)';
-            container.style.opacity = '1';
-            container.style.transform = 'translateY(0)';
-        });
-      }, 200);
+      state.cards = [];
+      container.innerHTML = '';
+      addCard();
+      updateUI();
     }
 
     function resetApp() {
-      if(confirm('Start a new project?')) {
-        state.cards = [];
-        container.innerHTML = '';
-        addCard();
-      }
+      state.cards = [];
+      container.innerHTML = '';
+      addCard();
+      updateUI();
     }
 
     // --- Card Logic ---
@@ -326,11 +303,9 @@
       
       renderCardHTML(id);
       
-      // Attach Listeners immediately
       const cardEl = document.getElementById(id);
       attachCardListeners(id, cardEl);
       
-      // Animate In
       updateUI();
     }
 
@@ -340,119 +315,129 @@
         state.cards.splice(idx, 1);
         const cardEl = document.getElementById(id);
         
-        // Exit Animation
-        cardEl.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        cardEl.style.transform = 'scale(0.95)';
         cardEl.style.opacity = '0';
-        cardEl.style.transform = 'scale(0.8) translateY(20px)';
         
         setTimeout(() => {
           cardEl.remove();
           calculateAll();
-        }, 300);
+        }, 150);
       }
     }
 
     // --- Rendering ---
     function renderCardHTML(id) {
       const html = `
-        <div id="${id}" class="glass-panel rounded-3xl p-5 relative animate-enter-spring group transition-all duration-300 hover:border-brand/30">
+        <div id="${id}" class="pro-panel rounded-2xl p-5 relative animate-slide-up transition-transform duration-200">
           ${state.mode === 'advanced' ? `
-          <button onclick="removeCard('${id}')" class="absolute -top-3 -right-3 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white shadow-xl opacity-0 group-hover:opacity-100 transition-all scale-50 group-hover:scale-100 z-10 border-2 border-[#050505] hover:bg-red-600 btn-press">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          <button onclick="removeCard('${id}')" class="absolute -top-2.5 -right-2.5 w-7 h-7 bg-[#18181b] rounded-full flex items-center justify-center text-red-500 border border-red-500/30 btn-active z-10 shadow-lg shadow-black/30">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>` : ''}
 
-          <!-- Search -->
-          <div class="mb-5 relative">
-            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 block pl-1">Tile Size</label>
-            <div class="relative group/input">
-              <div class="absolute inset-0 bg-brand/20 blur-lg rounded-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-500"></div>
-              <input type="text" data-field="sku" class="input-field relative w-full rounded-xl py-3.5 pl-11 pr-4 text-sm font-semibold text-white placeholder-gray-600 focus:placeholder-gray-500" placeholder="Search size (e.g. 600x1200)" autocomplete="off">
-              <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 transition-colors group-focus-within/input:text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-              
-              <!-- Suggestions Dropdown -->
-              <div class="suggestions hidden absolute z-20 top-full left-0 right-0 mt-2 bg-[#151518]/95 backdrop-blur-xl border border-gray-700/50 rounded-xl shadow-2xl max-h-56 overflow-y-auto custom-scroll"></div>
+          <!-- SKU Search -->
+          <div class="mb-4 relative">
+            <div class="relative input-wrapper rounded-xl">
+              <input type="text" data-field="sku" class="pro-input rounded-xl py-3 pl-4 pr-10 text-sm font-medium placeholder-gray-500" placeholder="Search Size (e.g. 600x1200)" autocomplete="off">
+              <div class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+              </div>
+              <div class="suggestions hidden absolute z-20 top-full left-0 right-0 mt-1 bg-[#18181b] border border-white/10 rounded-xl shadow-xl max-h-56 overflow-y-auto"></div>
             </div>
           </div>
 
-          <!-- Specs Grid -->
-          <div class="grid grid-cols-5 gap-2 mb-5 bg-black/20 p-2.5 rounded-2xl border border-white/5">
-            ${['l|Length|0', 'w|Width|0', 'th|Thick|mm', 'pcs|Pcs|0', 'kg|Kg/Box|0'].map(f => {
-              const [k, l, p] = f.split('|');
-              return `
-              <div class="flex flex-col items-center">
-                <label class="text-[8px] text-gray-500 font-bold uppercase mb-1.5 tracking-wider">${l}</label>
-                <input type="${k=='th'?'text':'number'}" data-field="${k}" class="input-field w-full text-center py-2 rounded-lg text-sm font-bold text-white placeholder-gray-700 bg-white/5 border-transparent focus:bg-white/10 focus:border-brand/40" placeholder="${p}">
-              </div>`;
-            }).join('')}
+          <!-- 5 Specs Box (Distinct Premium Boxes) -->
+          <div class="specs-grid mb-5">
+             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center">
+                <label class="text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Length</label>
+                <input type="number" data-field="l" class="pro-input text-center text-xs font-bold" placeholder="0">
+             </div>
+             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center">
+                <label class="text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Width</label>
+                <input type="number" data-field="w" class="pro-input text-center text-xs font-bold" placeholder="0">
+             </div>
+             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center">
+                <label class="text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Thick</label>
+                <input type="text" data-field="th" class="pro-input text-center text-xs font-bold" placeholder="mm">
+             </div>
+             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center">
+                <label class="text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Pcs</label>
+                <input type="number" data-field="pcs" class="pro-input text-center text-xs font-bold" placeholder="0">
+             </div>
+             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center">
+                <label class="text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Kg</label>
+                <input type="number" data-field="kg" class="pro-input text-center text-xs font-bold" placeholder="0">
+             </div>
           </div>
 
-          <!-- Mode & Qty -->
-          <div class="grid grid-cols-2 gap-4 mb-5 items-end">
+          <!-- Quantity Row -->
+          <div class="grid grid-cols-2 gap-3 mb-5 items-end">
             <div>
               <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 block pl-1">Calc Mode</label>
-              <div class="flex bg-black/40 rounded-xl p-1 border border-white/10 relative">
-                 <div class="mode-slider absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-gray-700/80 rounded-lg transition-all duration-300"></div>
-                 <button data-action="mode-area" class="flex-1 py-2.5 text-[10px] font-bold uppercase relative z-10 text-white transition-colors btn-press">Area</button>
-                 <button data-action="mode-boxes" class="flex-1 py-2.5 text-[10px] font-bold uppercase relative z-10 text-gray-400 transition-colors btn-press">Boxes</button>
+              <div class="flex bg-[#18181b] rounded-xl p-1 border border-white/5 relative isolate">
+                 <div class="mode-slider absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-gradient-to-r from-indigo-600 to-violet-600 rounded-lg transition-transform duration-200 border border-white/5 -z-10 shadow-lg shadow-indigo-900/30"></div>
+                 <button data-action="mode-area" class="flex-1 py-2 text-[10px] font-bold uppercase relative z-10 text-white transition-colors">Sq.Ft</button>
+                 <button data-action="mode-boxes" class="flex-1 py-2 text-[10px] font-bold uppercase relative z-10 text-gray-500 transition-colors">Boxes</button>
               </div>
             </div>
             <div>
               <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 block pl-1" data-label="qty">Area (ft²)</label>
-              <input type="number" data-field="qty" class="input-field w-full rounded-xl py-3.5 px-4 text-sm font-bold text-white" placeholder="Enter...">
+              <div class="relative input-wrapper rounded-xl">
+                  <input type="number" data-field="qty" class="pro-input rounded-xl py-2.5 px-3 text-sm font-bold pr-12" placeholder="0">
+                  <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 text-[10px] font-bold uppercase pointer-events-none tracking-wider" data-suffix="qty">ft²</span>
+              </div>
             </div>
           </div>
 
-          <!-- Price -->
-          <div class="bg-gradient-to-r from-gray-900/60 to-black/60 border border-white/5 rounded-2xl p-4 mb-5">
-             <div class="grid grid-cols-3 gap-4">
+          <!-- Price Row -->
+          <div class="bg-[#18181b] border border-white/5 rounded-xl p-3 mb-5">
+             <div class="grid grid-cols-3 gap-3">
                <div class="col-span-2">
                  <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block pl-1">Price / sq.ft</label>
-                 <div class="relative">
-                   <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 font-bold">₹</span>
-                   <input type="number" data-field="price" class="input-field w-full rounded-xl py-2.5 pl-8 pr-3 text-sm font-bold text-white" placeholder="0">
+                 <div class="relative input-wrapper rounded-lg">
+                   <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-sm">₹</span>
+                   <input type="number" data-field="price" class="pro-input rounded-lg py-2 pl-7 pr-3 text-sm font-bold" placeholder="0.00">
                  </div>
                </div>
                <div>
-                 <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block text-center">GST</label>
-                 <div class="relative">
-                    <select data-field="gst" class="input-field w-full rounded-xl py-2.5 pl-2 pr-6 text-sm font-bold text-white text-center appearance-none cursor-pointer bg-white/5">
+                 <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block text-center">GST %</label>
+                 <div class="relative input-wrapper rounded-lg">
+                    <select data-field="gst" class="pro-input rounded-lg py-2 pl-2 pr-6 text-sm font-bold text-center appearance-none cursor-pointer">
                         <option value="18">18%</option>
                         <option value="12">12%</option>
                         <option value="5">5%</option>
                         <option value="0">0%</option>
                     </select>
-                    <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-500 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    <svg class="absolute right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-500 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                  </div>
                </div>
              </div>
           </div>
 
-          <!-- Results -->
+          <!-- Mini Dashboard Results -->
           <div class="grid grid-cols-3 gap-2 mb-3">
-            <div class="bg-white/5 rounded-xl p-3 text-center border border-white/5">
+            <div class="bg-[#18181b] rounded-xl p-2.5 text-center border border-white/5">
               <div class="text-[9px] text-gray-500 font-bold uppercase tracking-wide mb-1">Boxes</div>
-              <div class="text-base font-bold text-white result-val num-pop" data-res="boxes">-</div>
+              <div class="text-base font-bold text-white result-val" data-res="boxes">-</div>
             </div>
-            <div class="bg-white/5 rounded-xl p-3 text-center border border-white/5">
+            <div class="bg-[#18181b] rounded-xl p-2.5 text-center border border-white/5">
                <div class="text-[9px] text-gray-500 font-bold uppercase tracking-wide mb-1">Area (ft²)</div>
-               <div class="text-base font-bold text-white result-val num-pop" data-res="area">-</div>
+               <div class="text-base font-bold text-white result-val" data-res="area">-</div>
             </div>
-             <div class="bg-white/5 rounded-xl p-3 text-center border border-white/5">
+             <div class="bg-[#18181b] rounded-xl p-2.5 text-center border border-white/5">
                <div class="text-[9px] text-gray-500 font-bold uppercase tracking-wide mb-1">Weight (t)</div>
-               <div class="text-base font-bold text-white result-val num-pop" data-res="weight">-</div>
+               <div class="text-base font-bold text-white result-val" data-res="weight">-</div>
             </div>
           </div>
 
-          <div class="relative overflow-hidden bg-gradient-to-r from-brand/20 to-accent/20 border border-brand/20 rounded-xl py-4 px-5 flex justify-between items-center shadow-lg group">
-             <!-- Shine effect -->
-             <div class="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-shimmer skew-x-12"></div>
-             
-             <span class="text-xs font-bold text-indigo-300 uppercase tracking-wider relative z-10">Total Amount</span>
-             <span class="text-2xl font-black text-white result-val tracking-tight relative z-10 num-pop" data-res="total">-</span>
+          <!-- Final Amount Bar -->
+          <div class="bg-[#18181b] border-l-4 border-indigo-500 rounded-r-xl py-3 px-4 flex justify-between items-center shadow-lg shadow-black/20">
+             <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total Amount</span>
+             <span class="text-xl font-black text-white result-val animate-pop" data-res="total">-</span>
           </div>
 
+          <!-- Meta Footer -->
           <div class="text-center mt-3">
-            <span class="text-[10px] text-gray-600 font-medium italic result-meta tracking-wide">Enter dimensions to calculate</span>
+            <span class="text-[9px] text-gray-600 font-medium italic result-meta tracking-wide">Enter dimensions to calculate</span>
           </div>
         </div>
       `;
@@ -464,7 +449,7 @@
       const inputs = el.querySelectorAll('input, select');
       const dataObj = state.cards.find(c => c.id === id);
 
-      // Input Handler
+      // Input Handler (Debounced slightly for visuals, but logic is instant)
       inputs.forEach(input => {
         input.addEventListener('input', (e) => {
           const field = e.target.dataset.field;
@@ -481,24 +466,25 @@
       const modeBoxesBtn = el.querySelector('[data-action="mode-boxes"]');
       const slider = el.querySelector('.mode-slider');
       const qtyLabel = el.querySelector('[data-label="qty"]');
+      const qtySuffix = el.querySelector('[data-suffix="qty"]');
 
       modeAreaBtn.addEventListener('click', () => {
-        if(navigator.vibrate) navigator.vibrate(5);
         dataObj.mode = 'area';
         slider.style.transform = 'translateX(0)';
-        modeAreaBtn.classList.add('text-white'); modeAreaBtn.classList.remove('text-gray-400');
-        modeBoxesBtn.classList.add('text-gray-400'); modeBoxesBtn.classList.remove('text-white');
+        modeAreaBtn.classList.add('text-white'); modeAreaBtn.classList.remove('text-gray-500');
+        modeBoxesBtn.classList.add('text-gray-500'); modeBoxesBtn.classList.remove('text-white');
         qtyLabel.innerText = 'Area (ft²)';
+        qtySuffix.innerText = 'ft²';
         calculate(id);
       });
 
       modeBoxesBtn.addEventListener('click', () => {
-        if(navigator.vibrate) navigator.vibrate(5);
         dataObj.mode = 'boxes';
         slider.style.transform = 'translateX(100%)';
-        modeBoxesBtn.classList.add('text-white'); modeBoxesBtn.classList.remove('text-gray-400');
-        modeAreaBtn.classList.add('text-gray-400'); modeAreaBtn.classList.remove('text-white');
+        modeBoxesBtn.classList.add('text-white'); modeBoxesBtn.classList.remove('text-gray-500');
+        modeAreaBtn.classList.add('text-gray-500'); modeAreaBtn.classList.remove('text-white');
         qtyLabel.innerText = 'Boxes';
+        qtySuffix.innerText = 'Boxes';
         calculate(id);
       });
     }
@@ -508,7 +494,7 @@
       const el = document.getElementById(id);
       const list = el.querySelector('.suggestions');
       
-      if(query.length < 2) {
+      if(query.length < 1) {
         list.classList.add('hidden');
         return;
       }
@@ -517,13 +503,13 @@
       
       if(matches.length > 0) {
         list.innerHTML = matches.map(s => `
-          <div class="px-4 py-3 hover:bg-white/10 cursor-pointer border-b border-gray-700/50 last:border-0 transition-colors flex flex-col gap-0.5 group/item" 
+          <div class="px-4 py-2.5 hover:bg-white/5 cursor-pointer border-b border-white/5 last:border-0 flex flex-col gap-0.5" 
                onclick='fillSku("${id}", ${JSON.stringify(s).replace(/'/g, "&#39;")})'>
-            <div class="text-xs font-bold text-gray-200 group-hover/item:text-brand transition-colors">${s.name}</div>
+            <div class="text-xs font-bold text-gray-200">${s.name}</div>
             <div class="text-[10px] text-gray-500 flex gap-2">
-               <span class="bg-white/10 px-1.5 rounded">${s.l}x${s.w}</span>
-               <span>${s.pcs}pcs</span>
-               <span>${s.kg}kg</span>
+               <span class="text-gray-500">${s.l}x${s.w}</span>
+               <span class="text-gray-500">${s.pcs}pcs</span>
+               <span class="text-gray-500">${s.kg}kg</span>
             </div>
           </div>
         `).join('');
@@ -537,14 +523,9 @@
       const data = state.cards.find(c => c.id === id);
       const el = document.getElementById(id);
       
-      // Update Data
       data.sku = sku.name;
-      data.l = sku.l;
-      data.w = sku.w;
-      data.pcs = sku.pcs;
-      data.kg = sku.kg;
+      data.l = sku.l; data.w = sku.w; data.pcs = sku.pcs; data.kg = sku.kg;
 
-      // Update UI Inputs
       el.querySelector('[data-field="sku"]').value = sku.name;
       el.querySelector('[data-field="l"]').value = sku.l;
       el.querySelector('[data-field="w"]').value = sku.w;
@@ -595,30 +576,28 @@
       c.resWeight = totalWeight;
       c.resPrice = amount;
 
-      // Update DOM Text (with Animation)
+      // Update DOM
       const el = document.getElementById(id);
+      const format = (n) => n ? n.toLocaleString('en-IN') : '-';
+      const formatDec = (n) => n ? n.toFixed(2) : '-';
       
-      animateNum(el.querySelector('[data-res="boxes"]'), boxes, 0);
-      animateNum(el.querySelector('[data-res="area"]'), totalArea, 2);
-      animateNum(el.querySelector('[data-res="weight"]'), totalWeight, 3);
-      
-      const priceEl = el.querySelector('[data-res="total"]');
-      // Special logic for Price to always animate even if 0 -> value
-      updateTextWithPop(priceEl, amount > 0 ? '₹' + Math.round(amount).toLocaleString('en-IN') : '-');
+      el.querySelector('[data-res="boxes"]').innerText = boxes || '-';
+      el.querySelector('[data-res="area"]').innerText = formatDec(totalArea);
+      el.querySelector('[data-res="weight"]').innerText = totalWeight ? totalWeight.toFixed(3) : '-';
+      el.querySelector('[data-res="total"]').innerText = amount > 0 ? '₹' + Math.round(amount).toLocaleString('en-IN') : '-';
 
       // Meta
       const meta = el.querySelector('.result-meta');
       if (ft2Box > 0) {
-        meta.innerHTML = `${pcs} pcs/box • <span class="text-gray-300 font-bold">${ft2Box.toFixed(2)} ft²</span> • ${m2Box.toFixed(2)} m²`;
+        meta.innerHTML = `<span class="text-indigo-400">${pcs} pcs/box</span> • ${ft2Box.toFixed(2)} ft²`;
       } else {
-        meta.innerText = 'Enter dimensions to calculate';
+        meta.innerText = 'Enter dimensions';
       }
 
       calculateAll();
     }
 
     function calculateAll() {
-      // Aggregate Grand Total
       let tb = 0, ta = 0, tw = 0, tp = 0;
       state.cards.forEach(c => {
         tb += c.resBoxes;
@@ -627,48 +606,14 @@
         tp += c.resPrice;
       });
 
-      // Update Global Elements
       if (state.mode === 'advanced') {
-        animateNum(document.getElementById('gt-boxes'), tb, 0);
-        animateNum(document.getElementById('gt-area'), ta, 0); 
+        document.getElementById('gt-boxes').innerText = tb;
+        document.getElementById('gt-area').innerText = ta.toFixed(0); 
         document.getElementById('gt-weight').innerText = tw.toFixed(3);
-        
-        const gtPrice = document.getElementById('gt-price');
-        updateTextWithPop(gtPrice, '₹' + Math.round(tp).toLocaleString('en-IN'));
+        document.getElementById('gt-price').innerText = '₹' + Math.round(tp).toLocaleString('en-IN');
       }
-
-      // Show Share if valid
-      if (tp > 0 || tb > 0) {
-        shareSection.classList.remove('hidden');
-      } else {
-        shareSection.classList.add('hidden');
-      }
-    }
-
-    // --- "Pro" Number Animation ---
-    function animateNum(el, endVal, decimals) {
-      if(!el) return;
       
-      const currentText = el.innerText.replace(/[^0-9.]/g, '');
-      const current = parseFloat(currentText) || 0;
-      
-      if (current === endVal && endVal !== 0) return;
-      if (endVal === 0) { el.innerText = '-'; return; }
-
-      // Add Pop Class
-      el.classList.remove('animate-pop');
-      void el.offsetWidth; // trigger reflow
-      el.classList.add('animate-pop');
-
-      el.innerText = endVal.toLocaleString('en-IN', { maximumFractionDigits: decimals });
-    }
-
-    function updateTextWithPop(el, text) {
-        if(el.innerText === text) return;
-        el.classList.remove('animate-pop');
-        void el.offsetWidth;
-        el.classList.add('animate-pop');
-        el.innerText = text;
+      // Share section always visible now
     }
 
     // --- Global UI Updates ---
@@ -679,7 +624,7 @@
       } else {
         addBtnContainer.classList.add('hidden');
         grandTotalContainer.classList.add('hidden');
-        // Only 1 card allowed
+        // If switching to basic, ensure only 1 card
         if(state.cards.length > 1) {
           state.cards = [state.cards[0]];
           container.innerHTML = '';
@@ -689,10 +634,8 @@
       }
     }
 
-    // --- Share ---
+    // --- Share Logic ---
     window.share = function(type) {
-      if(navigator.vibrate) navigator.vibrate(10);
-      
       let text = state.mode === 'basic' ? "*TILE ESTIMATE*\n" : "*PROJECT ESTIMATE*\n";
       const fmt = new Intl.NumberFormat('en-IN');
 
@@ -704,45 +647,46 @@
       });
 
       if(state.mode === 'advanced') {
-        text += `\n------------------\nTOTAL: ₹${document.getElementById('gt-price').innerText}\n`;
+        text += `\n------------------\n*TOTAL: ₹${document.getElementById('gt-price').innerText}*\n`;
         text += `Weight: ${document.getElementById('gt-weight').innerText}t`;
       } else if (state.cards[0].resPrice > 0) {
-        text += `\n💰 Amount: ₹${fmt.format(state.cards[0].resPrice)}`;
+        text += `\n💰 *Amount: ₹${fmt.format(Math.round(state.cards[0].resPrice))}*`;
       }
 
       const encoded = encodeURIComponent(text);
 
       if (type === 'whatsapp') window.open(`https://wa.me/?text=${encoded}`, '_blank');
       if (type === 'sms') window.open(`sms:?body=${encoded}`, '_self');
-      
       if (type === 'copy') {
         navigator.clipboard.writeText(text);
         const toast = document.getElementById('toast');
         toast.style.opacity = '1';
-        toast.style.transform = 'translate(-50%, 0) scale(1)';
+        toast.style.transform = 'translate(-50%, 0)';
         setTimeout(() => {
            toast.style.opacity = '0';
-           toast.style.transform = 'translate(-50%, 32px) scale(0.9)';
-        }, 2500);
+           toast.style.transform = 'translate(-50%, 16px)';
+        }, 2000);
       }
     }
 
-    // --- Header Scroll Effect ---
-    let lastScroll = 0;
+    // Sticky Header Scroll
     const header = document.getElementById('app-header');
     window.addEventListener('scroll', () => {
-      const current = window.scrollY;
-      if (current > lastScroll && current > 50) {
-        header.style.transform = 'translateY(-100%)';
+      if (window.scrollY > 20) {
+        header.classList.add('header-scrolled');
       } else {
-        header.style.transform = 'translateY(0)';
+        header.classList.remove('header-scrolled');
       }
-      lastScroll = current;
     }, { passive: true });
 
-    // Start
-    init();
+    // Close suggestions on click outside
+    document.addEventListener('click', (e) => {
+      if(!e.target.closest('.relative')) {
+        document.querySelectorAll('.suggestions').forEach(el => el.classList.add('hidden'));
+      }
+    });
 
+    init();
   </script>
 </body>
 </html>

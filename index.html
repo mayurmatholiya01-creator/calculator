@@ -7,7 +7,7 @@
   <!-- Native App Meta Tags -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#131316">
   
   <title>TilesPro Calculator</title>
   
@@ -53,89 +53,65 @@
   <style>
     body {
       background-color: #000000;
-      /* Subtle static gradient for depth without performance cost */
-      background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #000000 60%);
+      /* Deep atmospheric gradient */
+      background-image: radial-gradient(circle at 50% -20%, #2e1065 0%, #000000 60%);
       color: #e4e4e7;
       -webkit-tap-highlight-color: transparent;
       min-height: 100vh;
-      overscroll-behavior-y: none; /* Prevents rubber-banding on pull-to-refresh */
+      overscroll-behavior-y: none;
     }
     
-    /* PRO PANEL: Solid dark with subtle border. Fast rendering. */
-    .pro-panel {
-      background-color: rgba(15, 15, 17, 0.96); /* High opacity */
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    }
-
-    /* PRO INPUT: No Glow, just crisp borders */
+    /* PRO INPUT: Recessed Dark Look */
     .pro-input {
       background-color: transparent;
       border: none;
       color: white;
       width: 100%;
     }
-    .pro-input:focus {
-      outline: none;
-    }
-    .pro-input::placeholder {
-      color: #52525b;
-    }
+    .pro-input:focus { outline: none; }
+    .pro-input::placeholder { color: #52525b; }
 
-    /* Hide Numeric Arrows/Spinners (Chrome, Safari, Edge, Opera) */
+    /* Hide Numeric Arrows/Spinners */
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { 
-      -webkit-appearance: none; 
-      margin: 0; 
+      -webkit-appearance: none; margin: 0; 
     }
-    /* Hide Numeric Arrows/Spinners (Firefox) */
-    input[type=number] {
-      -moz-appearance: textfield;
-    }
+    input[type=number] { -moz-appearance: textfield; }
 
+    /* Input Wrapper: Cutout Effect */
     .input-wrapper {
-        background-color: #18181b;
+        background-color: #050505; /* Pure black cutout */
         border: 1px solid #27272a;
-        transition: border-color 0.15s ease, background-color 0.15s ease;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); /* Inner shadow for depth */
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .input-wrapper:focus-within {
         border-color: #6366f1;
-        background-color: #1f1f22;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 0 0 1px rgba(99, 102, 241, 0.3);
     }
 
-    /* Original 5-Box Grid Layout */
+    /* 5-Box Grid */
     .specs-grid {
       display: grid;
       grid-template-columns: 1.4fr 1.4fr 0.8fr 0.8fr 1fr;
-      gap: 6px;
+      gap: 8px;
     }
 
-    /* Tactile Button Feedback */
+    /* Tactile Button */
     .btn-active:active { transform: scale(0.96); transition: transform 0.05s; }
 
     /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 0px; background: transparent; }
-
-    /* Sticky Header Styling */
-    .header-scrolled {
-      background-color: rgba(0, 0, 0, 0.95);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    
-    /* Active Tab Text Color Override */
-    .tab-active { color: white !important; }
-    .tab-inactive { color: #9ca3af !important; }
   </style>
 </head>
 <body class="antialiased font-sans text-gray-200">
 
-  <!-- Header -->
-  <!-- transition-transform ensures smooth hiding. -translate-y-full hides it. -->
-  <header class="fixed top-0 inset-x-0 z-50 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] h-16 flex items-center will-change-transform" id="app-header">
+  <!-- Regular Header (Not Sticky) -->
+  <header class="relative w-full z-50 h-16 flex items-center bg-[#131316] border-b border-white/5 shadow-md">
     <div class="max-w-2xl mx-auto px-5 w-full flex items-center justify-between">
       <div class="flex items-center gap-3 cursor-pointer btn-active" onclick="window.location.reload()">
         <!-- Brand Logo -->
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center shadow-md shadow-indigo-900/20">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 border border-white/10">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
         </div>
         <div class="flex flex-col">
@@ -143,89 +119,95 @@
           <span class="text-[10px] text-indigo-400 font-bold uppercase tracking-widest">Calculator</span>
         </div>
       </div>
-      <button onclick="confirmReset()" class="w-9 h-9 rounded-full bg-[#18181b] flex items-center justify-center text-gray-400 hover:text-white border border-white/10 btn-active">
+      <button onclick="confirmReset()" class="w-9 h-9 rounded-full bg-[#131316] flex items-center justify-center text-gray-400 hover:text-white border border-white/10 btn-active shadow-lg">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
       </button>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="pt-20 pb-10 px-4 max-w-xl mx-auto" id="main-container">
+  <main class="pt-6 pb-10 px-4 max-w-xl mx-auto" id="main-container">
     
     <!-- Mode Switcher -->
-    <div class="pro-panel p-1 rounded-xl flex mb-4 relative isolate max-w-sm mx-auto overflow-hidden">
-      <!-- Animated Slider (Colored Gradient) -->
-      <div id="mode-indicator" class="absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-gradient-to-r from-indigo-600 to-violet-600 rounded-lg transition-transform duration-200 ease-out -z-10 shadow-lg shadow-indigo-900/30"></div>
+    <div class="bg-[#131316] p-1 rounded-xl flex mb-6 relative isolate max-w-sm mx-auto overflow-hidden border border-white/10 shadow-2xl">
+      <!-- Animated Slider -->
+      <div id="mode-indicator" class="absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg transition-transform duration-200 ease-out -z-10 shadow-lg shadow-indigo-900/40 border border-white/10"></div>
       
       <button onclick="setMode('basic')" id="btn-basic" class="flex-1 py-2.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors text-white btn-active">Basic</button>
       <button onclick="setMode('advanced')" id="btn-advanced" class="flex-1 py-2.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors text-gray-400 btn-active">Advanced</button>
     </div>
 
     <!-- Cards Container -->
-    <div id="cards-container" class="space-y-4">
+    <div id="cards-container" class="space-y-6">
       <!-- Cards injected by JS -->
     </div>
 
-    <!-- Add Button (Advanced Mode) -->
-    <div id="add-btn-container" class="hidden mt-4 animate-slide-up">
-      <button onclick="addCard()" class="w-full py-3.5 border-2 border-dashed border-indigo-500/30 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 hover:from-indigo-500/20 hover:to-purple-500/20 rounded-xl flex items-center justify-center gap-2 text-indigo-400 hover:text-indigo-300 transition-all btn-active">
-        <span class="text-xs font-bold uppercase tracking-widest flex items-center gap-2">
-           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/></svg>
-           Add More Item
+    <!-- Add Button -->
+    <div id="add-btn-container" class="hidden mt-6 animate-slide-up">
+      <button onclick="addCard()" class="w-full py-4 bg-[#131316] border border-dashed border-indigo-500/40 hover:border-indigo-500 rounded-xl flex items-center justify-center gap-2 text-indigo-400 hover:text-white transition-all btn-active group shadow-lg">
+        <span class="w-6 h-6 rounded-full bg-indigo-500/10 group-hover:bg-indigo-500 flex items-center justify-center transition-colors">
+            <svg class="w-3.5 h-3.5 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/></svg>
         </span>
+        <span class="text-xs font-bold uppercase tracking-widest">Add More Item</span>
       </button>
     </div>
 
-    <!-- Grand Total (Advanced Mode) -->
-    <div id="grand-total-container" class="hidden mt-6 mb-4 animate-slide-up">
-      <div class="pro-panel rounded-2xl p-5 border-t-2 border-t-indigo-500 bg-gradient-to-b from-indigo-900/10 to-[#0f0f11]">
-        <h3 class="text-[10px] font-bold uppercase text-indigo-300 tracking-widest mb-4 text-center">Project Summary</h3>
+    <!-- Grand Total -->
+    <div id="grand-total-container" class="hidden mt-8 mb-4 animate-slide-up">
+      <div class="bg-[#131316] rounded-2xl p-6 border-t border-t-white/10 border-b border-b-black/50 border-x border-x-white/5 relative overflow-hidden shadow-2xl">
+        <!-- Glow effect -->
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 opacity-70"></div>
+        <div class="absolute -top-20 -right-20 w-40 h-40 bg-indigo-500/20 blur-3xl rounded-full pointer-events-none"></div>
+
+        <h3 class="text-[10px] font-bold uppercase text-gray-400 tracking-[0.2em] mb-5 text-center flex items-center justify-center gap-2">
+            <span class="w-8 h-[1px] bg-gray-700"></span> Project Summary <span class="w-8 h-[1px] bg-gray-700"></span>
+        </h3>
         
         <div class="grid grid-cols-2 gap-3 mb-4">
-          <div class="bg-[#18181b] rounded-lg p-3 border border-white/5 text-center shadow-inner shadow-black/20">
-            <div class="text-[9px] text-gray-500 font-bold uppercase mb-1">Boxes</div>
-            <div class="text-lg font-bold text-white tracking-tight" id="gt-boxes">0</div>
+          <div class="bg-[#050505] rounded-xl p-3 border border-white/5 text-center relative overflow-hidden">
+            <div class="text-[9px] text-gray-500 font-bold uppercase mb-1">Total Boxes</div>
+            <div class="text-xl font-bold text-white tracking-tight" id="gt-boxes">0</div>
           </div>
-          <div class="bg-[#18181b] rounded-lg p-3 border border-white/5 text-center shadow-inner shadow-black/20">
-            <div class="text-[9px] text-gray-500 font-bold uppercase mb-1">Area</div>
-            <div class="text-lg font-bold text-white tracking-tight"><span id="gt-area">0</span> <span class="text-xs text-gray-500">ft²</span></div>
+          <div class="bg-[#050505] rounded-xl p-3 border border-white/5 text-center">
+            <div class="text-[9px] text-gray-500 font-bold uppercase mb-1">Total Area</div>
+            <div class="text-xl font-bold text-white tracking-tight"><span id="gt-area">0</span> <span class="text-xs text-gray-600 ml-0.5">ft²</span></div>
           </div>
-          <div class="bg-[#18181b] rounded-lg p-3 border border-white/5 text-center col-span-2 flex justify-between px-6 items-center shadow-inner shadow-black/20">
-            <div class="text-[9px] text-gray-500 font-bold uppercase">Weight</div>
-            <div class="text-lg font-bold text-white tracking-tight"><span id="gt-weight">0</span> <span class="text-xs text-gray-500">tons</span></div>
+          <div class="bg-[#050505] rounded-xl p-3 border border-white/5 text-center col-span-2 flex justify-between px-6 items-center">
+            <div class="text-[9px] text-gray-500 font-bold uppercase">Total Weight</div>
+            <div class="text-xl font-bold text-white tracking-tight"><span id="gt-weight">0</span> <span class="text-xs text-gray-600 ml-0.5">tons</span></div>
           </div>
         </div>
         
-        <div class="bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-xl p-4 flex justify-between items-center border border-indigo-500/30">
-             <span class="text-[10px] font-bold text-indigo-300 uppercase tracking-widest">Total Amount</span>
-             <span class="text-2xl font-black text-white" id="gt-price">₹0</span>
+        <div class="bg-gradient-to-r from-indigo-900/30 to-purple-900/30 rounded-xl p-4 flex justify-between items-end border border-indigo-500/20 mt-2">
+             <span class="text-[10px] font-bold text-indigo-300 uppercase tracking-widest mb-1">Final Amount</span>
+             <span class="text-2xl font-black text-white leading-none" id="gt-price">₹0</span>
         </div>
       </div>
     </div>
 
-    <!-- Share Actions (Always Visible, Compact) -->
-    <div id="share-section" class="mt-4 pt-4 border-t border-white/5 flex justify-center gap-4 animate-slide-up">
-      <button onclick="share('whatsapp')" class="flex flex-col items-center gap-1.5 btn-active group">
-         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 text-white flex items-center justify-center shadow-lg shadow-green-900/40 group-hover:scale-105 transition-transform border border-green-400/20">
-             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/></svg>
+    <!-- Share Actions -->
+    <div id="share-section" class="mt-4 pt-4 border-t border-white/5 flex justify-center gap-5 animate-slide-up pb-8">
+      <button onclick="share('whatsapp')" class="flex flex-col items-center gap-2 btn-active group">
+         <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 text-white flex items-center justify-center shadow-lg shadow-green-900/30 group-hover:-translate-y-1 transition-transform border border-white/10">
+             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/></svg>
          </div>
       </button>
 
-      <button onclick="share('sms')" class="flex flex-col items-center gap-1.5 btn-active group">
-         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 text-white flex items-center justify-center shadow-lg shadow-blue-900/40 group-hover:scale-105 transition-transform border border-blue-400/20">
-             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+      <button onclick="share('sms')" class="flex flex-col items-center gap-2 btn-active group">
+         <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-500 text-white flex items-center justify-center shadow-lg shadow-blue-900/30 group-hover:-translate-y-1 transition-transform border border-white/10">
+             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
          </div>
       </button>
 
-      <button onclick="share('copy')" class="flex flex-col items-center gap-1.5 btn-active group">
-         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center shadow-lg shadow-indigo-900/40 group-hover:scale-105 transition-transform border border-indigo-400/20">
-             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+      <button onclick="share('copy')" class="flex flex-col items-center gap-2 btn-active group">
+         <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center shadow-lg shadow-indigo-900/30 group-hover:-translate-y-1 transition-transform border border-white/10">
+             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
          </div>
       </button>
 
-      <button onclick="confirmReset()" class="flex flex-col items-center gap-1.5 btn-active group">
-         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-500 text-white flex items-center justify-center shadow-lg shadow-red-900/40 group-hover:scale-105 transition-transform border border-red-400/20">
-             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+      <button onclick="confirmReset()" class="flex flex-col items-center gap-2 btn-active group">
+         <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 text-white flex items-center justify-center shadow-lg shadow-red-900/30 group-hover:-translate-y-1 transition-transform border border-white/10">
+             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
          </div>
       </button>
     </div>
@@ -274,28 +256,22 @@
 
     // --- Initialization ---
     function init() {
-      loadState(); // Auto-Load from LocalStorage
+      loadState(); 
+      if(state.cards.length === 0) addCard();
       
-      if(state.cards.length === 0) {
-        addCard();
-      }
-      
-      // Sync UI with loaded state
       if(state.mode === 'advanced') {
-         // Force animation frame to ensure elements exist
          requestAnimationFrame(() => {
-            modeIndicator.style.transition = 'none'; // No animation on load
+            modeIndicator.style.transition = 'none';
             modeIndicator.style.transform = 'translateX(100%) translateX(4px)';
             btnBasic.classList.replace('text-white', 'text-gray-400');
             btnAdvanced.classList.replace('text-gray-400', 'text-white');
             setTimeout(() => modeIndicator.style.transition = '', 100);
          });
       }
-      
       updateUI();
     }
 
-    // --- Storage Logic (PRO Feature) ---
+    // --- Storage ---
     function saveState() {
         localStorage.setItem('tilesProData', JSON.stringify(state));
     }
@@ -306,22 +282,14 @@
             try {
                 const parsed = JSON.parse(saved);
                 state = parsed;
-                // Re-hydrate cards
                 container.innerHTML = '';
-                state.cards.forEach(card => {
-                    renderCardHTML(card.id, card); // Pass data to pre-fill
-                    // We need to attach listeners after rendering
-                });
-                // Attach listeners in a second pass
+                state.cards.forEach(card => renderCardHTML(card.id, card));
                 state.cards.forEach(card => {
                     const el = document.getElementById(card.id);
                     if(el) attachCardListeners(card.id, el);
-                    calculate(card.id, false); // Calculate without saving loop
+                    calculate(card.id, false); 
                 });
-            } catch(e) {
-                console.error("Save data corrupted", e);
-                state.cards = [];
-            }
+            } catch(e) { console.error(e); state.cards = []; }
         }
     }
 
@@ -331,7 +299,6 @@
 
       state.mode = mode;
       
-      // Animations
       if (mode === 'advanced') {
         modeIndicator.style.transform = 'translateX(100%) translateX(4px)';
         btnBasic.classList.replace('text-white', 'text-gray-400');
@@ -350,9 +317,7 @@
     }
 
     function confirmReset() {
-        if(confirm("Are you sure you want to reset everything?")) {
-            resetApp();
-        }
+        if(confirm("Are you sure you want to reset everything?")) resetApp();
     }
 
     function resetApp() {
@@ -367,18 +332,13 @@
     function addCard() {
       const id = 'card_' + Date.now() + Math.random().toString(36).substr(2, 9);
       const cardData = { 
-        id, 
-        sku: '', l: '', w: '', th: '', pcs: '', kg: '', 
+        id, sku: '', l: '', w: '', th: '', pcs: '', kg: '', 
         mode: 'area', qty: '', price: '', gst: 18,
         resBoxes: 0, resArea: 0, resWeight: 0, resPrice: 0, resBase: 0, resGST: 0
       };
       state.cards.push(cardData);
-      
       renderCardHTML(id, cardData);
-      
-      const cardEl = document.getElementById(id);
-      attachCardListeners(id, cardEl);
-      
+      attachCardListeners(id, document.getElementById(id));
       updateUI();
       saveState();
     }
@@ -388,10 +348,8 @@
       if (idx > -1) {
         state.cards.splice(idx, 1);
         const cardEl = document.getElementById(id);
-        
         cardEl.style.transform = 'scale(0.95)';
         cardEl.style.opacity = '0';
-        
         setTimeout(() => {
           cardEl.remove();
           calculateAll();
@@ -400,88 +358,99 @@
       }
     }
 
-    // --- Rendering ---
+    // --- Rendering (The Premium Look) ---
     function renderCardHTML(id, data = null) {
-      // Use provided data or defaults
       const d = data || { sku: '', l: '', w: '', th: '', pcs: '', kg: '', qty: '', price: '', gst: 18, mode: 'area' };
-      
       const isBoxes = d.mode === 'boxes';
+      const hasSku = d.sku && d.sku.length > 0;
       
+      // Card Container: Dark Gunmetal (#131316) with subtle ambient light gradient at top
       const html = `
-        <div id="${id}" class="rounded-2xl p-5 relative animate-slide-up transition-transform duration-200 bg-gradient-to-br from-[#1e1b4b] to-[#020202] border border-indigo-500/30 shadow-2xl shadow-black/50">
+        <div id="${id}" class="rounded-2xl p-5 relative animate-slide-up transition-transform duration-200 bg-[#131316] bg-gradient-to-b from-indigo-500/10 to-transparent border-t border-t-white/10 border-b border-b-black/40 border-x border-x-white/5 shadow-2xl overflow-hidden">
+          
+          <!-- Top Laser Highlight -->
+          <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent opacity-50"></div>
+
           ${state.mode === 'advanced' ? `
-          <button onclick="removeCard('${id}')" class="absolute -top-2.5 -right-2.5 w-7 h-7 bg-[#18181b] rounded-full flex items-center justify-center text-red-500 border border-red-500/30 btn-active z-10 shadow-lg shadow-black/30">
-            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          <button onclick="removeCard('${id}')" class="absolute -top-1 -right-1 w-8 h-8 rounded-bl-xl flex items-center justify-center text-red-500 hover:text-red-400 bg-red-500/10 hover:bg-red-500/20 transition-colors z-10">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>` : ''}
 
           <!-- SKU Search -->
-          <div class="mb-4 relative">
-            <div class="relative input-wrapper rounded-xl">
-              <input type="text" data-field="sku" value="${d.sku}" class="pro-input rounded-xl py-3 pl-4 pr-10 text-sm font-medium placeholder-gray-500" placeholder="Search Size (e.g. 600x1200)" autocomplete="off">
-              <div class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          <div class="mb-5 relative">
+            <div class="relative input-wrapper rounded-xl group">
+              <input type="text" data-field="sku" value="${d.sku}" class="pro-input rounded-xl py-3.5 pl-4 pr-10 text-sm font-semibold placeholder-gray-600 transition-colors" placeholder="Search Size (e.g. 600x1200)" autocomplete="off">
+              <div class="search-icon-container absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 transition-colors">
+                ${hasSku ? 
+                  `<button onclick="clearSku('${id}')" class="text-gray-400 hover:text-white"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>` 
+                  : 
+                  `<svg class="w-5 h-5 pointer-events-none group-focus-within:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>`
+                }
               </div>
-              <div class="suggestions hidden absolute z-20 top-full left-0 right-0 mt-1 bg-[#18181b] border border-white/10 rounded-xl shadow-xl max-h-56 overflow-y-auto"></div>
+              <div class="suggestions hidden absolute z-30 top-full left-0 right-0 mt-2 bg-[#0a0a0c] border border-white/10 rounded-xl shadow-2xl max-h-56 overflow-y-auto"></div>
             </div>
           </div>
 
-          <!-- 5 Specs Box (Distinct Premium Boxes) -->
-          <div class="specs-grid mb-5">
+          <!-- 5 Specs Box (Centered) -->
+          <div class="specs-grid mb-6">
              <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center justify-center">
-                <label class="w-full text-center text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Length</label>
-                <input type="number" inputmode="decimal" data-field="l" value="${d.l}" class="pro-input w-full text-center text-xs font-bold p-0" placeholder="0">
+                <label class="w-full text-center text-[9px] text-indigo-300/80 font-bold uppercase mb-1 tracking-widest">Length</label>
+                <input type="number" inputmode="decimal" data-field="l" value="${d.l}" class="pro-input w-full text-center text-sm font-bold p-0" placeholder="0">
              </div>
              <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center justify-center">
-                <label class="w-full text-center text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Width</label>
-                <input type="number" inputmode="decimal" data-field="w" value="${d.w}" class="pro-input w-full text-center text-xs font-bold p-0" placeholder="0">
+                <label class="w-full text-center text-[9px] text-indigo-300/80 font-bold uppercase mb-1 tracking-widest">Width</label>
+                <input type="number" inputmode="decimal" data-field="w" value="${d.w}" class="pro-input w-full text-center text-sm font-bold p-0" placeholder="0">
              </div>
              <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center justify-center">
-                <label class="w-full text-center text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Thick</label>
-                <input type="text" data-field="th" value="${d.th}" class="pro-input w-full text-center text-xs font-bold p-0" placeholder="mm">
+                <label class="w-full text-center text-[9px] text-gray-500 font-bold uppercase mb-1 tracking-widest">Thick</label>
+                <input type="text" data-field="th" value="${d.th}" class="pro-input w-full text-center text-sm font-bold p-0" placeholder="mm">
              </div>
              <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center justify-center">
-                <label class="w-full text-center text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Pcs</label>
-                <input type="number" inputmode="decimal" data-field="pcs" value="${d.pcs}" class="pro-input w-full text-center text-xs font-bold p-0" placeholder="0">
+                <label class="w-full text-center text-[9px] text-gray-500 font-bold uppercase mb-1 tracking-widest">Pcs</label>
+                <input type="number" inputmode="decimal" data-field="pcs" value="${d.pcs}" class="pro-input w-full text-center text-sm font-bold p-0" placeholder="0">
              </div>
              <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center justify-center">
-                <label class="w-full text-center text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Kg</label>
-                <input type="number" inputmode="decimal" data-field="kg" value="${d.kg}" class="pro-input w-full text-center text-xs font-bold p-0" placeholder="0">
+                <label class="w-full text-center text-[9px] text-gray-500 font-bold uppercase mb-1 tracking-widest">Kg</label>
+                <input type="number" inputmode="decimal" data-field="kg" value="${d.kg}" class="pro-input w-full text-center text-sm font-bold p-0" placeholder="0">
              </div>
           </div>
 
           <!-- Quantity Row -->
-          <div class="grid grid-cols-2 gap-3 mb-5 items-end">
+          <div class="grid grid-cols-2 gap-4 mb-6 items-end">
             <div>
               <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 block pl-1">Calc Mode</label>
-              <div class="flex bg-[#18181b] rounded-xl p-1 border border-white/5 relative isolate">
-                 <div class="mode-slider absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-gradient-to-r from-indigo-600 to-violet-600 rounded-lg transition-transform duration-200 border border-white/5 -z-10 shadow-lg shadow-indigo-900/30" style="transform: ${isBoxes ? 'translateX(100%)' : 'translateX(0)'}"></div>
-                 <button data-action="mode-area" class="flex-1 py-2 text-[10px] font-bold uppercase relative z-10 transition-colors ${!isBoxes ? 'text-white' : 'text-gray-500'}">Sq.Ft</button>
-                 <button data-action="mode-boxes" class="flex-1 py-2 text-[10px] font-bold uppercase relative z-10 transition-colors ${isBoxes ? 'text-white' : 'text-gray-500'}">Boxes</button>
+              <div class="flex bg-[#050505] rounded-xl p-1 border border-white/10 relative isolate shadow-inner">
+                 <div class="mode-slider absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg transition-transform duration-200 border border-white/10 -z-10 shadow-lg" style="transform: ${isBoxes ? 'translateX(100%)' : 'translateX(0)'}"></div>
+                 <button data-action="mode-area" class="flex-1 py-2.5 text-[10px] font-bold uppercase relative z-10 transition-colors ${!isBoxes ? 'text-white' : 'text-gray-500'}">Sq.Ft</button>
+                 <button data-action="mode-boxes" class="flex-1 py-2.5 text-[10px] font-bold uppercase relative z-10 transition-colors ${isBoxes ? 'text-white' : 'text-gray-500'}">Boxes</button>
               </div>
             </div>
             <div>
               <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 block pl-1" data-label="qty">${isBoxes ? 'Boxes' : 'Area (ft²)'}</label>
               <div class="relative input-wrapper rounded-xl">
-                  <input type="number" inputmode="decimal" data-field="qty" value="${d.qty}" class="pro-input rounded-xl py-2.5 px-3 text-sm font-bold pr-12" placeholder="0">
+                  <input type="number" inputmode="decimal" data-field="qty" value="${d.qty}" class="pro-input rounded-xl py-3 px-3 text-base font-bold pr-12" placeholder="0">
                   <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 text-[10px] font-bold uppercase pointer-events-none tracking-wider" data-suffix="qty">${isBoxes ? 'Boxes' : 'ft²'}</span>
               </div>
             </div>
           </div>
 
           <!-- Price Row -->
-          <div class="bg-[#18181b] border border-white/5 rounded-xl p-3 mb-5">
+          <div class="bg-[#0a0a0c] border border-white/5 rounded-xl p-4 mb-6 relative overflow-hidden">
+             <!-- Side Accent -->
+             <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-500 to-purple-500"></div>
+             
              <div class="grid grid-cols-3 gap-3">
                <div class="col-span-2">
                  <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block pl-1">Price / sq.ft</label>
-                 <div class="relative input-wrapper rounded-lg">
+                 <div class="relative input-wrapper rounded-lg bg-[#050505]">
                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-sm">₹</span>
-                   <input type="number" inputmode="decimal" data-field="price" value="${d.price}" class="pro-input rounded-lg py-2 pl-7 pr-3 text-sm font-bold" placeholder="0.00">
+                   <input type="number" inputmode="decimal" data-field="price" value="${d.price}" class="pro-input rounded-lg py-2.5 pl-7 pr-3 text-sm font-bold" placeholder="0.00">
                  </div>
                </div>
                <div>
                  <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block text-center">GST %</label>
-                 <div class="relative input-wrapper rounded-lg">
-                    <select data-field="gst" class="pro-input rounded-lg py-2 pl-2 pr-6 text-sm font-bold text-center appearance-none cursor-pointer">
+                 <div class="relative input-wrapper rounded-lg bg-[#050505]">
+                    <select data-field="gst" class="pro-input rounded-lg py-2.5 pl-2 pr-6 text-sm font-bold text-center appearance-none cursor-pointer">
                         <option value="18" ${d.gst == 18 ? 'selected' : ''}>18%</option>
                         <option value="12" ${d.gst == 12 ? 'selected' : ''}>12%</option>
                         <option value="5" ${d.gst == 5 ? 'selected' : ''}>5%</option>
@@ -494,30 +463,36 @@
           </div>
 
           <!-- Mini Dashboard Results -->
-          <div class="grid grid-cols-3 gap-2 mb-3">
-            <div class="bg-[#18181b] rounded-xl p-2.5 text-center border border-white/5">
+          <div class="grid grid-cols-3 gap-2 mb-4">
+            <div class="bg-[#050505] rounded-xl p-3 text-center border border-white/5 relative group">
+              <div class="absolute inset-0 bg-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
               <div class="text-[9px] text-gray-500 font-bold uppercase tracking-wide mb-1">Boxes</div>
-              <div class="text-base font-bold text-white result-val" data-res="boxes">-</div>
+              <div class="text-lg font-bold text-white result-val" data-res="boxes">-</div>
             </div>
-            <div class="bg-[#18181b] rounded-xl p-2.5 text-center border border-white/5">
+            <div class="bg-[#050505] rounded-xl p-3 text-center border border-white/5 relative group">
+               <div class="absolute inset-0 bg-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
                <div class="text-[9px] text-gray-500 font-bold uppercase tracking-wide mb-1">Area (ft²)</div>
-               <div class="text-base font-bold text-white result-val" data-res="area">-</div>
+               <div class="text-lg font-bold text-white result-val" data-res="area">-</div>
             </div>
-             <div class="bg-[#18181b] rounded-xl p-2.5 text-center border border-white/5">
+             <div class="bg-[#050505] rounded-xl p-3 text-center border border-white/5 relative group">
+               <div class="absolute inset-0 bg-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
                <div class="text-[9px] text-gray-500 font-bold uppercase tracking-wide mb-1">Weight (t)</div>
-               <div class="text-base font-bold text-white result-val" data-res="weight">-</div>
+               <div class="text-lg font-bold text-white result-val" data-res="weight">-</div>
             </div>
           </div>
 
           <!-- Final Amount Bar -->
-          <div class="bg-[#18181b] border-l-4 border-indigo-500 rounded-r-xl py-3 px-4 flex justify-between items-center shadow-lg shadow-black/20">
-             <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total Amount</span>
-             <span class="text-xl font-black text-white result-val animate-pop" data-res="total">-</span>
+          <div class="bg-[#0a0a0c] border border-white/5 rounded-xl py-4 px-5 flex justify-between items-center shadow-lg relative overflow-hidden">
+             <!-- Bottom Glow Line -->
+             <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 opacity-80"></div>
+             
+             <span class="text-[10px] font-bold text-indigo-200 uppercase tracking-widest">Total Amount</span>
+             <span class="text-2xl font-black text-white result-val animate-pop tracking-tight" data-res="total">-</span>
           </div>
 
           <!-- Meta Footer -->
           <div class="text-center mt-3">
-            <span class="text-[9px] text-gray-600 font-medium italic result-meta tracking-wide">Enter dimensions to calculate</span>
+            <span class="text-[10px] text-gray-600 font-medium italic result-meta tracking-wide">Enter dimensions to calculate</span>
           </div>
         </div>
       `;
@@ -529,19 +504,20 @@
       const inputs = el.querySelectorAll('input, select');
       const dataObj = state.cards.find(c => c.id === id);
 
-      // Input Handler (Debounced slightly for visuals, but logic is instant)
       inputs.forEach(input => {
         input.addEventListener('input', (e) => {
           const field = e.target.dataset.field;
           if(field) {
             dataObj[field] = e.target.value;
-            if(field === 'sku') handleSearch(id, e.target.value);
+            if(field === 'sku') {
+              handleSearch(id, e.target.value);
+              updateSearchIcon(id, e.target.value);
+            }
             calculate(id);
           }
         });
       });
 
-      // Mode Toggles
       const modeAreaBtn = el.querySelector('[data-action="mode-area"]');
       const modeBoxesBtn = el.querySelector('[data-action="mode-boxes"]');
       const slider = el.querySelector('.mode-slider');
@@ -570,6 +546,17 @@
     }
 
     // --- Search Logic ---
+    function updateSearchIcon(id, val) {
+      const el = document.getElementById(id);
+      const iconContainer = el.querySelector('.search-icon-container');
+      
+      if(val && val.length > 0) {
+        iconContainer.innerHTML = `<button onclick="clearSku('${id}')" class="text-gray-400 hover:text-white"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>`;
+      } else {
+        iconContainer.innerHTML = `<svg class="w-5 h-5 pointer-events-none group-focus-within:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>`;
+      }
+    }
+
     function handleSearch(id, query) {
       const el = document.getElementById(id);
       const list = el.querySelector('.suggestions');
@@ -582,21 +569,34 @@
       const matches = SKU_MASTER.filter(s => s.name.toLowerCase().includes(query.toLowerCase()));
       
       if(matches.length > 0) {
+        // Simplified Suggestions: Name only
         list.innerHTML = matches.map(s => `
-          <div class="px-4 py-2.5 hover:bg-white/5 cursor-pointer border-b border-white/5 last:border-0 flex flex-col gap-0.5" 
+          <div class="px-4 py-3 hover:bg-white/5 cursor-pointer border-b border-white/5 last:border-0 flex flex-col gap-0.5 group" 
                onclick='fillSku("${id}", ${JSON.stringify(s).replace(/'/g, "&#39;")})'>
-            <div class="text-xs font-bold text-gray-200">${s.name}</div>
-            <div class="text-[10px] text-gray-500 flex gap-2">
-               <span class="text-gray-500">${s.l}x${s.w}</span>
-               <span class="text-gray-500">${s.pcs}pcs</span>
-               <span class="text-gray-500">${s.kg}kg</span>
-            </div>
+            <div class="text-xs font-bold text-gray-200 group-hover:text-indigo-300 transition-colors">${s.name}</div>
           </div>
         `).join('');
         list.classList.remove('hidden');
       } else {
         list.classList.add('hidden');
       }
+    }
+
+    window.clearSku = function(id) {
+       const data = state.cards.find(c => c.id === id);
+       const el = document.getElementById(id);
+       
+       data.sku = ''; data.l = ''; data.w = ''; data.th = ''; data.pcs = ''; data.kg = '';
+       
+       el.querySelector('[data-field="sku"]').value = '';
+       el.querySelector('[data-field="l"]').value = '';
+       el.querySelector('[data-field="w"]').value = '';
+       el.querySelector('[data-field="th"]').value = '';
+       el.querySelector('[data-field="pcs"]').value = '';
+       el.querySelector('[data-field="kg"]').value = '';
+       
+       updateSearchIcon(id, '');
+       calculate(id);
     }
 
     window.fillSku = function(id, sku) {
@@ -612,6 +612,7 @@
       el.querySelector('[data-field="pcs"]').value = sku.pcs;
       el.querySelector('[data-field="kg"]').value = sku.kg;
       
+      updateSearchIcon(id, sku.name);
       el.querySelector('.suggestions').classList.add('hidden');
       calculate(id);
     }
@@ -629,7 +630,6 @@
       const price = parseFloat(c.price) || 0;
       const gst = parseFloat(c.gst) || 0;
 
-      // Coverage
       let ft2Box = 0;
       let m2Box = 0;
       if (l && w && pcs) {
@@ -637,7 +637,6 @@
         ft2Box = m2Box * 10.7639;
       }
 
-      // Results
       let boxes = 0;
       if (qty > 0 && ft2Box > 0) {
         boxes = c.mode === 'area' ? Math.ceil(qty / ft2Box) : Math.ceil(qty);
@@ -654,7 +653,6 @@
         amount = base + (base * (gst/100));
       }
 
-      // Store results
       c.resBoxes = boxes;
       c.resArea = totalArea;
       c.resWeight = totalWeight;
@@ -662,7 +660,6 @@
       c.resBase = base;
       c.resGST = amount - base;
 
-      // Update DOM
       const el = document.getElementById(id);
       if(el) {
           const formatDec = (n) => n ? n.toFixed(2) : '-';
@@ -672,15 +669,13 @@
           el.querySelector('[data-res="weight"]').innerText = totalWeight ? totalWeight.toFixed(3) : '-';
           el.querySelector('[data-res="total"]').innerText = amount > 0 ? '₹' + Math.round(amount).toLocaleString('en-IN') : '-';
 
-          // Meta
           const meta = el.querySelector('.result-meta');
           if (ft2Box > 0) {
-            meta.innerHTML = `<span class="text-indigo-400">${pcs} pcs/box</span> • ${ft2Box.toFixed(2)} ft²`;
+            meta.innerHTML = `<span class="text-indigo-400 font-bold">${pcs} pcs/box</span> <span class="text-gray-600 mx-1">•</span> ${ft2Box.toFixed(2)} ft²`;
           } else {
-            meta.innerText = 'Enter dimensions';
+            meta.innerText = 'Enter dimensions to calculate';
           }
       }
-
       calculateAll(save);
     }
 
@@ -699,11 +694,9 @@
         document.getElementById('gt-weight').innerText = tw.toFixed(3);
         document.getElementById('gt-price').innerText = '₹' + Math.round(tp).toLocaleString('en-IN');
       }
-      
       if(save) saveState();
     }
 
-    // --- Global UI Updates ---
     function updateUI() {
       if (state.mode === 'advanced') {
         addBtnContainer.classList.remove('hidden');
@@ -711,27 +704,20 @@
       } else {
         addBtnContainer.classList.add('hidden');
         grandTotalContainer.classList.add('hidden');
-        // If switching to basic, ensure only 1 card (handled in setMode usually, but good check)
       }
     }
 
     // --- Share Logic ---
     window.share = function(type) {
-      // Helpers
       const fmt = (n) => new Intl.NumberFormat('en-IN').format(n);
       const fmtDec = (n) => new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 }).format(n);
       
       let text = "";
 
       if(state.mode === 'basic') {
-          // --- BASIC MODE FORMAT ---
           const c = state.cards[0];
-          if(!c || c.resBoxes === 0) {
-              alert("Please enter details first");
-              return;
-          }
+          if(!c || c.resBoxes === 0) { alert("Please enter details first"); return; }
           
-          // Construct size string: "300x600x9MM (12x24) Wall"
           let sizeStr = `${c.l}x${c.w}`;
           if(c.th) sizeStr += `x${c.th}MM`;
           if(c.sku) sizeStr += ` (${c.sku})`;
@@ -750,24 +736,19 @@
           }
       } 
       else {
-          // --- ADVANCED MODE FORMAT ---
           text += "TILE CALCULATION DETAILS\n\n";
-          
           let hasItems = false;
           state.cards.forEach((c, i) => {
               if(c.resBoxes > 0) {
                   hasItems = true;
                   text += `ITEM ${i+1}:\n`;
-                  
                   let sizeStr = `${c.l}x${c.w}`;
                   if(c.th) sizeStr += ` (${c.th}MM)`;
-                  if(c.sku) sizeStr += ` - ${c.sku}`; // slightly different format usually better for lists
-                  
+                  if(c.sku) sizeStr += ` - ${c.sku}`;
                   text += `Size: ${sizeStr}\n`;
                   text += `Boxes: ${c.resBoxes}\n`;
                   text += `Area: ${fmt(c.resArea)} (sq feet)\n`;
                   text += `Weight: ${fmtDec(c.resWeight)} tons\n`;
-                  
                   if(c.resBase > 0) {
                       text += `Amount: ₹${fmt(Math.round(c.resBase))}\n`;
                       if(c.gst > 0) {
@@ -778,34 +759,18 @@
                   text += "\n";
               }
           });
-          
-          if(!hasItems) {
-              alert("Please enter details first");
-              return;
-          }
+          if(!hasItems) { alert("Please enter details first"); return; }
 
-          // Grand Total
-          let totalBoxes = 0;
-          let totalArea = 0;
-          let totalWeight = 0;
-          let totalBase = 0;
-          let totalGST = 0;
-          let totalFinal = 0;
-
+          let totalBoxes = 0, totalArea = 0, totalWeight = 0, totalBase = 0, totalGST = 0, totalFinal = 0;
           state.cards.forEach(c => {
-              totalBoxes += c.resBoxes;
-              totalArea += c.resArea;
-              totalWeight += c.resWeight;
-              totalBase += (c.resBase || 0);
-              totalGST += (c.resGST || 0);
-              totalFinal += c.resPrice;
+              totalBoxes += c.resBoxes; totalArea += c.resArea; totalWeight += c.resWeight;
+              totalBase += (c.resBase || 0); totalGST += (c.resGST || 0); totalFinal += c.resPrice;
           });
 
           text += `GRAND TOTAL:\n`;
           text += `Total Boxes: ${totalBoxes}\n`;
           text += `Total Area: ${fmtDec(totalArea)} ft²\n`;
           text += `Total Weight: ${fmtDec(totalWeight)} tons\n`;
-          
           if(totalFinal > 0) {
               text += `Base Amount: ₹${fmt(Math.round(totalBase))}\n`;
               text += `Total GST: ₹${fmt(Math.round(totalGST))}\n`;
@@ -814,7 +779,6 @@
       }
 
       const encoded = encodeURIComponent(text);
-
       if (type === 'whatsapp') window.open(`https://wa.me/?text=${encoded}`, '_blank');
       if (type === 'sms') window.open(`sms:?body=${encoded}`, '_self');
       if (type === 'copy') {
@@ -829,48 +793,8 @@
       }
     }
 
-    // Sticky Header Scroll Logic
-    const header = document.getElementById('app-header');
-    let lastScrollY = window.scrollY;
-
-    // Use requestAnimationFrame for smooth visuals
-    let ticking = false;
-
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-          
-          // 1. Background transparency toggle
-          if (currentScrollY > 10) {
-            header.classList.add('header-scrolled');
-          } else {
-            header.classList.remove('header-scrolled');
-          }
-
-          // 2. Hide/Show Logic
-          // > 60px ensures we don't hide immediately at top
-          if (currentScrollY > lastScrollY && currentScrollY > 60) {
-            // Scrolling Down -> Hide
-            // We use -translate-y-full (Tailwind) to slide completely out of view
-            header.classList.add('-translate-y-full');
-          } else if (currentScrollY < lastScrollY) {
-            // Scrolling Up -> Show
-            header.classList.remove('-translate-y-full');
-          }
-
-          lastScrollY = Math.max(0, currentScrollY);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }, { passive: true });
-
-    // Close suggestions on click outside
     document.addEventListener('click', (e) => {
-      if(!e.target.closest('.relative')) {
-        document.querySelectorAll('.suggestions').forEach(el => el.classList.add('hidden'));
-      }
+      if(!e.target.closest('.relative')) document.querySelectorAll('.suggestions').forEach(el => el.classList.add('hidden'));
     });
 
     init();

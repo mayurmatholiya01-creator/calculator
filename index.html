@@ -2,1264 +2,749 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <title>TilesPro Calculator</title>
   
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-  <script src="../imagedata.js"></script>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
   
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            primary: '#6366f1', // Indigo 500
+            'primary-dark': '#4f46e5', // Indigo 600
+            secondary: '#a855f7', // Purple 500
+            surface: '#18181b', // Zinc 900
+            'surface-glass': 'rgba(24, 24, 27, 0.7)',
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.4s ease-out',
+            'slide-up': 'slideUp 0.3s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Global Styles -->
   <style>
-    :root {
-      /* --- ORIGINAL THEME VARIABLES (UNCHANGED) --- */
-      --primary: #6366f1; 
-      --primary-light: #a855f7;
-      
-      --bg-primary: #0a0a0b;
-      --glass: rgba(30, 30, 35, 0.6);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --glass-hover: rgba(35, 35, 40, 0.75);
-      
-      --text-primary: #f0f6fc;
-      --text-secondary: #c9d1d9;
-      --text-muted: #9ca3af;
-      
-      --border-radius: 16px;
-      --border-radius-sm: 10px;
-
-      --success: #10b981;
-      --warning: #f59e0b;
-      --error: #ef4444;
-      
-      --bg-secondary: #1a1a1e;
-
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.2);
-      
-      --safe-area-top: env(safe-area-inset-top);
-      --safe-area-bottom: env(safe-area-inset-bottom);
-      --safe-area-left: env(safe-area-inset-left);
-      --safe-area-right: env(safe-area-inset-right);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    .app-header {
-      position: sticky; 
-      top: 0;
-      width: 100%;
-      padding: 15px 20px;
-      border-bottom: 1px solid var(--glass-border);
-      z-index: 100;
-      overflow: hidden; 
-      transition: transform 0.3s ease-out;
-      will-change: transform;
-      background: rgba(10, 10, 11, 0.8);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    .app-header.header-hidden {
-        transform: translateY(-100%);
-    }
-
-    .header-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 600;
-    }
-
-    .logo-container { display: flex; align-items: center; gap: 10px; }
-    .logo-container img { height: 35px; width: auto; object-fit: contain; }
-
-    .header-icon-btn { background: transparent; border: none; cursor: pointer; padding: 5px; line-height: 0; }
-    .header-icon-btn svg { width: 20px; height: 20px; stroke: var(--text-secondary); transition: all 0.3s ease; }
-    .header-icon-btn:hover svg { stroke: var(--text-primary); transform: rotate(90deg); }
-
-    html {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      height: 100%;
-    }
-
     body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg-primary);
-      background-image: radial-gradient(at 50% 0%, hsla(228,100%,74%,0.1) 0, transparent 50%);
-      color: var(--text-primary);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start; /* Changed to top align */
-      padding: max(1rem, var(--safe-area-top)) max(1rem, var(--safe-area-right)) max(1rem, var(--safe-area-bottom)) max(1rem, var(--safe-area-left));
-      transition: background-image 0.3s ease;
+      background-color: #09090b;
+      background-image: radial-gradient(at 50% 0%, rgba(99, 102, 241, 0.15) 0, transparent 50%), radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.1) 0, transparent 50%);
+      background-attachment: fixed;
+      color: #f4f4f5;
       -webkit-tap-highlight-color: transparent;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 720px;
-      margin: 0 auto;
-      transition: all 0.3s ease;
-      padding-top: 10px;
-    }
-
-    /* Mode Switch */
-    .mode-switch {
-      display: flex;
-      background: var(--glass);
-      border-radius: var(--border-radius-sm);
-      padding: 3px;
-      margin-bottom: 1rem;
-      position: relative;
-      border: 1px solid var(--glass-border);
-      transition: all 0.3s ease;
-    }
-
-    .mode-switch-option {
-      flex: 1;
-      padding: 0.6rem 1rem;
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: color 0.2s ease;
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .mode-switch-option.active {
-      color: var(--text-primary);
-    }
-
-    .mode-switch::after {
-      content: '';
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      bottom: 3px;
-      width: calc(50% - 3px);
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      border-radius: calc(var(--border-radius-sm) - 3px);
-      transition: transform 0.3s ease;
-      z-index: 1;
-    }
-
-    .mode-switch.advanced-mode::after {
-      transform: translateX(100%);
-    }
-
-    /* Calculator cards */
-    .calculator-cards {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .calculator-card {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--border-radius);
-      padding: 1.25rem;
-      position: relative;
-      transition: all 0.2s ease;
-      animation: cardSlideIn 0.4s ease-out;
-    }
-
-    @keyframes cardSlideIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .delete-card-btn {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: none;
-      background: linear-gradient(135deg, #ef4444, #dc2626);
-      color: white;
-      cursor: pointer;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.2s ease;
-      z-index: 10;
-      border: 2px solid var(--bg-primary);
-      box-shadow: var(--shadow);
-    }
-
-    .container.advanced-mode .delete-card-btn {
-      display: flex;
-    }
-
-    /* Form sections */
-    .form-section { margin-bottom: 1rem; }
-    
-    /* Input Mode Row (Compacted) */
-    .input-mode-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-bottom: 1rem;
-        align-items: end;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 0.5rem;
-    }
-    .form-group { position: relative; }
-    .form-group.full-width { width: 100%; margin-bottom: 1rem; }
-
-    /* Labels */
-    .gst-label-centered {
-      text-align: center;
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      margin-bottom: 0.4rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 0.4rem;
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-
-    /* Inputs */
-    .form-input, .form-select {
-      width: 100%;
-      padding: 0.75rem 0.8rem;
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--border-radius-sm);
-      color: var(--text-primary);
-      font-size: 15px;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      outline: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
+      min-height: 100vh;
     }
     
-    .form-select {
-      background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23d1d5db' stroke-width='2' fill='none'/></svg>");
-      background-repeat: no-repeat;
-      background-position: right 0.8rem center;
-      background-size: 10px 6px;
-      padding-right: 2rem;
-    }
-    .form-select option {
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      padding: 0.5rem;
+    /* Smooth Scrolling */
+    html {
+      scroll-behavior: smooth;
     }
 
-    /* Price input */
-    .price-input-container { position: relative; }
-    .price-input-container::before {
-      content: '₹';
-      position: absolute;
-      left: 0.8rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      font-weight: 600;
-      z-index: 2;
-      pointer-events: none;
-    }
-    .form-input.price-input { padding-left: 1.8rem; }
-
-    /* Search Input & Suggestions */
-    .input-wrapper { position: relative; }
-    .sku-search { padding-right: 35px; }
-    .clear-sku-btn {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        color: var(--text-muted);
-        cursor: pointer;
-        display: none;
-        padding: 5px;
-        z-index: 5;
-    }
-    .clear-sku-btn.show { display: block; }
-
-    .suggestions-list {
-        position: absolute;
-        top: 100%; left: 0; right: 0;
-        background: #1a1a1e;
-        border: 1px solid var(--glass-border);
-        border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
-        max-height: 200px;
-        overflow-y: auto;
-        z-index: 100;
-        box-shadow: var(--shadow-lg);
-        margin-top: 2px;
-        display: none;
-    }
-    .suggestion-item {
-        padding: 10px 15px;
-        color: var(--text-primary);
-        font-size: 0.9rem;
-        border-bottom: 1px solid var(--glass-border);
-        cursor: pointer;
-        transition: background 0.2s;
-    }
-
-    /* --- OPTIMIZED 5 BOX GRID --- */
-    .specs-container {
-        margin-bottom: 1rem;
-        background: rgba(255,255,255,0.02);
-        padding: 8px 10px;
-        border-radius: var(--border-radius-sm);
-        border: 1px solid var(--glass-border);
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+    
+    /* Glassmorphism Classes */
+    .glass {
+      background: rgba(24, 24, 27, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
     
-    .specs-grid-5 {
-        display: grid;
-        /* Optimized Columns: 
-           Length & Width (Indices 0,1) = Wider (1.4fr) for 4 digits
-           Thick & Pcs (Indices 2,3) = Narrower (0.8fr) for 2 digits
-           Kg (Index 4) = Medium (1fr)
-        */
-        grid-template-columns: 1.4fr 1.4fr 0.8fr 0.8fr 1fr;
-        gap: 6px;
-    }
-    .spec-box {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .spec-box label {
-        font-size: 0.55rem;
-        color: var(--text-muted);
-        margin-bottom: 3px;
-        white-space: nowrap;
-        text-transform: uppercase;
-    }
-    .spec-input {
-        width: 100%;
-        padding: 6px 0;
-        text-align: center;
-        background: rgba(0,0,0,0.2);
-        border: 1px solid var(--glass-border);
-        border-radius: 6px;
-        color: var(--text-primary);
-        font-size: 0.85rem;
-        font-weight: 600;
-        transition: border-color 0.2s;
-    }
-    .spec-input:focus {
-        border-color: var(--primary);
-        background: rgba(99, 102, 241, 0.1);
+    .glass-card {
+      background: rgba(30, 30, 35, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     }
 
-    /* Focus states */
-    .form-input:focus, .form-select:focus {
-      border-color: var(--primary);
-      background: var(--glass-hover);
-      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+    /* Hide number input spinners */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
     }
 
-    /* Compact Mode toggle */
-    .mode-toggle {
-      display: flex;
-      background: var(--glass);
-      border-radius: var(--border-radius-sm);
-      padding: 3px;
-      position: relative;
-      border: 1px solid var(--glass-border);
-      height: 42px; /* Fixed height to match inputs */
-    }
-    .mode-option {
-      flex: 1;
-      padding: 0;
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      font-size: 0.7rem;
-      font-weight: 600;
-      cursor: pointer;
-      position: relative;
-      z-index: 2;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .mode-option.active { color: var(--text-primary); }
-    .mode-toggle::after {
-      content: '';
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      bottom: 3px;
-      width: calc(50% - 3px);
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      border-radius: calc(var(--border-radius-sm) - 3px);
-      transition: transform 0.2s ease;
-      z-index: 1;
-    }
-    .mode-toggle.boxes-mode::after { transform: translateX(100%); }
-
-    /* Price section */
-    .price-section {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--border-radius-sm);
-      padding: 0.8rem;
-      margin-bottom: 1rem;
-    }
-
-    /* NEW COMPACT RESULTS DASHBOARD */
-    .results-container {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        margin-bottom: 10px;
-    }
-    
-    .results-strip {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 8px;
-    }
-    
-    .result-box-sm {
-        background: rgba(255,255,255,0.03);
-        border: 1px solid var(--glass-border);
-        border-radius: var(--border-radius-sm);
-        padding: 8px 4px;
-        text-align: center;
-    }
-    .result-box-sm .lbl {
-        color: var(--text-secondary);
-        font-size: 0.6rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        margin-bottom: 2px;
-    }
-    .result-box-sm .val {
-        color: var(--text-primary);
-        font-size: 0.95rem;
-        font-weight: 700;
-        white-space: nowrap;
-    }
-
-    .result-total-bar {
-        background: linear-gradient(90deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
-        border: 1px solid var(--glass-border);
-        border-radius: var(--border-radius-sm);
-        padding: 10px 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 2px;
-    }
-    .result-total-bar .lbl {
-        color: var(--primary-light);
-        font-size: 0.8rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    .result-total-bar .val {
-        color: #fff;
-        font-size: 1.2rem;
-        font-weight: 800;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-
-    /* Results Meta (Updated to show dynamic calc) */
-    .results-meta {
-      color: var(--text-muted);
-      font-size: 0.7rem;
-      text-align: center;
-      padding: 6px;
-      border-radius: var(--border-radius-sm);
-      margin-bottom: 0.5rem;
-      font-style: italic;
-    }
-
-    /* Basic Share Section */
-    .basic-share-section {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 0.5rem;
-      padding-top: 0.8rem;
-      border-top: 1px solid var(--glass-border);
-    }
-    .container.advanced-mode .basic-share-section { display: none; }
-
-    /* Add more button */
-    .add-more-btn {
-      width: 100%;
-      padding: 0.875rem;
-      background: rgba(99, 102, 241, 0.1);
-      border: 2px dashed var(--primary);
-      border-radius: var(--border-radius-sm);
-      color: var(--primary-light);
-      font-size: 0.875rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      margin-bottom: 1.5rem;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .add-more-btn:hover {
-      background: rgba(99, 102, 241, 0.15);
-      transform: translateY(-2px);
-    }
-    .container.advanced-mode .add-more-btn { display: flex; }
-
-    /* Grand Total */
-    .grand-total {
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
-      border: 1px solid var(--glass-border);
-      border-radius: var(--border-radius);
-      padding: 1.25rem;
-      margin-bottom: 1.5rem;
-      display: none;
-    }
-    .container.advanced-mode .grand-total { display: block; }
-    .grand-total-header {
-      text-align: center;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .grand-total-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.8rem;
-    }
-    .grand-total-item {
-      text-align: center;
-      padding: 0.8rem;
-      background: var(--glass);
-      border-radius: var(--border-radius-sm);
-      border: 1px solid var(--glass-border);
-    }
-    .grand-total-label {
-      color: var(--text-secondary);
-      font-size: 0.6rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      margin-bottom: 0.4rem;
-    }
-    .grand-total-value {
-      color: var(--text-primary);
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-
-    /* Advanced Share Section */
-    .share-section {
-      display: none;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 1rem;
-    }
-    .container.advanced-mode .share-section { display: flex; }
-
-    /* Share buttons */
-    .share-btn {
-      width: 40px; height: 40px;
-      border-radius: 50%; border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 0.2s ease; position: relative; overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-    .share-btn:hover { transform: translateY(-2px) scale(1.05); }
-    .share-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
-    .share-sms { background: linear-gradient(135deg, #06b6d4, #0891b2); }
-    .share-email { background: linear-gradient(135deg, #ec4899, #db2777); }
-    .share-copy { background: linear-gradient(135deg, var(--primary), var(--primary-light)); }
-    .share-clear { background: linear-gradient(135deg, var(--warning), #f97316); }
-    .share-icon { width: 16px; height: 16px; fill: white; }
-
-    /* Copy message */
-    .copy-message {
-      position: fixed;
-      top: calc(20px + var(--safe-area-top));
-      left: 50%;
-      transform: translateX(-50%) translateY(-60px);
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.95), rgba(6, 182, 212, 0.95));
-      border-radius: var(--border-radius-sm);
-      color: white; font-size: 0.8rem; font-weight: 600;
-      opacity: 0; transition: all 0.3s ease; z-index: 1000;
-      text-transform: uppercase; letter-spacing: 0.5px;
-      padding: 8px 16px;
-    }
-    .copy-message.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    /* Mobile optimizations */
-    @media (max-width: 480px) {
-      .container { padding: 5px; }
-      .calculator-card { padding: 1rem; }
-      .input-mode-row { gap: 8px; }
-      .specs-grid-5 { gap: 4px; }
-      .spec-input { font-size: 0.8rem; }
-      .results-strip { gap: 4px; }
+    /* Text Shadow */
+    .text-shadow-sm {
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
   </style>
+
+  <!-- Import Map for React & Libraries -->
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://esm.sh/react@18.2.0",
+      "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+      "lucide-react": "https://esm.sh/lucide-react@0.263.1",
+      "uuid": "https://esm.sh/uuid@9.0.0"
+    }
+  }
+  </script>
+  
+  <!-- Babel Standalone for JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
+  <div id="root"></div>
 
-  <header class="app-header">
-    <div class="header-content">
-        <div class="logo-container">
-            <img id="logoA" alt="Logo A">
-            <img id="logoGranicer2" alt="Granicer Logo 2"> 
-        </div>
-        <button id="refresh-btn" class="header-icon-btn" title="Refresh Page">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M23 4v6h-6M1 20v-6h6"/>
-                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-            </svg>
-        </button>
-    </div>
-  </header>
-  
-  <div class="container">
-    <div class="mode-switch" id="modeSwitch">
-      <button class="mode-switch-option active" data-mode="basic">Basic</button>
-      <button class="mode-switch-option" data-mode="advanced">Advanced</button>
-    </div>
+  <!-- Main Application Script -->
+  <script type="text/babel" data-type="module">
+    import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+    import { createRoot } from 'react-dom/client';
+    import { Trash2, Search, X, RefreshCcw, Share2, Copy, Plus, Mail, MessageSquare } from 'lucide-react';
+    import { v4 as uuidv4 } from 'uuid';
 
-    <div class="calculator-cards" id="calculatorCards">
-      </div>
-
-    <button class="add-more-btn" id="addMoreBtn">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 6px;">
-        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-      </svg>
-      Add More Item
-    </button>
-
-    <div class="grand-total">
-      <div class="grand-total-header">Grand Total</div>
-      <div class="grand-total-grid">
-        <div class="grand-total-item">
-          <div class="grand-total-label">Total Boxes</div>
-          <div class="grand-total-value" id="grandTotalBoxes">-</div>
-        </div>
-        <div class="grand-total-item">
-          <div class="grand-total-label">Total Area</div>
-          <div class="grand-total-value" id="grandTotalArea">-</div>
-        </div>
-        <div class="grand-total-item">
-          <div class="grand-total-label">Total Weight</div>
-          <div class="grand-total-value" id="grandTotalWeight">-</div>
-        </div>
-        <div class="grand-total-item">
-          <div class="grand-total-label">Final Amount</div>
-          <div class="grand-total-value" id="grandFinalAmount">-</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="share-section">
-      <button class="share-btn share-whatsapp" id="shareWhatsapp">
-        <svg class="share-icon" viewBox="0 0 24 24">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/></svg></button>
-      <button class="share-btn share-sms" id="shareSMS">
-        <svg class="share-icon" viewBox="0 0 24 24">
-          <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0 -1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/>
-        </svg>
-      </button>
-      <button class="share-btn share-email" id="shareEmail">
-        <svg class="share-icon" viewBox="0 0 24 24">
-          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-        </svg>
-      </button>
-      <button class="share-btn share-copy" id="copyBtn">
-        <svg class="share-icon" viewBox="0 0 24 24">
-          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-        </svg>
-      </button>
-      <button class="share-btn share-clear" id="clearBtn">
-        <svg class="share-icon" viewBox="0 0 24 24">
-          <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-        </svg>
-      </button>
-    </div>
-  </div>
-
-  <div class="copy-message" id="copyMessage">✓ Details copied to clipboard!</div>
-
-  <script>
-    // --- 1. Universal SKU Database (Expanded) ---
+    // --- CONSTANTS ---
     const SKU_MASTER = [
-        // Wall Tiles
-        { name: "300x600 mm (12x24) Wall", l: 300, w: 600, mm: "8.5", pcs: 5, kg: 13.5 },
-        { name: "300x450 mm (12x18) Wall", l: 300, w: 450, mm: "7.5", pcs: 6, kg: 10.5 },
-        { name: "250x375 mm (10x15) Wall", l: 250, w: 375, mm: "7", pcs: 8, kg: 10 },
-        
-        // GVT / PGVT
-        { name: "600x600 mm (2x2) GVT", l: 600, w: 600, mm: "8.5", pcs: 4, kg: 27 },
-        { name: "600x1200 mm (2x4) GVT", l: 600, w: 1200, mm: "9", pcs: 2, kg: 28 },
-        { name: "800x800 mm (32x32) GVT", l: 800, w: 800, mm: "9", pcs: 3, kg: 38 },
-        { name: "800x1600 mm (32x64) GVT", l: 800, w: 1600, mm: "9", pcs: 2, kg: 50 },
-        { name: "1000x1000 mm GVT", l: 1000, w: 1000, mm: "9", pcs: 2, kg: 40 },
-        
-        // Slabs
-        { name: "1200x1200 mm (4x4)", l: 1200, w: 1200, mm: "9", pcs: 2, kg: 58 },
-        { name: "1200x1800 mm (4x6)", l: 1200, w: 1800, mm: "9", pcs: 2, kg: 88 },
-        { name: "1200x2400 mm (4x8) 9mm", l: 1200, w: 2400, mm: "9", pcs: 1, kg: 60 },
-        { name: "1200x2400 mm (4x8) 15mm", l: 1200, w: 2400, mm: "15", pcs: 1, kg: 92 },
-        
-        // Heavy/Parking
-        { name: "300x300 mm (12x12) Heavy", l: 300, w: 300, mm: "8", pcs: 10, kg: 16 },
-        { name: "400x400 mm (16x16) Parking", l: 400, w: 400, mm: "9", pcs: 5, kg: 15 },
-        { name: "600x600 mm Full Body (16mm)", l: 600, w: 600, mm: "16", pcs: 2, kg: 25 },
+      // Wall Tiles
+      { name: "300x600 mm (12x24) Wall", l: 300, w: 600, mm: "8.5", pcs: 5, kg: 13.5 },
+      { name: "300x450 mm (12x18) Wall", l: 300, w: 450, mm: "7.5", pcs: 6, kg: 10.5 },
+      { name: "250x375 mm (10x15) Wall", l: 250, w: 375, mm: "7", pcs: 8, kg: 10 },
+      
+      // GVT / PGVT
+      { name: "600x600 mm (2x2) GVT", l: 600, w: 600, mm: "8.5", pcs: 4, kg: 27 },
+      { name: "600x1200 mm (2x4) GVT", l: 600, w: 1200, mm: "9", pcs: 2, kg: 28 },
+      { name: "800x800 mm (32x32) GVT", l: 800, w: 800, mm: "9", pcs: 3, kg: 38 },
+      { name: "800x1600 mm (32x64) GVT", l: 800, w: 1600, mm: "9", pcs: 2, kg: 50 },
+      { name: "1000x1000 mm GVT", l: 1000, w: 1000, mm: "9", pcs: 2, kg: 40 },
+      
+      // Slabs
+      { name: "1200x1200 mm (4x4)", l: 1200, w: 1200, mm: "9", pcs: 2, kg: 58 },
+      { name: "1200x1800 mm (4x6)", l: 1200, w: 1800, mm: "9", pcs: 2, kg: 88 },
+      { name: "1200x2400 mm (4x8) 9mm", l: 1200, w: 2400, mm: "9", pcs: 1, kg: 60 },
+      { name: "1200x2400 mm (4x8) 15mm", l: 1200, w: 2400, mm: "15", pcs: 1, kg: 92 },
+      
+      // Heavy/Parking
+      { name: "300x300 mm (12x12) Heavy", l: 300, w: 300, mm: "8", pcs: 10, kg: 16 },
+      { name: "400x400 mm (16x16) Parking", l: 400, w: 400, mm: "9", pcs: 5, kg: 15 },
+      { name: "600x600 mm Full Body (16mm)", l: 600, w: 600, mm: "16", pcs: 2, kg: 25 },
 
-        // Planks
-        { name: "200x1000 mm Wood Plank", l: 200, w: 1000, mm: "9", pcs: 5, kg: 20 },
-        { name: "200x1200 mm Wood Plank", l: 200, w: 1200, mm: "9", pcs: 5, kg: 23 }
+      // Planks
+      { name: "200x1000 mm Wood Plank", l: 200, w: 1000, mm: "9", pcs: 5, kg: 20 },
+      { name: "200x1200 mm Wood Plank", l: 200, w: 1200, mm: "9", pcs: 5, kg: 23 }
     ];
 
-    window.addEventListener('DOMContentLoaded', () => {
-        try {
-            if (typeof logoA_base64 !== 'undefined') document.getElementById('logoA').src = logoA_base64;
-            if (typeof logoGranicer2_base64 !== 'undefined') document.getElementById('logoGranicer2').src = logoGranicer2_base64;
-        } catch (e) { console.error("Logo error", e); }
+    const INITIAL_CARD = {
+      id: 'init',
+      skuName: '',
+      length: 0,
+      width: 0,
+      thickness: '',
+      piecesPerBox: 0,
+      weightPerBox: 0,
+      mode: 'area',
+      quantity: 0,
+      price: 0,
+      gst: 18
+    };
 
-        document.getElementById('refresh-btn').addEventListener('click', () => location.reload());
+    // --- COMPONENTS ---
+
+    // 1. Calculator Card Component
+    const CalculatorCard = React.memo(({ 
+      data, 
+      isAdvanced, 
+      isSingle, 
+      onUpdate, 
+      onDelete,
+      onResultChange 
+    }) => {
+      const [showSuggestions, setShowSuggestions] = useState(false);
+      const [filteredSku, setFilteredSku] = useState([]);
+      const suggestionsRef = useRef(null);
+
+      // Constants for formatting
+      const fmt = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
+      const fmt2 = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 });
+      const fmt3 = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 });
+      const fmtCurr = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+
+      // Calculation Logic
+      useEffect(() => {
+        let m2PerBox = 0;
+        let ft2PerBox = 0;
         
-        // Header scroll effect
-        const header = document.querySelector('.app-header');
-        let lastScrollY = window.scrollY;
-        window.addEventListener('scroll', () => {
-            const currentScrollY = window.scrollY;
-            if (currentScrollY > lastScrollY && currentScrollY > 50) {
-                header.classList.add('header-hidden');
-            } else {
-                header.classList.remove('header-hidden');
-            }
-            lastScrollY = currentScrollY;
-        }, { passive: true });
+        if (data.length > 0 && data.width > 0 && data.piecesPerBox > 0) {
+          m2PerBox = (data.length * data.width * data.piecesPerBox) / 1000000;
+          ft2PerBox = m2PerBox * 10.7639;
+        }
 
-        // Initialize with first card
-        addMoreCard();
+        let numBoxes = 0;
+        let totalPieces = 0;
+        let totalAreaFt2 = 0;
+        let totalWeightTons = 0;
+        let totalPrice = 0;
+
+        if (data.quantity > 0 && ft2PerBox > 0) {
+          if (data.mode === 'area') {
+            numBoxes = Math.ceil(data.quantity / ft2PerBox);
+          } else {
+            numBoxes = Math.ceil(data.quantity);
+          }
+
+          totalPieces = numBoxes * data.piecesPerBox;
+          totalAreaFt2 = numBoxes * ft2PerBox;
+          totalWeightTons = (numBoxes * data.weightPerBox) / 1000;
+
+          if (data.price > 0) {
+            const basePrice = totalAreaFt2 * data.price;
+            const gstAmount = basePrice * (data.gst / 100);
+            totalPrice = basePrice + gstAmount;
+          }
+        }
+
+        onResultChange(data.id, {
+          numBoxes,
+          totalPieces,
+          totalAreaFt2,
+          totalWeightTons,
+          totalPrice,
+          coveragePerBoxFt2: ft2PerBox,
+          coveragePerBoxM2: m2PerBox
+        });
+      }, [data, onResultChange]);
+
+      // Handle SKU Search
+      const handleSearchChange = (e) => {
+        const val = e.target.value;
+        onUpdate(data.id, { skuName: val });
+        
+        if (val.length > 0) {
+          const matches = SKU_MASTER.filter(s => s.name.toLowerCase().includes(val.toLowerCase()));
+          setFilteredSku(matches);
+          setShowSuggestions(true);
+        } else {
+          setShowSuggestions(false);
+        }
+      };
+
+      const selectSku = (sku) => {
+        onUpdate(data.id, {
+          skuName: sku.name,
+          length: sku.l,
+          width: sku.w,
+          thickness: sku.mm,
+          piecesPerBox: sku.pcs,
+          weightPerBox: sku.kg
+        });
+        setShowSuggestions(false);
+      };
+
+      // Close suggestions on click outside
+      useEffect(() => {
+        const handleClickOutside = (event) => {
+          if (suggestionsRef.current && !suggestionsRef.current.contains(event.target)) {
+            setShowSuggestions(false);
+          }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+      }, []);
+
+      // Compute local display values for the render
+      const m2PerBox = (data.length * data.width * data.piecesPerBox) / 1000000;
+      const ft2PerBox = m2PerBox * 10.7639;
+      let numBoxes = 0, totalAreaFt2 = 0, totalWeight = 0, totalPrice = 0;
+      
+      if (data.quantity > 0 && ft2PerBox > 0) {
+        if (data.mode === 'area') numBoxes = Math.ceil(data.quantity / ft2PerBox);
+        else numBoxes = Math.ceil(data.quantity);
+        
+        totalAreaFt2 = numBoxes * ft2PerBox;
+        totalWeight = (numBoxes * data.weightPerBox) / 1000;
+        
+        if (data.price > 0) {
+          const base = totalAreaFt2 * data.price;
+          totalPrice = base + (base * (data.gst/100));
+        }
+      }
+
+      return (
+        <div className="glass-card rounded-2xl p-4 md:p-5 relative transition-all duration-300 mb-4 animate-fade-in hover:border-primary/30">
+          {/* Delete Button (Only in advanced mode) */}
+          {isAdvanced && !isSingle && (
+            <button 
+              onClick={() => onDelete(data.id)}
+              className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white p-1.5 rounded-full shadow-lg transition-transform hover:scale-110 z-10 border-2 border-surface"
+            >
+              <Trash2 size={16} />
+            </button>
+          )}
+
+          {/* Row 1: Search */}
+          <div className="mb-4 relative" ref={suggestionsRef}>
+            <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 block">Tile Size & Thickness</label>
+            <div className="relative group">
+              <input
+                type="text"
+                className="w-full bg-zinc-900/40 border border-zinc-700/60 rounded-lg py-3 pl-3 pr-10 text-sm font-medium text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-inner"
+                placeholder="Search size (e.g. 600x1200)"
+                value={data.skuName}
+                onChange={handleSearchChange}
+              />
+              {data.skuName ? (
+                <button 
+                  onClick={() => onUpdate(data.id, { skuName: '' })}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                >
+                  <X size={16} />
+                </button>
+              ) : (
+                <Search size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none group-focus-within:text-primary transition-colors" />
+              )}
+            </div>
+            
+            {/* Autocomplete Dropdown */}
+            {showSuggestions && filteredSku.length > 0 && (
+              <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-[#1a1a1e] border border-zinc-700 rounded-lg shadow-2xl max-h-56 overflow-y-auto animate-slide-up">
+                {filteredSku.map((item, idx) => (
+                  <div 
+                    key={idx} 
+                    onClick={() => selectSku(item)}
+                    className="px-4 py-3 text-sm text-gray-200 hover:bg-primary/20 hover:text-white cursor-pointer border-b border-zinc-800 last:border-none transition-colors"
+                  >
+                    <span className="font-semibold">{item.name}</span>
+                    <div className="text-xs text-gray-500 mt-0.5">{item.l}x{item.w} • {item.pcs} pcs • {item.kg}kg</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Row 2: 5-Box Grid specs */}
+          <div className="mb-4 bg-zinc-900/30 rounded-lg p-3 border border-white/5">
+            <div className="grid grid-cols-5 gap-2">
+              {[
+                { label: 'Length', val: data.length || '', key: 'length', ph: '0' },
+                { label: 'Width', val: data.width || '', key: 'width', ph: '0' },
+                { label: 'Thick', val: data.thickness, key: 'thickness', ph: 'mm' },
+                { label: 'Pcs/Box', val: data.piecesPerBox || '', key: 'piecesPerBox', ph: '0' },
+                { label: 'Kg/Box', val: data.weightPerBox || '', key: 'weightPerBox', ph: '0' },
+              ].map((field, idx) => (
+                <div key={idx} className="flex flex-col items-center">
+                  <label className="text-[9px] md:text-[10px] text-gray-500 uppercase font-bold mb-1.5 whitespace-nowrap">{field.label}</label>
+                  <input
+                    type={field.key === 'thickness' ? 'text' : 'number'}
+                    className="w-full bg-black/20 border border-zinc-700/60 rounded text-center py-2 text-sm font-semibold text-white focus:border-primary focus:bg-primary/5 focus:outline-none transition-all placeholder-gray-600"
+                    placeholder={field.ph}
+                    value={field.val}
+                    onChange={(e) => onUpdate(data.id, { [field.key]: field.key === 'thickness' ? e.target.value : parseFloat(e.target.value) })}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Row 3: Mode and Quantity */}
+          <div className="grid grid-cols-2 gap-4 mb-4 items-end">
+            <div>
+              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 block">Mode</label>
+              <div className="flex bg-zinc-900/40 p-1 rounded-lg border border-zinc-700/60 relative isolate">
+                {/* Sliding background for toggle */}
+                <div 
+                  className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-gradient-to-br from-primary to-secondary rounded-md transition-all duration-300 -z-10 shadow-lg ${data.mode === 'boxes' ? 'left-[calc(50%+2px)]' : 'left-1'}`} 
+                />
+                <button 
+                  onClick={() => onUpdate(data.id, { mode: 'area' })}
+                  className={`flex-1 text-xs font-bold py-2.5 text-center rounded-md transition-colors uppercase ${data.mode === 'area' ? 'text-white' : 'text-gray-400 hover:text-gray-200'}`}
+                >
+                  Area
+                </button>
+                <button 
+                  onClick={() => onUpdate(data.id, { mode: 'boxes' })}
+                  className={`flex-1 text-xs font-bold py-2.5 text-center rounded-md transition-colors uppercase ${data.mode === 'boxes' ? 'text-white' : 'text-gray-400 hover:text-gray-200'}`}
+                >
+                  Boxes
+                </button>
+              </div>
+            </div>
+            <div>
+              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 block">
+                {data.mode === 'area' ? 'Area (ft²)' : 'Boxes'}
+              </label>
+              <input
+                type="number"
+                className="w-full bg-zinc-900/40 border border-zinc-700/60 rounded-lg py-3 px-3 text-sm font-medium text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-inner"
+                placeholder="Enter..."
+                value={data.quantity || ''}
+                onChange={(e) => onUpdate(data.id, { quantity: parseFloat(e.target.value) })}
+              />
+            </div>
+          </div>
+
+          {/* Row 4: Price & GST */}
+          <div className="bg-gradient-to-b from-zinc-800/30 to-zinc-900/30 border border-zinc-700/40 rounded-lg p-3 mb-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 block">Price/sq.ft</label>
+                <div className="relative group">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold group-focus-within:text-primary transition-colors">₹</span>
+                  <input
+                    type="number"
+                    className="w-full bg-zinc-900/40 border border-zinc-700/60 rounded-lg py-2 pl-7 pr-3 text-sm font-medium text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                    placeholder="0.00"
+                    value={data.price || ''}
+                    onChange={(e) => onUpdate(data.id, { price: parseFloat(e.target.value) })}
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 block text-center">GST %</label>
+                <div className="relative">
+                  <select
+                    className="w-full bg-zinc-900/40 border border-zinc-700/60 rounded-lg py-2 px-3 text-sm font-medium text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all appearance-none text-center cursor-pointer"
+                    value={data.gst}
+                    onChange={(e) => onUpdate(data.id, { gst: parseFloat(e.target.value) })}
+                  >
+                    <option value={0}>None</option>
+                    <option value={18}>18%</option>
+                    <option value={12}>12%</option>
+                    <option value={5}>5%</option>
+                  </select>
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                    <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Row 5: Results Dashboard */}
+          <div className="flex flex-col gap-2">
+            <div className="grid grid-cols-3 gap-2">
+              <div className="bg-white/5 border border-white/5 rounded-lg p-2 text-center hover:bg-white/10 transition-colors">
+                <div className="text-[10px] text-gray-400 font-bold uppercase mb-0.5">Boxes</div>
+                <div className="text-base font-bold text-white">{numBoxes > 0 ? fmt.format(numBoxes) : '-'}</div>
+              </div>
+              <div className="bg-white/5 border border-white/5 rounded-lg p-2 text-center hover:bg-white/10 transition-colors">
+                <div className="text-[10px] text-gray-400 font-bold uppercase mb-0.5">Area (ft²)</div>
+                <div className="text-base font-bold text-white">{totalAreaFt2 > 0 ? fmt.format(totalAreaFt2) : '-'}</div>
+              </div>
+              <div className="bg-white/5 border border-white/5 rounded-lg p-2 text-center hover:bg-white/10 transition-colors">
+                <div className="text-[10px] text-gray-400 font-bold uppercase mb-0.5">Weight (t)</div>
+                <div className="text-base font-bold text-white">{totalWeight > 0 ? fmt3.format(totalWeight) : '-'}</div>
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-r from-primary/15 to-secondary/15 border border-primary/20 rounded-lg px-4 py-3 flex justify-between items-center shadow-lg relative overflow-hidden">
+               <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-50"></div>
+              <div className="text-xs font-bold text-primary-light uppercase tracking-wide relative z-10 text-indigo-300">Total Amount</div>
+              <div className="text-xl font-extrabold text-white text-shadow-sm relative z-10">
+                {totalPrice > 0 ? fmtCurr.format(totalPrice) : '-'}
+              </div>
+            </div>
+          </div>
+
+          {/* Meta Text */}
+          <div className="text-center mt-3 text-[10px] text-gray-500 italic font-medium">
+            {ft2PerBox > 0 
+              ? `${data.piecesPerBox} pcs/box • ${fmt2.format(ft2PerBox)} ft²/box • ${fmt2.format(m2PerBox)} m²/box` 
+              : 'Enter size & packing details to calculate'}
+          </div>
+        </div>
+      );
     });
 
-    let currentAppMode = 'basic';
-    let cardCounter = 0;
-    let cardModes = {};
+    // 2. Main App Component
+    const App = () => {
+      const [mode, setMode] = useState('basic');
+      const [cards, setCards] = useState([{ ...INITIAL_CARD, id: uuidv4() }]);
+      const [results, setResults] = useState({});
+      const [headerVisible, setHeaderVisible] = useState(true);
+      const [lastScrollY, setLastScrollY] = useState(0);
+      const [copyFeedback, setCopyFeedback] = useState(false);
 
-    const fmt = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 });
-    const fmt3 = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 });
+      // --- Scroll Header Logic ---
+      useEffect(() => {
+        const handleScroll = () => {
+          const currentScrollY = window.scrollY;
+          if (currentScrollY > lastScrollY && currentScrollY > 50) {
+            setHeaderVisible(false);
+          } else {
+            setHeaderVisible(true);
+          }
+          setLastScrollY(currentScrollY);
+        };
 
-    function addMoreCard() {
-        const cardId = cardCounter++;
-        const cardsContainer = document.getElementById('calculatorCards');
-        const isFirstCard = cardsContainer.children.length === 0;
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, [lastScrollY]);
 
-        const newCard = document.createElement('div');
-        newCard.className = 'calculator-card';
-        newCard.dataset.cardId = cardId;
+      // --- Card Handlers ---
+      const addCard = () => {
+        setCards(prev => [...prev, { ...INITIAL_CARD, id: uuidv4() }]);
+      };
 
-        newCard.innerHTML = `
-            <button class="delete-card-btn" onclick="deleteCard(${cardId})">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-                </svg>
-            </button>
+      const updateCard = useCallback((id, updates) => {
+        setCards(prev => prev.map(card => card.id === id ? { ...card, ...updates } : card));
+      }, []);
 
-            <div class="form-section">
-                <div class="form-group full-width" style="margin-bottom: 0.8rem;">
-                    <label class="form-label">Tile Size & Thickness</label>
-                    <div class="input-wrapper">
-                        <input type="text" class="form-input sku-search" data-card="${cardId}" placeholder="Search size (e.g. 600x1200)" autocomplete="off">
-                        <button class="clear-sku-btn" data-card="${cardId}" onclick="clearSkuSearch(${cardId})">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="15" y1="9" x2="9" y2="15"></line>
-                                <line x1="9" y1="9" x2="15" y2="15"></line>
-                            </svg>
-                        </button>
-                        <div class="suggestions-list" id="suggestions-${cardId}"></div>
-                    </div>
-                </div>
-                
-                <div class="specs-container">
-                    <div class="specs-grid-5">
-                        <div class="spec-box">
-                            <label>Length</label>
-                            <input type="number" class="spec-input spec-l" data-card="${cardId}" placeholder="0">
-                        </div>
-                        <div class="spec-box">
-                            <label>Width</label>
-                            <input type="number" class="spec-input spec-w" data-card="${cardId}" placeholder="0">
-                        </div>
-                        <div class="spec-box">
-                            <label>Thick</label>
-                            <input type="text" class="spec-input spec-mm" data-card="${cardId}" placeholder="mm">
-                        </div>
-                        <div class="spec-box">
-                            <label>Pcs/Box</label>
-                            <input type="number" class="spec-input spec-pcs" data-card="${cardId}" placeholder="0">
-                        </div>
-                        <div class="spec-box">
-                            <label>Kg/Box</label>
-                            <input type="number" class="spec-input spec-kg" data-card="${cardId}" placeholder="0">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="input-mode-row">
-                    <div class="form-group">
-                        <label class="form-label">Calc Mode</label>
-                        <div class="mode-toggle" data-card="${cardId}">
-                            <button class="mode-option active" data-mode="area">Area</button>
-                            <button class="mode-option" data-mode="boxes">Boxes</button>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label input-label">Area (ft²)</label>
-                        <input type="number" class="form-input quantity" data-card="${cardId}" placeholder="Enter..." min="0" step="0.01" inputmode="decimal">
-                    </div>
-                </div>
-            </div>
-
-            <div class="price-section">
-                <div class="form-row" style="margin-bottom:0;">
-                    <div class="form-group">
-                        <label class="form-label">Price/sq.ft</label>
-                        <div class="price-input-container">
-                            <input type="number" class="form-input price-input price" data-card="${cardId}" placeholder="0.00" min="0" step="0.01" inputmode="decimal">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="gst-label-centered">GST %</div>
-                        <select class="form-select gst" data-card="${cardId}">
-                            <option value="0">None</option>
-                            <option value="18" selected>18%</option>
-                            <option value="12">12%</option>
-                            <option value="5">5%</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="results-container">
-                <div class="results-strip">
-                    <div class="result-box-sm">
-                        <div class="lbl">Boxes</div>
-                        <div class="val boxes-result">-</div>
-                    </div>
-                    <div class="result-box-sm">
-                        <div class="lbl">Area (ft²)</div>
-                        <div class="val area-ft2-result">-</div>
-                    </div>
-                    <div class="result-box-sm">
-                        <div class="lbl">Weight (t)</div>
-                        <div class="val weight-result">-</div>
-                    </div>
-                </div>
-                <div class="result-total-bar">
-                    <div class="lbl">Total Amount</div>
-                    <div class="val total-price-result">-</div>
-                </div>
-            </div>
-
-            <div class="results-meta">Select size to see box details</div>
-
-            ${isFirstCard ? `
-            <div class="basic-share-section">
-                <button class="share-btn share-whatsapp" onclick="shareWhatsApp()"><svg class="share-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.891 3.486"/></svg></button>
-                <button class="share-btn share-sms" onclick="shareSMS()"><svg class="share-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0 -1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg></button>
-                <button class="share-btn share-email" onclick="shareEmail()"><svg class="share-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></button>
-                <button class="share-btn share-copy" onclick="copyToClipboard()"><svg class="share-icon" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>
-                <button class="share-btn share-clear" onclick="clearAll()"><svg class="share-icon" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
-            </div>
-            ` : ''}
-        `;
-
-        cardsContainer.appendChild(newCard);
-        cardModes[cardId] = 'area';
-        setupCardEventListeners(cardId);
-    }
-
-    function setupCardEventListeners(cardId) {
-        const card = document.querySelector(`[data-card-id="${cardId}"]`);
-        if (!card) return;
-
-        // Search Input
-        const searchInput = card.querySelector('.sku-search');
-        searchInput.addEventListener('input', (e) => handleSkuSearch(e, cardId));
-
-        // Clear Button
-        const clearBtn = card.querySelector('.clear-sku-btn');
-        if (clearBtn) {
-            clearBtn.addEventListener('click', () => clearSkuSearch(cardId));
-        }
-
-        // Smart Logic: Update calc when any spec box changes
-        const specInputs = card.querySelectorAll('.spec-input');
-        specInputs.forEach(input => {
-            input.addEventListener('input', () => calculateCard(cardId));
+      const deleteCard = useCallback((id) => {
+        setCards(prev => prev.filter(card => card.id !== id));
+        setResults(prev => {
+          const newResults = { ...prev };
+          delete newResults[id];
+          return newResults;
         });
+      }, []);
 
-        // Other inputs
-        card.querySelector('.quantity').addEventListener('input', () => calculateCard(cardId));
-        card.querySelector('.price').addEventListener('input', () => calculateCard(cardId));
-        card.querySelector('.gst').addEventListener('change', () => calculateCard(cardId));
-
-        // Mode toggle
-        card.querySelector('.mode-toggle').addEventListener('click', (e) => {
-            const option = e.target.closest('.mode-option');
-            if (option) {
-                setCardMode(cardId, option.dataset.mode);
-            }
+      const updateResult = useCallback((id, result) => {
+        setResults(prev => {
+          // Only update if changed to avoid loop
+          if (JSON.stringify(prev[id]) !== JSON.stringify(result)) {
+            return { ...prev, [id]: result };
+          }
+          return prev;
         });
-    }
+      }, []);
 
-    function handleSkuSearch(event, cardId) {
-        const query = event.target.value.toLowerCase();
-        const suggestionsList = document.getElementById(`suggestions-${cardId}`);
-        const clearBtn = document.querySelector(`[data-card="${cardId}"].clear-sku-btn`);
-
-        if (query.length > 0) {
-            clearBtn.classList.add('show');
-        } else {
-            clearBtn.classList.remove('show');
-            suggestionsList.style.display = 'none';
-            return;
+      const refreshApp = () => {
+        if(window.confirm("Reset all calculations?")) {
+          setCards([{ ...INITIAL_CARD, id: uuidv4() }]);
+          setResults({});
         }
+      };
 
-        const matches = SKU_MASTER.filter(item => item.name.toLowerCase().includes(query));
-        
-        suggestionsList.innerHTML = '';
-        if (matches.length > 0) {
-            matches.forEach((sku, index) => {
-                const div = document.createElement('div');
-                div.className = 'suggestion-item';
-                div.textContent = sku.name;
-                div.onclick = () => selectSku(cardId, sku);
-                suggestionsList.appendChild(div);
-            });
-            suggestionsList.style.display = 'block';
-        } else {
-            suggestionsList.style.display = 'none';
+      const switchMode = (newMode) => {
+        if (mode !== newMode) {
+          setMode(newMode);
+          // Reset cards on mode switch for cleaner UX
+          setCards([{ ...INITIAL_CARD, id: uuidv4() }]);
+          setResults({});
         }
-    }
+      };
 
-    function selectSku(cardId, sku) {
-        const card = document.querySelector(`[data-card-id="${cardId}"]`);
-        
-        // 1. Fill Search Input
-        card.querySelector('.sku-search').value = sku.name;
-        
-        // 2. Auto-fill 5 Boxes
-        card.querySelector('.spec-l').value = sku.l;
-        card.querySelector('.spec-w').value = sku.w;
-        card.querySelector('.spec-mm').value = sku.mm;
-        card.querySelector('.spec-pcs').value = sku.pcs;
-        card.querySelector('.spec-kg').value = sku.kg;
+      // --- Grand Total Calculation ---
+      const grandTotal = useMemo(() => {
+        return Object.values(results).reduce((acc, curr) => ({
+          boxes: acc.boxes + curr.numBoxes,
+          area: acc.area + curr.totalAreaFt2,
+          weight: acc.weight + curr.totalWeightTons,
+          price: acc.price + curr.totalPrice
+        }), { boxes: 0, area: 0, weight: 0, price: 0 });
+      }, [results]);
 
-        // Hide suggestions
-        document.getElementById(`suggestions-${cardId}`).style.display = 'none';
-
-        // Recalculate
-        calculateCard(cardId);
-    }
-
-    function clearSkuSearch(cardId) {
-        const card = document.querySelector(`[data-card-id="${cardId}"]`);
-        card.querySelector('.sku-search').value = '';
-        card.querySelector('.clear-sku-btn').classList.remove('show');
-        
-        // Clear spec boxes too? Optional. Let's clear them for fresh start.
-        card.querySelectorAll('.spec-input').forEach(i => i.value = '');
-        
-        calculateCard(cardId);
-    }
-
-    function calculateCard(cardId) {
-        const card = document.querySelector(`[data-card-id="${cardId}"]`);
-        if (!card) return;
-
-        // --- SMART LOGIC: READ FROM 5 BOXES ---
-        const L = parseFloat(card.querySelector('.spec-l').value) || 0;
-        const W = parseFloat(card.querySelector('.spec-w').value) || 0;
-        const PCS = parseFloat(card.querySelector('.spec-pcs').value) || 0;
-        const KG = parseFloat(card.querySelector('.spec-kg').value) || 0;
-        
-        // Inputs
-        const quantity = parseFloat(card.querySelector('.quantity').value || 0);
-        const pricePerFt2 = parseFloat(card.querySelector('.price').value || 0);
-        const gstRate = parseFloat(card.querySelector('.gst').value || 0);
-
-        // 1. Calculate Coverage per box
-        let ft2PerBox = 0;
-        let m2PerBox = 0;
-
-        if (L > 0 && W > 0 && PCS > 0) {
-            m2PerBox = (L * W * PCS) / 1000000; // mm to m2
-            ft2PerBox = m2PerBox * 10.7639; // m2 to ft2
-        }
-
-        let numBoxes = 0, pieces = 0, areaFt2 = 0, weight = 0, totalPrice = 0;
-        const mode = cardModes[cardId] || 'area';
-
-        if (quantity > 0 && ft2PerBox > 0) {
-            if (mode === 'area') {
-                numBoxes = Math.ceil(quantity / ft2PerBox);
-            } else {
-                numBoxes = Math.ceil(quantity);
-            }
-
-            pieces = numBoxes * PCS;
-            areaFt2 = numBoxes * ft2PerBox;
-            weight = (numBoxes * KG) / 1000; // To Tons
-
-            if (pricePerFt2 > 0) {
-                const basePrice = areaFt2 * pricePerFt2;
-                const gstAmount = basePrice * (gstRate / 100);
-                totalPrice = basePrice + gstAmount;
-            }
-        }
-
-        // Update UI
-        card.querySelector('.boxes-result').textContent = numBoxes ? fmt.format(numBoxes) : '-';
-        card.querySelector('.area-ft2-result').textContent = areaFt2 ? fmt.format(areaFt2) : '-';
-        card.querySelector('.weight-result').textContent = weight ? fmt3.format(weight) : '-';
-        card.querySelector('.total-price-result').textContent = totalPrice > 0 ? '₹' + new Intl.NumberFormat('en-IN').format(Math.round(totalPrice)) : '-';
-
-        // Update Meta Text
-        if (ft2PerBox > 0) {
-            card.querySelector('.results-meta').textContent = `${PCS} pcs/box • ${ft2PerBox.toFixed(2)} ft²/box • ${m2PerBox.toFixed(2)} m²/box`;
-        } else {
-            card.querySelector('.results-meta').textContent = 'Enter packing details to see calculations';
-        }
-
-        if (currentAppMode === 'advanced') {
-            updateGrandTotal();
-        }
-    }
-
-    function setCardMode(cardId, mode) {
-        cardModes[cardId] = mode;
-        const card = document.querySelector(`[data-card-id="${cardId}"]`);
-        const modeToggle = card.querySelector('.mode-toggle');
-        const inputLabel = card.querySelector('.input-label');
-        const quantityInput = card.querySelector('.quantity');
-
-        modeToggle.classList.toggle('boxes-mode', mode === 'boxes');
-        
-        const options = modeToggle.querySelectorAll('.mode-option');
-        options.forEach(opt => {
-            opt.classList.toggle('active', opt.dataset.mode === mode);
-        });
-
-        inputLabel.textContent = mode === 'area' ? 'Area (ft²)' : 'Boxes';
-        quantityInput.placeholder = mode === 'area' ? 'Enter...' : 'Enter...';
-
-        calculateCard(cardId);
-    }
-
-    // --- Advanced Mode Features ---
-    function updateGrandTotal() {
-        const cards = document.querySelectorAll('.calculator-card');
-        let totalBoxes = 0, totalArea = 0, totalWeight = 0, totalFinalAmount = 0;
-
-        cards.forEach(card => {
-            const boxes = parseFloat(card.querySelector('.boxes-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
-            const area = parseFloat(card.querySelector('.area-ft2-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
-            const weight = parseFloat(card.querySelector('.weight-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
-            const finalAmount = parseFloat(card.querySelector('.total-price-result').textContent.replace(/[^0-9.-]+/g,"") || 0);
-
-            totalBoxes += boxes;
-            totalArea += area;
-            totalWeight += weight;
-            totalFinalAmount += finalAmount;
-        });
-
-        document.getElementById('grandTotalBoxes').textContent = totalBoxes > 0 ? fmt.format(totalBoxes) : '-';
-        document.getElementById('grandTotalArea').textContent = totalArea > 0 ? fmt.format(totalArea) + ' ft²' : '-';
-        document.getElementById('grandTotalWeight').textContent = totalWeight > 0 ? fmt3.format(totalWeight) + ' t' : '-';
-        document.getElementById('grandFinalAmount').textContent = totalFinalAmount > 0 ? '₹' + new Intl.NumberFormat('en-IN').format(Math.round(totalFinalAmount)) : '-';
-    }
-
-    function switchMode(mode) {
-        const prevMode = currentAppMode;
-        currentAppMode = mode;
-        const container = document.querySelector('.container');
-        const modeSwitch = document.getElementById('modeSwitch');
-
-        // Reset logic when switching? The original code did this.
-        if (prevMode !== mode) {
-            resetAllCards();
-        }
-
-        if (mode === 'advanced') {
-            container.classList.add('advanced-mode');
-            modeSwitch.classList.add('advanced-mode');
-            setTimeout(() => updateGrandTotal(), 100);
-        } else {
-            container.classList.remove('advanced-mode');
-            modeSwitch.classList.remove('advanced-mode');
-        }
-
-        const options = modeSwitch.querySelectorAll('.mode-switch-option');
-        options.forEach(opt => {
-            opt.classList.toggle('active', opt.dataset.mode === mode);
-        });
-    }
-
-    function resetAllCards() {
-        const cardsContainer = document.getElementById('calculatorCards');
-        cardsContainer.innerHTML = '';
-        cardCounter = 0;
-        cardModes = {};
-        addMoreCard(); // Add 1 fresh card
-    }
-
-    function deleteCard(cardId) {
-        const card = document.querySelector(`[data-card-id="${cardId}"]`);
-        if (card) {
-            card.remove();
-            delete cardModes[cardId];
-            updateGrandTotal();
-        }
-    }
-
-    // --- Share Logic ---
-    function getShareText() {
-        const cards = document.querySelectorAll('.calculator-card');
+      // --- Sharing Logic ---
+      const getShareText = () => {
         let text = '';
+        const fmt = new Intl.NumberFormat('en-IN');
+        
+        if (mode === 'basic') {
+          const card = cards[0];
+          const res = results[card.id];
+          if (!res) return '';
 
-        if (currentAppMode === 'basic') {
-            const card = cards[0];
-            const skuName = card.querySelector('.sku-search').value || 'Custom Size';
-            
-            // Get 5 box values
-            const L = card.querySelector('.spec-l').value;
-            const W = card.querySelector('.spec-w').value;
-            const Pcs = card.querySelector('.spec-pcs').value;
-
-            text = `Size: ${skuName}\nSpecs: ${L}x${W}mm | ${Pcs} pcs/box\n`;
-            text += `Boxes: ${card.querySelector('.boxes-result').textContent}\n`;
-            text += `Area: ${card.querySelector('.area-ft2-result').textContent} sq ft\n`;
-            text += `Weight: ${card.querySelector('.weight-result').textContent} tons`;
-
-            const amt = card.querySelector('.total-price-result').textContent;
-            if (amt !== '-') text += `\nAmount: ${amt}`;
+          text = `*TILE CALCULATION*\n`;
+          text += `Size: ${card.skuName || 'Custom'}\n`;
+          text += `Specs: ${card.length}x${card.width}mm | ${card.piecesPerBox} pcs/box\n`;
+          text += `------------------\n`;
+          text += `Boxes: ${res.numBoxes}\n`;
+          text += `Area: ${fmt.format(res.totalAreaFt2)} sq ft\n`;
+          text += `Weight: ${res.totalWeightTons.toFixed(3)} tons\n`;
+          if (res.totalPrice > 0) text += `Amount: ₹${fmt.format(Math.round(res.totalPrice))}`;
         } else {
-            text = 'TILE CALCULATION\n\n';
-            cards.forEach((card, index) => {
-                const skuName = card.querySelector('.sku-search').value || 'Item';
-                const boxes = card.querySelector('.boxes-result').textContent;
-                if(boxes !== '-') {
-                    text += `#${index + 1} ${skuName}\n`;
-                    text += `Boxes: ${boxes} | Area: ${card.querySelector('.area-ft2-result').textContent} ft²\n\n`;
-                }
-            });
-            text += `GRAND TOTAL:\nBoxes: ${document.getElementById('grandTotalBoxes').textContent}\n`;
-            text += `Area: ${document.getElementById('grandTotalArea').textContent}\n`;
-            text += `Amount: ${document.getElementById('grandFinalAmount').textContent}`;
+          text = `*PROJECT ESTIMATE*\n\n`;
+          cards.forEach((card, idx) => {
+            const res = results[card.id];
+            if (res && res.numBoxes > 0) {
+              text += `#${idx + 1} ${card.skuName || 'Item'}\n`;
+              text += `Boxes: ${res.numBoxes} | Area: ${fmt.format(res.totalAreaFt2)} ft²\n\n`;
+            }
+          });
+          text += `------------------\n`;
+          text += `*GRAND TOTAL*\n`;
+          text += `Boxes: ${fmt.format(grandTotal.boxes)}\n`;
+          text += `Area: ${fmt.format(grandTotal.area)} ft²\n`;
+          text += `Weight: ${grandTotal.weight.toFixed(3)} tons\n`;
+          text += `Amount: ₹${fmt.format(Math.round(grandTotal.price))}`;
         }
         return text;
-    }
+      };
 
-    function shareWhatsApp() {
+      const handleShare = (type) => {
         const text = getShareText();
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-    }
-    
-    function shareSMS() {
-        const text = getShareText();
-        window.open(`sms:?body=${encodeURIComponent(text)}`, '_self');
-    }
-    
-    function shareEmail() {
-        const text = getShareText();
-        window.location.href = `mailto:?subject=Tile Calculation&body=${encodeURIComponent(text)}`;
-    }
+        const encodedText = encodeURIComponent(text);
 
-    function copyToClipboard() {
-        const text = getShareText();
-        navigator.clipboard.writeText(text).then(() => {
-            const msg = document.getElementById('copyMessage');
-            msg.classList.add('show');
-            setTimeout(() => msg.classList.remove('show'), 1500);
-        });
-    }
-
-    function clearAll() {
-        // Simply reset inputs on all cards
-        const cards = document.querySelectorAll('.calculator-card');
-        cards.forEach(card => {
-            card.querySelectorAll('input').forEach(i => i.value = '');
-            card.querySelector('.gst').selectedIndex = 1;
-            calculateCard(card.dataset.cardId);
-        });
-    }
-
-    // Global Click to close suggestions
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.input-wrapper')) {
-            document.querySelectorAll('.suggestions-list').forEach(list => list.style.display = 'none');
+        switch (type) {
+          case 'whatsapp':
+            window.open(`https://wa.me/?text=${encodedText}`, '_blank');
+            break;
+          case 'sms':
+            window.open(`sms:?body=${encodedText}`, '_self');
+            break;
+          case 'email':
+            window.location.href = `mailto:?subject=Tile Calculation&body=${encodedText}`;
+            break;
+          case 'copy':
+            navigator.clipboard.writeText(text).then(() => {
+              setCopyFeedback(true);
+              setTimeout(() => setCopyFeedback(false), 2000);
+            });
+            break;
         }
-    });
+      };
 
-    // Mode Switch Listener
-    document.getElementById('modeSwitch').addEventListener('click', (e) => {
-        const option = e.target.closest('.mode-switch-option');
-        if (option) switchMode(option.dataset.mode);
-    });
+      const ShareButtons = () => (
+        <div className="flex justify-center gap-3 mt-6 pt-6 border-t border-white/10 animate-fade-in">
+          <button onClick={() => handleShare('whatsapp')} className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#25D366] to-[#128C7E] shadow-lg hover:scale-110 transition-transform active:scale-95">
+            <MessageSquare size={18} color="white" fill="white" />
+          </button>
+          <button onClick={() => handleShare('sms')} className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-cyan-400 to-cyan-600 shadow-lg hover:scale-110 transition-transform active:scale-95">
+             <div className="font-bold text-white text-[10px]">SMS</div>
+          </button>
+          <button onClick={() => handleShare('email')} className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-pink-400 to-pink-600 shadow-lg hover:scale-110 transition-transform active:scale-95">
+            <Mail size={18} color="white" />
+          </button>
+          <button onClick={() => handleShare('copy')} className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-indigo-400 to-indigo-600 shadow-lg hover:scale-110 transition-transform active:scale-95">
+            <Copy size={18} color="white" />
+          </button>
+          <button onClick={refreshApp} className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-orange-400 to-orange-600 shadow-lg hover:scale-110 transition-transform active:scale-95">
+            <RefreshCcw size={18} color="white" />
+          </button>
+        </div>
+      );
 
-    // Add More Listener
-    document.getElementById('addMoreBtn').addEventListener('click', addMoreCard);
+      return (
+        <div className="min-h-screen pb-10 font-sans">
+          {/* Sticky Header */}
+          <header className={`fixed top-0 w-full z-40 transition-transform duration-300 ${headerVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+            <div className="glass border-b border-white/5 px-5 py-4 shadow-2xl">
+              <div className="max-w-2xl mx-auto flex justify-between items-center">
+                 <div className="flex items-center gap-2.5">
+                    {/* Logo */}
+                    <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-primary/20">T</div>
+                    <h1 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300 tracking-tight">TilesPro</h1>
+                 </div>
+                 <button onClick={refreshApp} className="p-2 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
+                   <RefreshCcw size={20} />
+                 </button>
+              </div>
+            </div>
+          </header>
 
-    // Other share buttons
-    document.getElementById('shareWhatsapp').addEventListener('click', shareWhatsApp);
-    document.getElementById('shareSMS').addEventListener('click', shareSMS);
-    document.getElementById('shareEmail').addEventListener('click', shareEmail);
-    document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
-    document.getElementById('clearBtn').addEventListener('click', clearAll);
+          <main className="pt-24 px-4 max-w-2xl mx-auto">
+            {/* Mode Switcher */}
+            <div className="bg-zinc-900/40 p-1 rounded-xl border border-white/10 flex mb-6 relative isolate shadow-lg">
+               <div 
+                  className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-gradient-to-br from-primary to-secondary rounded-lg transition-all duration-300 -z-10 shadow-md ${mode === 'advanced' ? 'translate-x-[calc(100%+8px)]' : 'translate-x-0'}`} 
+                />
+              <button 
+                onClick={() => switchMode('basic')}
+                className={`flex-1 py-2.5 text-sm font-bold uppercase tracking-wide rounded-lg transition-colors ${mode === 'basic' ? 'text-white' : 'text-gray-400 hover:text-gray-200'}`}
+              >
+                Basic
+              </button>
+              <button 
+                 onClick={() => switchMode('advanced')}
+                 className={`flex-1 py-2.5 text-sm font-bold uppercase tracking-wide rounded-lg transition-colors ${mode === 'advanced' ? 'text-white' : 'text-gray-400 hover:text-gray-200'}`}
+              >
+                Advanced
+              </button>
+            </div>
 
+            {/* Cards List */}
+            <div className="space-y-4">
+              {cards.map(card => (
+                <CalculatorCard 
+                  key={card.id} 
+                  data={card} 
+                  isAdvanced={mode === 'advanced'}
+                  isSingle={cards.length === 1}
+                  onUpdate={updateCard} 
+                  onDelete={deleteCard}
+                  onResultChange={updateResult}
+                />
+              ))}
+            </div>
+
+            {/* Add More Button (Advanced Mode) */}
+            {mode === 'advanced' && (
+              <button 
+                onClick={addCard}
+                className="w-full mt-4 py-4 border-2 border-dashed border-primary/40 rounded-xl flex items-center justify-center gap-2 text-primary-light font-bold hover:bg-primary/5 hover:border-primary transition-all active:scale-[0.98] uppercase tracking-wider text-sm animate-fade-in"
+              >
+                <Plus size={20} />
+                Add Item
+              </button>
+            )}
+
+            {/* Grand Total (Advanced Mode) */}
+            {mode === 'advanced' && (
+              <div className="mt-6 glass-card rounded-2xl p-5 border-t-4 border-t-secondary animate-fade-in">
+                 <div className="text-center text-xs font-extrabold uppercase text-gray-500 tracking-[0.25em] mb-5">Grand Total Estimate</div>
+                 <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-zinc-900/40 rounded-lg p-3 text-center border border-white/5">
+                      <div className="text-[10px] text-gray-500 uppercase font-bold mb-1">Total Boxes</div>
+                      <div className="text-lg font-bold text-white">{new Intl.NumberFormat('en-IN').format(grandTotal.boxes)}</div>
+                    </div>
+                    <div className="bg-zinc-900/40 rounded-lg p-3 text-center border border-white/5">
+                      <div className="text-[10px] text-gray-500 uppercase font-bold mb-1">Total Area</div>
+                      <div className="text-lg font-bold text-white">{new Intl.NumberFormat('en-IN').format(grandTotal.area)} <span className="text-xs text-gray-500 font-normal">ft²</span></div>
+                    </div>
+                    <div className="bg-zinc-900/40 rounded-lg p-3 text-center border border-white/5">
+                      <div className="text-[10px] text-gray-500 uppercase font-bold mb-1">Total Weight</div>
+                      <div className="text-lg font-bold text-white">{new Intl.NumberFormat('en-IN', { maximumFractionDigits: 3 }).format(grandTotal.weight)} <span className="text-xs text-gray-500 font-normal">t</span></div>
+                    </div>
+                    <div className="bg-zinc-900/40 rounded-lg p-3 text-center border border-white/5 relative overflow-hidden">
+                       <div className="absolute inset-0 bg-primary/10"></div>
+                      <div className="text-[10px] text-primary-light uppercase font-bold mb-1 relative z-10">Final Amount</div>
+                      <div className="text-lg font-bold text-white relative z-10">{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(grandTotal.price)}</div>
+                    </div>
+                 </div>
+              </div>
+            )}
+
+            {/* Share Section (Advanced always, Basic only if calc exists) */}
+            {(mode === 'advanced' || (mode === 'basic' && results[cards[0].id]?.numBoxes > 0)) && (
+              <ShareButtons />
+            )}
+
+          </main>
+
+          {/* Copy Feedback Toast */}
+          <div className={`fixed top-24 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-5 py-3 rounded-full shadow-2xl font-bold text-sm transition-all duration-300 z-50 flex items-center gap-2 backdrop-blur-md bg-opacity-90 ${copyFeedback ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-95 pointer-events-none'}`}>
+             <Copy size={18} /> Copied to clipboard!
+          </div>
+        </div>
+      );
+    };
+
+    // Render App
+    const rootElement = document.getElementById('root');
+    const root = createRoot(rootElement);
+    root.render(<App />);
   </script>
 </body>
 </html>

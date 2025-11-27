@@ -4,6 +4,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  
+  <!-- Native App Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#000000">
+  
   <title>TilesPro Calculator</title>
   
   <!-- Tailwind CSS -->
@@ -53,6 +59,7 @@
       color: #e4e4e7;
       -webkit-tap-highlight-color: transparent;
       min-height: 100vh;
+      overscroll-behavior-y: none; /* Prevents rubber-banding on pull-to-refresh */
     }
     
     /* PRO PANEL: Solid dark with subtle border. Fast rendering. */
@@ -76,10 +83,21 @@
       color: #52525b;
     }
 
+    /* Hide Numeric Arrows/Spinners (Chrome, Safari, Edge, Opera) */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    /* Hide Numeric Arrows/Spinners (Firefox) */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
     .input-wrapper {
         background-color: #18181b;
         border: 1px solid #27272a;
-        transition: border-color 0.15s ease;
+        transition: border-color 0.15s ease, background-color 0.15s ease;
     }
     .input-wrapper:focus-within {
         border-color: #6366f1;
@@ -99,7 +117,7 @@
     /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 0px; background: transparent; }
 
-    /* Sticky Header - High opacity solid color */
+    /* Sticky Header Styling */
     .header-scrolled {
       background-color: rgba(0, 0, 0, 0.95);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -113,7 +131,8 @@
 <body class="antialiased font-sans text-gray-200">
 
   <!-- Header -->
-  <header class="fixed top-0 inset-x-0 z-50 transition-colors duration-200 h-16 flex items-center" id="app-header">
+  <!-- transition-transform ensures smooth hiding. -translate-y-full hides it. -->
+  <header class="fixed top-0 inset-x-0 z-50 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] h-16 flex items-center will-change-transform" id="app-header">
     <div class="max-w-2xl mx-auto px-5 w-full flex items-center justify-between">
       <div class="flex items-center gap-3 cursor-pointer btn-active" onclick="window.location.reload()">
         <!-- Brand Logo -->
@@ -125,7 +144,7 @@
           <span class="text-[10px] text-indigo-400 font-bold uppercase tracking-widest">Calculator</span>
         </div>
       </div>
-      <button onclick="window.location.reload()" class="w-9 h-9 rounded-full bg-[#18181b] flex items-center justify-center text-gray-400 hover:text-white border border-white/10 btn-active">
+      <button onclick="confirmReset()" class="w-9 h-9 rounded-full bg-[#18181b] flex items-center justify-center text-gray-400 hover:text-white border border-white/10 btn-active">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
       </button>
     </div>
@@ -205,7 +224,7 @@
          </div>
       </button>
 
-      <button onclick="resetApp()" class="flex flex-col items-center gap-1.5 btn-active group">
+      <button onclick="confirmReset()" class="flex flex-col items-center gap-1.5 btn-active group">
          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-500 text-white flex items-center justify-center shadow-lg shadow-red-900/40 group-hover:scale-105 transition-transform border border-red-400/20">
              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
          </div>
@@ -256,8 +275,55 @@
 
     // --- Initialization ---
     function init() {
-      addCard();
+      loadState(); // Auto-Load from LocalStorage
+      
+      if(state.cards.length === 0) {
+        addCard();
+      }
+      
+      // Sync UI with loaded state
+      if(state.mode === 'advanced') {
+         // Force animation frame to ensure elements exist
+         requestAnimationFrame(() => {
+            modeIndicator.style.transition = 'none'; // No animation on load
+            modeIndicator.style.transform = 'translateX(100%) translateX(4px)';
+            btnBasic.classList.replace('text-white', 'text-gray-400');
+            btnAdvanced.classList.replace('text-gray-400', 'text-white');
+            setTimeout(() => modeIndicator.style.transition = '', 100);
+         });
+      }
+      
       updateUI();
+    }
+
+    // --- Storage Logic (PRO Feature) ---
+    function saveState() {
+        localStorage.setItem('tilesProData', JSON.stringify(state));
+    }
+
+    function loadState() {
+        const saved = localStorage.getItem('tilesProData');
+        if(saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                state = parsed;
+                // Re-hydrate cards
+                container.innerHTML = '';
+                state.cards.forEach(card => {
+                    renderCardHTML(card.id, card); // Pass data to pre-fill
+                    // We need to attach listeners after rendering
+                });
+                // Attach listeners in a second pass
+                state.cards.forEach(card => {
+                    const el = document.getElementById(card.id);
+                    if(el) attachCardListeners(card.id, el);
+                    calculate(card.id, false); // Calculate without saving loop
+                });
+            } catch(e) {
+                console.error("Save data corrupted", e);
+                state.cards = [];
+            }
+        }
     }
 
     // --- Mode Switching ---
@@ -281,6 +347,13 @@
       container.innerHTML = '';
       addCard();
       updateUI();
+      saveState();
+    }
+
+    function confirmReset() {
+        if(confirm("Are you sure you want to reset everything?")) {
+            resetApp();
+        }
     }
 
     function resetApp() {
@@ -288,6 +361,7 @@
       container.innerHTML = '';
       addCard();
       updateUI();
+      saveState();
     }
 
     // --- Card Logic ---
@@ -301,12 +375,13 @@
       };
       state.cards.push(cardData);
       
-      renderCardHTML(id);
+      renderCardHTML(id, cardData);
       
       const cardEl = document.getElementById(id);
       attachCardListeners(id, cardEl);
       
       updateUI();
+      saveState();
     }
 
     function removeCard(id) {
@@ -321,12 +396,18 @@
         setTimeout(() => {
           cardEl.remove();
           calculateAll();
+          saveState();
         }, 150);
       }
     }
 
     // --- Rendering ---
-    function renderCardHTML(id) {
+    function renderCardHTML(id, data = null) {
+      // Use provided data or defaults
+      const d = data || { sku: '', l: '', w: '', th: '', pcs: '', kg: '', qty: '', price: '', gst: 18, mode: 'area' };
+      
+      const isBoxes = d.mode === 'boxes';
+      
       const html = `
         <div id="${id}" class="pro-panel rounded-2xl p-5 relative animate-slide-up transition-transform duration-200">
           ${state.mode === 'advanced' ? `
@@ -337,7 +418,7 @@
           <!-- SKU Search -->
           <div class="mb-4 relative">
             <div class="relative input-wrapper rounded-xl">
-              <input type="text" data-field="sku" class="pro-input rounded-xl py-3 pl-4 pr-10 text-sm font-medium placeholder-gray-500" placeholder="Search Size (e.g. 600x1200)" autocomplete="off">
+              <input type="text" data-field="sku" value="${d.sku}" class="pro-input rounded-xl py-3 pl-4 pr-10 text-sm font-medium placeholder-gray-500" placeholder="Search Size (e.g. 600x1200)" autocomplete="off">
               <div class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
               </div>
@@ -347,25 +428,25 @@
 
           <!-- 5 Specs Box (Distinct Premium Boxes) -->
           <div class="specs-grid mb-5">
-             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center">
-                <label class="text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Length</label>
-                <input type="number" data-field="l" class="pro-input text-center text-xs font-bold" placeholder="0">
+             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center justify-center">
+                <label class="w-full text-center text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Length</label>
+                <input type="number" inputmode="decimal" data-field="l" value="${d.l}" class="pro-input w-full text-center text-xs font-bold" placeholder="0">
              </div>
-             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center">
-                <label class="text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Width</label>
-                <input type="number" data-field="w" class="pro-input text-center text-xs font-bold" placeholder="0">
+             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center justify-center">
+                <label class="w-full text-center text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Width</label>
+                <input type="number" inputmode="decimal" data-field="w" value="${d.w}" class="pro-input w-full text-center text-xs font-bold" placeholder="0">
              </div>
-             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center">
-                <label class="text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Thick</label>
-                <input type="text" data-field="th" class="pro-input text-center text-xs font-bold" placeholder="mm">
+             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center justify-center">
+                <label class="w-full text-center text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Thick</label>
+                <input type="text" data-field="th" value="${d.th}" class="pro-input w-full text-center text-xs font-bold" placeholder="mm">
              </div>
-             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center">
-                <label class="text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Pcs</label>
-                <input type="number" data-field="pcs" class="pro-input text-center text-xs font-bold" placeholder="0">
+             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center justify-center">
+                <label class="w-full text-center text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Pcs</label>
+                <input type="number" inputmode="decimal" data-field="pcs" value="${d.pcs}" class="pro-input w-full text-center text-xs font-bold" placeholder="0">
              </div>
-             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center">
-                <label class="text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Kg</label>
-                <input type="number" data-field="kg" class="pro-input text-center text-xs font-bold" placeholder="0">
+             <div class="input-wrapper rounded-lg p-1.5 flex flex-col items-center justify-center">
+                <label class="w-full text-center text-[9px] text-gray-500 font-bold uppercase mb-0.5 tracking-wider">Kg</label>
+                <input type="number" inputmode="decimal" data-field="kg" value="${d.kg}" class="pro-input w-full text-center text-xs font-bold" placeholder="0">
              </div>
           </div>
 
@@ -374,16 +455,16 @@
             <div>
               <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 block pl-1">Calc Mode</label>
               <div class="flex bg-[#18181b] rounded-xl p-1 border border-white/5 relative isolate">
-                 <div class="mode-slider absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-gradient-to-r from-indigo-600 to-violet-600 rounded-lg transition-transform duration-200 border border-white/5 -z-10 shadow-lg shadow-indigo-900/30"></div>
-                 <button data-action="mode-area" class="flex-1 py-2 text-[10px] font-bold uppercase relative z-10 text-white transition-colors">Sq.Ft</button>
-                 <button data-action="mode-boxes" class="flex-1 py-2 text-[10px] font-bold uppercase relative z-10 text-gray-500 transition-colors">Boxes</button>
+                 <div class="mode-slider absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-gradient-to-r from-indigo-600 to-violet-600 rounded-lg transition-transform duration-200 border border-white/5 -z-10 shadow-lg shadow-indigo-900/30" style="transform: ${isBoxes ? 'translateX(100%)' : 'translateX(0)'}"></div>
+                 <button data-action="mode-area" class="flex-1 py-2 text-[10px] font-bold uppercase relative z-10 transition-colors ${!isBoxes ? 'text-white' : 'text-gray-500'}">Sq.Ft</button>
+                 <button data-action="mode-boxes" class="flex-1 py-2 text-[10px] font-bold uppercase relative z-10 transition-colors ${isBoxes ? 'text-white' : 'text-gray-500'}">Boxes</button>
               </div>
             </div>
             <div>
-              <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 block pl-1" data-label="qty">Area (ft²)</label>
+              <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 block pl-1" data-label="qty">${isBoxes ? 'Boxes' : 'Area (ft²)'}</label>
               <div class="relative input-wrapper rounded-xl">
-                  <input type="number" data-field="qty" class="pro-input rounded-xl py-2.5 px-3 text-sm font-bold pr-12" placeholder="0">
-                  <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 text-[10px] font-bold uppercase pointer-events-none tracking-wider" data-suffix="qty">ft²</span>
+                  <input type="number" inputmode="decimal" data-field="qty" value="${d.qty}" class="pro-input rounded-xl py-2.5 px-3 text-sm font-bold pr-12" placeholder="0">
+                  <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 text-[10px] font-bold uppercase pointer-events-none tracking-wider" data-suffix="qty">${isBoxes ? 'Boxes' : 'ft²'}</span>
               </div>
             </div>
           </div>
@@ -395,17 +476,17 @@
                  <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block pl-1">Price / sq.ft</label>
                  <div class="relative input-wrapper rounded-lg">
                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-sm">₹</span>
-                   <input type="number" data-field="price" class="pro-input rounded-lg py-2 pl-7 pr-3 text-sm font-bold" placeholder="0.00">
+                   <input type="number" inputmode="decimal" data-field="price" value="${d.price}" class="pro-input rounded-lg py-2 pl-7 pr-3 text-sm font-bold" placeholder="0.00">
                  </div>
                </div>
                <div>
                  <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block text-center">GST %</label>
                  <div class="relative input-wrapper rounded-lg">
                     <select data-field="gst" class="pro-input rounded-lg py-2 pl-2 pr-6 text-sm font-bold text-center appearance-none cursor-pointer">
-                        <option value="18">18%</option>
-                        <option value="12">12%</option>
-                        <option value="5">5%</option>
-                        <option value="0">0%</option>
+                        <option value="18" ${d.gst == 18 ? 'selected' : ''}>18%</option>
+                        <option value="12" ${d.gst == 12 ? 'selected' : ''}>12%</option>
+                        <option value="5" ${d.gst == 5 ? 'selected' : ''}>5%</option>
+                        <option value="0" ${d.gst == 0 ? 'selected' : ''}>0%</option>
                     </select>
                     <svg class="absolute right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-500 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                  </div>
@@ -537,8 +618,10 @@
     }
 
     // --- Calculation Core ---
-    function calculate(id) {
+    function calculate(id, save = true) {
       const c = state.cards.find(x => x.id === id);
+      if(!c) return;
+
       const l = parseFloat(c.l) || 0;
       const w = parseFloat(c.w) || 0;
       const pcs = parseFloat(c.pcs) || 0;
@@ -578,26 +661,27 @@
 
       // Update DOM
       const el = document.getElementById(id);
-      const format = (n) => n ? n.toLocaleString('en-IN') : '-';
-      const formatDec = (n) => n ? n.toFixed(2) : '-';
-      
-      el.querySelector('[data-res="boxes"]').innerText = boxes || '-';
-      el.querySelector('[data-res="area"]').innerText = formatDec(totalArea);
-      el.querySelector('[data-res="weight"]').innerText = totalWeight ? totalWeight.toFixed(3) : '-';
-      el.querySelector('[data-res="total"]').innerText = amount > 0 ? '₹' + Math.round(amount).toLocaleString('en-IN') : '-';
+      if(el) {
+          const formatDec = (n) => n ? n.toFixed(2) : '-';
+          
+          el.querySelector('[data-res="boxes"]').innerText = boxes || '-';
+          el.querySelector('[data-res="area"]').innerText = formatDec(totalArea);
+          el.querySelector('[data-res="weight"]').innerText = totalWeight ? totalWeight.toFixed(3) : '-';
+          el.querySelector('[data-res="total"]').innerText = amount > 0 ? '₹' + Math.round(amount).toLocaleString('en-IN') : '-';
 
-      // Meta
-      const meta = el.querySelector('.result-meta');
-      if (ft2Box > 0) {
-        meta.innerHTML = `<span class="text-indigo-400">${pcs} pcs/box</span> • ${ft2Box.toFixed(2)} ft²`;
-      } else {
-        meta.innerText = 'Enter dimensions';
+          // Meta
+          const meta = el.querySelector('.result-meta');
+          if (ft2Box > 0) {
+            meta.innerHTML = `<span class="text-indigo-400">${pcs} pcs/box</span> • ${ft2Box.toFixed(2)} ft²`;
+          } else {
+            meta.innerText = 'Enter dimensions';
+          }
       }
 
-      calculateAll();
+      calculateAll(save);
     }
 
-    function calculateAll() {
+    function calculateAll(save = true) {
       let tb = 0, ta = 0, tw = 0, tp = 0;
       state.cards.forEach(c => {
         tb += c.resBoxes;
@@ -613,7 +697,7 @@
         document.getElementById('gt-price').innerText = '₹' + Math.round(tp).toLocaleString('en-IN');
       }
       
-      // Share section always visible now
+      if(save) saveState();
     }
 
     // --- Global UI Updates ---
@@ -624,13 +708,7 @@
       } else {
         addBtnContainer.classList.add('hidden');
         grandTotalContainer.classList.add('hidden');
-        // If switching to basic, ensure only 1 card
-        if(state.cards.length > 1) {
-          state.cards = [state.cards[0]];
-          container.innerHTML = '';
-          renderCardHTML(state.cards[0].id);
-          attachCardListeners(state.cards[0].id, document.getElementById(state.cards[0].id));
-        }
+        // If switching to basic, ensure only 1 card (handled in setMode usually, but good check)
       }
     }
 
@@ -669,13 +747,40 @@
       }
     }
 
-    // Sticky Header Scroll
+    // Sticky Header Scroll Logic
     const header = document.getElementById('app-header');
+    let lastScrollY = window.scrollY;
+
+    // Use requestAnimationFrame for smooth visuals
+    let ticking = false;
+
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
-        header.classList.add('header-scrolled');
-      } else {
-        header.classList.remove('header-scrolled');
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          
+          // 1. Background transparency toggle
+          if (currentScrollY > 10) {
+            header.classList.add('header-scrolled');
+          } else {
+            header.classList.remove('header-scrolled');
+          }
+
+          // 2. Hide/Show Logic
+          // > 60px ensures we don't hide immediately at top
+          if (currentScrollY > lastScrollY && currentScrollY > 60) {
+            // Scrolling Down -> Hide
+            // We use -translate-y-full (Tailwind) to slide completely out of view
+            header.classList.add('-translate-y-full');
+          } else if (currentScrollY < lastScrollY) {
+            // Scrolling Up -> Show
+            header.classList.remove('-translate-y-full');
+          }
+
+          lastScrollY = Math.max(0, currentScrollY);
+          ticking = false;
+        });
+        ticking = true;
       }
     }, { passive: true });
 
